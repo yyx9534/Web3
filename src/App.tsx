@@ -151,7 +151,8 @@ const Capabilities = () => {
     { 
       title: "Business Consulting", 
       desc: "Strategic business consulting for the modern era.",
-      detail: "Navigating complexity with surgical precision. We provide strategic roadmaps for legacy enterprises and disruptive startups alike, focusing on sustainable growth and operational excellence in a volatile global market."
+      detail: "Navigating complexity with surgical precision. We provide strategic roadmaps for legacy enterprises and disruptive startups alike, focusing on sustainable growth and operational excellence in a volatile global market.",
+      link: "https://yeah-business-amsterdam-m6sjyle.gamma.site/yeah-en"
     },
     { 
       title: "Creative Agency", 
@@ -191,7 +192,13 @@ const Capabilities = () => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              onClick={() => setSelectedService(i)}
+              onClick={() => {
+                if ('link' in service) {
+                  window.open(service.link, '_blank');
+                } else {
+                  setSelectedService(i);
+                }
+              }}
               className="bg-black p-12 md:p-24 group hover:bg-[#080808] transition-colors cursor-pointer relative overflow-hidden"
             >
               <span className="text-gray-700 font-mono text-sm mb-8 block">0{i + 1}</span>
