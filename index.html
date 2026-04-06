@@ -2,31 +2,58 @@
 <html lang="en">
   <head>
     <script>
-      // More robust fix for "Cannot set property fetch of #<Window> which has only a getter"
+      // Aggressive fix for "Cannot set property fetch of #<Window> which has only a getter"
       (function() {
-        const suppressError = (event) => {
-          const message = event.message || (event.reason && event.reason.message) || "";
-          if (message.includes('Cannot set property fetch of #<Window>') || 
-              message.includes('fetch') && message.includes('only a getter')) {
-            if (event.preventDefault) event.preventDefault();
+        const suppressError = (message, source, lineno, colno, error) => {
+          const msg = message || (error && error.message) || "";
+          if (typeof msg === 'string' && (
+              msg.includes('Cannot set property fetch of #<Window>') || 
+              (msg.includes('fetch') && msg.includes('only a getter'))
+          )) {
             console.warn('YEAH: Suppressed non-fatal fetch assignment error.');
-            return true;
+            return true; // Prevents the firing of the default event handler
           }
           return false;
         };
 
-        // 1. Global error listener
-        window.addEventListener('error', suppressError);
+        // 1. Global error listener (Modern)
+        window.addEventListener('error', (event) => {
+          if (suppressError(event.message, event.filename, event.lineno, event.colno, event.error)) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+        }, true);
 
-        // 2. Unhandled promise rejection listener
-        window.addEventListener('unhandledrejection', suppressError);
+        // 2. window.onerror (Legacy/Fallback)
+        const oldOnError = window.onerror;
+        window.onerror = function(message, source, lineno, colno, error) {
+          if (suppressError(message, source, lineno, colno, error)) return true;
+          if (oldOnError) return oldOnError.apply(this, arguments);
+        };
 
-        // 3. Proactive attempt to make fetch writable
+        // 3. Unhandled promise rejection listener
+        window.addEventListener('unhandledrejection', (event) => {
+          const reason = event.reason;
+          const msg = (reason && reason.message) || (typeof reason === 'string' ? reason : "");
+          if (msg.includes('Cannot set property fetch of #<Window>') || 
+              (msg.includes('fetch') && msg.includes('only a getter'))) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.warn('YEAH: Suppressed non-fatal fetch assignment promise rejection.');
+          }
+        }, true);
+
+        // 4. Proactive attempt to make fetch writable
         try {
           const originalFetch = window.fetch;
           if (originalFetch) {
-            const descriptor = Object.getOwnPropertyDescriptor(window, 'fetch') || 
-                               Object.getOwnPropertyDescriptor(Object.getPrototypeOf(window), 'fetch');
+            // Try to find where fetch is defined
+            let target = window;
+            let descriptor = Object.getOwnPropertyDescriptor(target, 'fetch');
+            if (!descriptor) {
+              target = Object.getPrototypeOf(window);
+              descriptor = Object.getOwnPropertyDescriptor(target, 'fetch');
+            }
             
             if (descriptor && descriptor.configurable) {
               Object.defineProperty(window, 'fetch', {

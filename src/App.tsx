@@ -460,6 +460,21 @@ const ServicePage = () => {
                 </AnimatePresence>
               </div>
 
+              {/* External Details Link for Business Consulting */}
+              {service.id === "business-consulting" && (
+                <div className="border-b border-gray-900 pb-4">
+                  <a 
+                    href="https://yeah-business-amsterdam-m6sjyle.gamma.site/yeah-en"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex justify-between items-center group py-4"
+                  >
+                    <span className="text-xs font-mono uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">More Details</span>
+                    <ArrowRight size={16} className="text-gray-800 group-hover:text-white transition-colors" />
+                  </a>
+                </div>
+              )}
+
               {/* Inquire */}
               <div className="pb-4">
                 <a 
