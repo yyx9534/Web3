@@ -287,7 +287,7 @@ const Footer = () => {
         <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
       </div>
       <div>
-        © 2026 YEAH Studio. All Rights Reserved.
+        © 2026 YEAH Agency. All Rights Reserved.
       </div>
       <div>
         Privacy / Terms
