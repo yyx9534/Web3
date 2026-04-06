@@ -1,49 +1,137 @@
-import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowRight, Menu, X, ChevronDown } from "lucide-react";
-import { useState, useRef } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { ArrowRight, Menu, X, ChevronDown, ArrowLeft } from "lucide-react";
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/src/lib/utils";
+
+// --- Constants ---
+
+const SERVICES = [
+  { 
+    id: "business-consulting",
+    title: "Business Consulting & Market Entry", 
+    desc: "Comprehensive support for foreign enterprises entering the Netherlands.",
+    detail: "We specialize in guiding international companies through the complexities of the Dutch business landscape. From initial legal registration and tax structuring to full-scale operational support, we ensure your entry into Europe is seamless and strategic.",
+    image: "https://images.unsplash.com/photo-1554469384-e58fac16e23a?q=80&w=1974&auto=format&fit=crop",
+    methodology: "Our 'Soft Landing' methodology minimizes risk and accelerates growth. We handle the bureaucracy so you can focus on your core business, providing a single point of contact for legal, financial, and administrative requirements.",
+    caseStudies: [
+      { title: "Global Tech Branch Establishment", desc: "Facilitated the complete setup of a Dutch subsidiary for a major Asian tech firm, including office acquisition, local compliance, and HR infrastructure." },
+      { title: "Corporate Immigration & EU Mobility", desc: "Managed the corporate immigration process for a multinational leadership team, securing residency and work permits for seamless European operations." }
+    ]
+  },
+  { 
+    id: "creative-agency",
+    title: "Video Production House", 
+    desc: "High-end media production for TVC, documentaries, and corporate narratives.",
+    detail: "YEAH is a premier video production house dedicated to crafting high-fidelity visual content. We bridge the gap between cinematic artistry and commercial impact, producing everything from television commercials to deep-dive documentaries.",
+    image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop",
+    methodology: "We operate with a 'Media-First' mindset. Our process involves strategic storytelling, high-end cinematography, and meticulous post-production to ensure every frame resonates with your target audience.",
+    caseStudies: [
+      { title: "Listed Law Firm Media Suite", desc: "Produced a series of high-impact internal speeches and exhibition videos for multiple publicly listed law firms, elevating their corporate communication." },
+      { title: "Dutch Dating Show 2026", desc: "Currently in production for a major Dutch reality dating show, managing full-scale on-site filming and creative direction for the 2026 season." }
+    ]
+  },
+  { 
+    id: "fine-art",
+    title: "Fine Art & Cultural Exchange", 
+    desc: "Connecting international artists with the Dutch art market.",
+    detail: "We curate the extraordinary by attracting international artists to the Netherlands. Leveraging our extensive network of Asian artists, we facilitate cultural exchange and provide a platform for diverse voices in the European contemporary art scene.",
+    image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=2090&auto=format&fit=crop",
+    methodology: "Our curation is a bridge between East and West. We provide artists with residency support, exhibition opportunities, and strategic positioning within the Dutch and European art markets.",
+    caseStudies: [
+      { title: "Asian Contemporary Art Showcase", desc: "Curated a landmark exhibition in Amsterdam featuring 12 emerging artists from East Asia, attracting over 5,000 visitors and critical acclaim." },
+      { title: "Artist Residency Program", desc: "Established a recurring residency program that has successfully integrated 20+ international artists into the local Dutch creative ecosystem." }
+    ]
+  },
+  { 
+    id: "custom-it-services",
+    title: "Enterprise IT Solutions", 
+    desc: "Bespoke digital architecture for global organizations.",
+    detail: "We provide critical IT support and custom software engineering for enterprises facing complex digital challenges. Our focus is on building robust, scalable foundations that empower cross-border operations.",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+    methodology: "We engineer for resilience. Our IT solutions are built on a foundation of security and scalability, ensuring that your digital infrastructure can grow alongside your global ambitions.",
+    caseStudies: [
+      { title: "Cross-Border System Integration", desc: "Designed and implemented a unified IT infrastructure for a multinational corporation, enabling real-time data synchronization across three continents." },
+      { title: "Custom ERP for Global Trade", desc: "Developed a bespoke Enterprise Resource Planning system tailored for the specific regulatory and logistical needs of international trade." }
+    ]
+  }
+];
+
+// --- Components ---
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 px-6 py-8 md:px-12 flex justify-between items-center mix-blend-difference">
-      <motion.div 
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
+      <Link 
+        to="/"
         className="text-2xl font-serif tracking-widest uppercase"
       >
         YEAH
-      </motion.div>
+      </Link>
       <motion.button 
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 hover:opacity-50 transition-opacity"
+        className="p-2 hover:opacity-50 transition-opacity text-white"
       >
         {isOpen ? <X size={24} /> : <Menu size={24} />}
       </motion.button>
 
       {/* Fullscreen Menu */}
-      <motion.div 
-        initial={false}
-        animate={isOpen ? { opacity: 1, visibility: "visible" } : { opacity: 0, visibility: "hidden" }}
-        className="fixed inset-0 bg-black z-40 flex flex-col justify-center items-center space-y-8 text-4xl md:text-6xl font-serif italic"
-      >
-        {["Home", "Philosophy", "Capabilities", "Contact"].map((item, i) => (
-          <motion.a
-            key={item}
-            href={`#${item.toLowerCase()}`}
-            initial={{ y: 20, opacity: 0 }}
-            animate={isOpen ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-            transition={{ delay: i * 0.1 }}
-            onClick={() => setIsOpen(false)}
-            className="hover:text-gray-500 transition-colors"
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black z-40 flex flex-col justify-center items-center space-y-8 text-4xl md:text-6xl font-serif italic"
           >
-            {item}
-          </motion.a>
-        ))}
-      </motion.div>
+            {[
+              { name: "Home", path: "/" },
+              { name: "Philosophy", path: "/#philosophy" },
+              { name: "Capabilities", path: "/#capabilities" },
+              { name: "Contact", path: "/#contact" }
+            ].map((item, i) => (
+              <motion.div
+                key={item.name}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                {item.path.startsWith("/#") ? (
+                  <a
+                    href={item.path}
+                    onClick={() => setIsOpen(false)}
+                    className="hover:text-gray-500 transition-colors text-white"
+                  >
+                    {item.name}
+                  </a>
+                ) : (
+                  <Link
+                    to={item.path}
+                    onClick={() => setIsOpen(false)}
+                    className="hover:text-gray-500 transition-colors text-white"
+                  >
+                    {item.name}
+                  </Link>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };
@@ -145,32 +233,6 @@ const Manifesto = () => {
 };
 
 const Capabilities = () => {
-  const [selectedService, setSelectedService] = useState<null | number>(null);
-
-  const services = [
-    { 
-      title: "Business Consulting", 
-      desc: "Strategic business consulting for the modern era.",
-      detail: "Navigating complexity with surgical precision. We provide strategic roadmaps for legacy enterprises and disruptive startups alike, focusing on sustainable growth and operational excellence in a volatile global market.",
-      link: "https://yeah-business-amsterdam-m6sjyle.gamma.site/yeah-en"
-    },
-    { 
-      title: "Creative Agency", 
-      desc: "Crafting narratives that define the future.",
-      detail: "Where imagination meets execution. Our creative studio specializes in high-fidelity brand identities, digital experiences, and narrative-driven campaigns that resonate at a frequency others cannot reach."
-    },
-    { 
-      title: "Fine Art", 
-      desc: "Curating the essential and the extraordinary.",
-      detail: "Curating the extraordinary. We bridge the gap between traditional craftsmanship and contemporary vision, offering bespoke art advisory and acquisition services for private collectors and institutional spaces."
-    },
-    { 
-      title: "Custom IT Services", 
-      desc: "Bespoke technology solutions for complex challenges.",
-      detail: "Bespoke digital architecture. From high-performance cloud infrastructure to custom-built software ecosystems, we engineer the invisible foundations that power the world's most ambitious organizations."
-    }
-  ];
-
   return (
     <section id="capabilities" className="py-32 bg-[#050505] relative">
       <div className="px-6 md:px-24 max-w-7xl mx-auto">
@@ -185,73 +247,39 @@ const Capabilities = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-900">
-          {services.map((service, i) => (
+          {SERVICES.map((service, i) => (
             <motion.div 
-              key={service.title}
+              key={service.id}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              onClick={() => {
-                if ('link' in service) {
-                  window.open(service.link, '_blank');
-                } else {
-                  setSelectedService(i);
-                }
-              }}
-              className="bg-black p-12 md:p-24 group hover:bg-[#080808] transition-colors cursor-pointer relative overflow-hidden"
+              className="bg-black p-12 md:p-24 group hover:bg-[#080808] transition-all duration-500 cursor-pointer relative overflow-hidden"
             >
-              <span className="text-gray-700 font-mono text-sm mb-8 block">0{i + 1}</span>
-              <h3 className="text-3xl font-serif mb-6 group-hover:italic transition-all">{service.title}</h3>
-              <p className="text-gray-500 leading-relaxed max-w-xs mb-8">
-                {service.desc}
-              </p>
-              <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-gray-600 group-hover:text-white transition-colors">
-                View Details <ArrowRight size={12} />
+              <Link to={`/services/${service.id}`} className="block h-full relative z-10">
+                <span className="text-gray-700 font-mono text-sm mb-8 block">0{i + 1}</span>
+                <h3 className="text-3xl font-serif mb-6 group-hover:italic transition-all">{service.title}</h3>
+                <p className="text-gray-500 leading-relaxed max-w-xs mb-8">
+                  {service.desc}
+                </p>
+                <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-gray-600 group-hover:text-white transition-colors">
+                  View Subpage <ArrowRight size={12} />
+                </div>
+              </Link>
+              
+              {/* Subtle Background Image on Hover */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none">
+                <img 
+                  src={service.image} 
+                  alt="" 
+                  className="w-full h-full object-cover grayscale scale-110 group-hover:scale-100 transition-transform duration-1000"
+                  referrerPolicy="no-referrer"
+                />
               </div>
             </motion.div>
           ))}
         </div>
       </div>
-
-      {/* Detail Modal Overlay */}
-      <motion.div
-        initial={false}
-        animate={selectedService !== null ? { opacity: 1, visibility: "visible" } : { opacity: 0, visibility: "hidden" }}
-        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6 md:p-24"
-      >
-        <button 
-          onClick={() => setSelectedService(null)}
-          className="absolute top-8 right-8 md:top-12 md:right-12 p-4 hover:opacity-50 transition-opacity"
-        >
-          <X size={32} />
-        </button>
-        
-        {selectedService !== null && (
-          <motion.div 
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="max-w-4xl w-full"
-          >
-            <span className="text-xs font-mono uppercase tracking-[0.5em] text-gray-600 block mb-8">
-              0{selectedService + 1} / {services[selectedService].title}
-            </span>
-            <h2 className="text-4xl md:text-7xl font-serif mb-12 leading-tight italic">
-              {services[selectedService].title}
-            </h2>
-            <p className="text-xl md:text-3xl font-light text-gray-300 leading-relaxed">
-              {services[selectedService].detail}
-            </p>
-            <motion.button
-              whileHover={{ x: 10 }}
-              onClick={() => setSelectedService(null)}
-              className="mt-16 flex items-center gap-4 text-sm font-mono uppercase tracking-widest text-white border-b border-white pb-2"
-            >
-              Back to Services <ArrowRight size={16} />
-            </motion.button>
-          </motion.div>
-        )}
-      </motion.div>
     </section>
   );
 };
@@ -296,18 +324,192 @@ const Footer = () => {
   );
 };
 
+const HomePage = () => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+  >
+    <Hero />
+    <Manifesto />
+    <Capabilities />
+    <Contact />
+  </motion.div>
+);
+
+const ServicePage = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const service = SERVICES.find(s => s.id === id);
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
+
+  if (!service) {
+    return (
+      <div className="h-screen flex items-center justify-center text-white font-serif italic text-2xl">
+        Service not found.
+      </div>
+    );
+  }
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen pt-40 pb-32 px-6 md:px-24"
+    >
+      <div className="max-w-7xl mx-auto">
+        <motion.button
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          onClick={() => navigate("/")}
+          className="flex items-center gap-4 text-xs font-mono uppercase tracking-widest text-gray-500 hover:text-white transition-colors mb-16"
+        >
+          <ArrowLeft size={16} /> Back to Home
+        </motion.button>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <span className="text-xs font-mono uppercase tracking-[0.5em] text-gray-600 block mb-8">
+              Service Detail
+            </span>
+            <h1 className="text-5xl md:text-8xl font-serif mb-12 leading-tight italic">
+              {service.title}
+            </h1>
+            <p className="text-xl md:text-3xl font-light text-gray-300 leading-relaxed mb-12">
+              {service.detail}
+            </p>
+            
+            <div className="space-y-4 pt-12 border-t border-gray-900">
+              {/* Methodology */}
+              <div className="border-b border-gray-900 pb-4">
+                <button 
+                  onClick={() => setExpandedSection(expandedSection === 'methodology' ? null : 'methodology')}
+                  className="w-full flex justify-between items-center group py-4"
+                >
+                  <span className={cn(
+                    "text-xs font-mono uppercase tracking-widest transition-colors",
+                    expandedSection === 'methodology' ? "text-white" : "text-gray-500 group-hover:text-white"
+                  )}>Methodology</span>
+                  <motion.div
+                    animate={{ rotate: expandedSection === 'methodology' ? 90 : 0 }}
+                  >
+                    <ArrowRight size={16} className={cn(
+                      "transition-colors",
+                      expandedSection === 'methodology' ? "text-white" : "text-gray-800 group-hover:text-white"
+                    )} />
+                  </motion.div>
+                </button>
+                <AnimatePresence>
+                  {expandedSection === 'methodology' && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="text-gray-400 font-light leading-relaxed pb-6">
+                        {service.methodology}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Case Studies */}
+              <div className="border-b border-gray-900 pb-4">
+                <button 
+                  onClick={() => setExpandedSection(expandedSection === 'cases' ? null : 'cases')}
+                  className="w-full flex justify-between items-center group py-4"
+                >
+                  <span className={cn(
+                    "text-xs font-mono uppercase tracking-widest transition-colors",
+                    expandedSection === 'cases' ? "text-white" : "text-gray-500 group-hover:text-white"
+                  )}>Case Studies</span>
+                  <motion.div
+                    animate={{ rotate: expandedSection === 'cases' ? 90 : 0 }}
+                  >
+                    <ArrowRight size={16} className={cn(
+                      "transition-colors",
+                      expandedSection === 'cases' ? "text-white" : "text-gray-800 group-hover:text-white"
+                    )} />
+                  </motion.div>
+                </button>
+                <AnimatePresence>
+                  {expandedSection === 'cases' && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="space-y-8 pb-6">
+                        {service.caseStudies?.map((cs, idx) => (
+                          <div key={idx} className="group/item">
+                            <h4 className="text-white font-serif italic text-lg mb-2">{cs.title}</h4>
+                            <p className="text-gray-500 text-sm leading-relaxed">{cs.desc}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Inquire */}
+              <div className="pb-4">
+                <a 
+                  href="mailto:info@yeah-amsterdam.nl"
+                  className="w-full flex justify-between items-center group py-4"
+                >
+                  <span className="text-xs font-mono uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">Inquire</span>
+                  <ArrowRight size={16} className="text-gray-800 group-hover:text-white transition-colors" />
+                </a>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 1 }}
+            className="relative aspect-[4/5] overflow-hidden"
+          >
+            <img 
+              src={service.image} 
+              alt={service.title}
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute inset-0 bg-black/20" />
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 export default function App() {
   return (
-    <div className="relative min-h-screen font-sans selection:bg-white selection:text-black">
-      <div className="grain" />
-      <Navbar />
-      <main>
-        <Hero />
-        <Manifesto />
-        <Capabilities />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+    <Router>
+      <ScrollToTop />
+      <div className="relative min-h-screen font-sans selection:bg-white selection:text-black bg-black text-white">
+        <div className="grain" />
+        <Navbar />
+        <main>
+          <AnimatePresence mode="wait">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/services/:id" element={<ServicePage />} />
+            </Routes>
+          </AnimatePresence>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
 }

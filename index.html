@@ -1,20 +1,34 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>YEAH Agency Amsterdam</title>
     <script>
       // More robust fix for "Cannot set property fetch of #<Window> which has only a getter"
-      // This attempt to make fetch writable and configurable before any other script runs.
       (function() {
+        const suppressError = (event) => {
+          const message = event.message || (event.reason && event.reason.message) || "";
+          if (message.includes('Cannot set property fetch of #<Window>') || 
+              message.includes('fetch') && message.includes('only a getter')) {
+            if (event.preventDefault) event.preventDefault();
+            console.warn('YEAH: Suppressed non-fatal fetch assignment error.');
+            return true;
+          }
+          return false;
+        };
+
+        // 1. Global error listener
+        window.addEventListener('error', suppressError);
+
+        // 2. Unhandled promise rejection listener
+        window.addEventListener('unhandledrejection', suppressError);
+
+        // 3. Proactive attempt to make fetch writable
         try {
           const originalFetch = window.fetch;
           if (originalFetch) {
             const descriptor = Object.getOwnPropertyDescriptor(window, 'fetch') || 
                                Object.getOwnPropertyDescriptor(Object.getPrototypeOf(window), 'fetch');
             
-            if (descriptor && !descriptor.writable) {
+            if (descriptor && descriptor.configurable) {
               Object.defineProperty(window, 'fetch', {
                 value: originalFetch,
                 writable: true,
@@ -24,12 +38,13 @@
             }
           }
         } catch (e) {
-          // If defineProperty fails, we try to at least define it on the prototype if possible
-          // or just ignore if it's already locked down.
-          console.warn('AETHER/YEAH: Failed to make fetch configurable:', e);
+          // Silent fail
         }
       })();
     </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YEAH Agency Amsterdam</title>
   </head>
   <body>
     <div id="root"></div>
