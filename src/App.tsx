@@ -13,7 +13,7 @@ const Navbar = () => {
         animate={{ opacity: 1, x: 0 }}
         className="text-2xl font-serif tracking-widest uppercase"
       >
-        Aether
+        YEAH
       </motion.div>
       <motion.button 
         initial={{ opacity: 0, x: 20 }}
@@ -65,7 +65,7 @@ const Hero = () => {
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           className="text-7xl md:text-[12rem] font-serif leading-none tracking-tighter mb-4"
         >
-          AETHER
+          YEAH
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0 }}
@@ -136,7 +136,7 @@ const Manifesto = () => {
             In a world saturated with noise, we seek the silence. Our methodology is not defined by industry, but by essence. We operate at the intersection of logic and poetry, crafting experiences that resonate beyond the surface.
           </p>
           <p className="text-gray-500 font-mono text-xs uppercase tracking-widest">
-            Est. MMXXVI / London — Tokyo — New York
+            Est. 2020, Amsterdam The Netherlands
           </p>
         </motion.div>
       </div>
@@ -145,15 +145,33 @@ const Manifesto = () => {
 };
 
 const Capabilities = () => {
+  const [selectedService, setSelectedService] = useState<null | number>(null);
+
   const services = [
-    { title: "Strategic Alchemy", desc: "Transforming raw data into meaningful narratives." },
-    { title: "Digital Resonance", desc: "Crafting interfaces that feel like extensions of the self." },
-    { title: "Spatial Poetics", desc: "Defining the atmosphere of physical and virtual realms." },
-    { title: "Essential Identity", desc: "Distilling the core of an entity into its purest form." }
+    { 
+      title: "Business Consulting", 
+      desc: "Strategic business consulting for the modern era.",
+      detail: "Navigating complexity with surgical precision. We provide strategic roadmaps for legacy enterprises and disruptive startups alike, focusing on sustainable growth and operational excellence in a volatile global market."
+    },
+    { 
+      title: "Creative Agency", 
+      desc: "Crafting narratives that define the future.",
+      detail: "Where imagination meets execution. Our creative studio specializes in high-fidelity brand identities, digital experiences, and narrative-driven campaigns that resonate at a frequency others cannot reach."
+    },
+    { 
+      title: "Fine Art", 
+      desc: "Curating the essential and the extraordinary.",
+      detail: "Curating the extraordinary. We bridge the gap between traditional craftsmanship and contemporary vision, offering bespoke art advisory and acquisition services for private collectors and institutional spaces."
+    },
+    { 
+      title: "Custom IT Services", 
+      desc: "Bespoke technology solutions for complex challenges.",
+      detail: "Bespoke digital architecture. From high-performance cloud infrastructure to custom-built software ecosystems, we engineer the invisible foundations that power the world's most ambitious organizations."
+    }
   ];
 
   return (
-    <section id="capabilities" className="py-32 bg-[#050505]">
+    <section id="capabilities" className="py-32 bg-[#050505] relative">
       <div className="px-6 md:px-24 max-w-7xl mx-auto">
         <motion.div 
           initial={{ opacity: 0 }}
@@ -162,7 +180,7 @@ const Capabilities = () => {
           className="mb-24"
         >
           <span className="text-xs font-mono uppercase tracking-[0.5em] text-gray-600 block mb-4">Capabilities</span>
-          <h2 className="text-5xl md:text-7xl font-serif">Our Domains</h2>
+          <h2 className="text-5xl md:text-7xl font-serif">Our Services</h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-900">
@@ -173,17 +191,60 @@ const Capabilities = () => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bg-black p-12 md:p-24 group hover:bg-[#080808] transition-colors"
+              onClick={() => setSelectedService(i)}
+              className="bg-black p-12 md:p-24 group hover:bg-[#080808] transition-colors cursor-pointer relative overflow-hidden"
             >
               <span className="text-gray-700 font-mono text-sm mb-8 block">0{i + 1}</span>
               <h3 className="text-3xl font-serif mb-6 group-hover:italic transition-all">{service.title}</h3>
-              <p className="text-gray-500 leading-relaxed max-w-xs">
+              <p className="text-gray-500 leading-relaxed max-w-xs mb-8">
                 {service.desc}
               </p>
+              <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-gray-600 group-hover:text-white transition-colors">
+                View Details <ArrowRight size={12} />
+              </div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      {/* Detail Modal Overlay */}
+      <motion.div
+        initial={false}
+        animate={selectedService !== null ? { opacity: 1, visibility: "visible" } : { opacity: 0, visibility: "hidden" }}
+        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6 md:p-24"
+      >
+        <button 
+          onClick={() => setSelectedService(null)}
+          className="absolute top-8 right-8 md:top-12 md:right-12 p-4 hover:opacity-50 transition-opacity"
+        >
+          <X size={32} />
+        </button>
+        
+        {selectedService !== null && (
+          <motion.div 
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="max-w-4xl w-full"
+          >
+            <span className="text-xs font-mono uppercase tracking-[0.5em] text-gray-600 block mb-8">
+              0{selectedService + 1} / {services[selectedService].title}
+            </span>
+            <h2 className="text-4xl md:text-7xl font-serif mb-12 leading-tight italic">
+              {services[selectedService].title}
+            </h2>
+            <p className="text-xl md:text-3xl font-light text-gray-300 leading-relaxed">
+              {services[selectedService].detail}
+            </p>
+            <motion.button
+              whileHover={{ x: 10 }}
+              onClick={() => setSelectedService(null)}
+              className="mt-16 flex items-center gap-4 text-sm font-mono uppercase tracking-widest text-white border-b border-white pb-2"
+            >
+              Back to Services <ArrowRight size={16} />
+            </motion.button>
+          </motion.div>
+        )}
+      </motion.div>
     </section>
   );
 };
@@ -199,10 +260,10 @@ const Contact = () => {
       >
         <h2 className="text-4xl md:text-8xl font-serif mb-12">Begin the Inquiry.</h2>
         <a 
-          href="mailto:hello@aether.studio" 
+          href="mailto:info@yeah-amsterdam.nl" 
           className="inline-flex items-center gap-4 text-xl md:text-2xl font-light hover:gap-8 transition-all duration-500 group"
         >
-          hello@aether.studio
+          info@yeah-amsterdam.nl
           <ArrowRight className="text-gray-600 group-hover:text-white transition-colors" />
         </a>
       </motion.div>
@@ -219,7 +280,7 @@ const Footer = () => {
         <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
       </div>
       <div>
-        © 2026 Aether Studio. All Rights Reserved.
+        © 2026 YEAH Studio. All Rights Reserved.
       </div>
       <div>
         Privacy / Terms

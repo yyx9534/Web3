@@ -5,20 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Google AI Studio App</title>
     <script>
-      // Fix for "Cannot set property fetch of #<Window> which has only a getter"
-      // This allows libraries to overwrite or polyfill fetch if needed.
+      // More robust fix for "Cannot set property fetch of #<Window> which has only a getter"
+      // This attempt to make fetch writable and configurable before any other script runs.
       (function() {
         try {
           const originalFetch = window.fetch;
           if (originalFetch) {
-            Object.defineProperty(window, 'fetch', {
-              value: originalFetch,
-              writable: true,
-              configurable: true
-            });
+            const descriptor = Object.getOwnPropertyDescriptor(window, 'fetch') || 
+                               Object.getOwnPropertyDescriptor(Object.getPrototypeOf(window), 'fetch');
+            
+            if (descriptor && !descriptor.writable) {
+              Object.defineProperty(window, 'fetch', {
+                value: originalFetch,
+                writable: true,
+                configurable: true,
+                enumerable: true
+              });
+            }
           }
         } catch (e) {
-          console.warn('Failed to make fetch configurable:', e);
+          // If defineProperty fails, we try to at least define it on the prototype if possible
+          // or just ignore if it's already locked down.
+          console.warn('AETHER/YEAH: Failed to make fetch configurable:', e);
         }
       })();
     </script>
