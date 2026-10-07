@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { 
   ArrowRight, 
   Menu, 
@@ -8,26 +8,22 @@ import {
   ExternalLink, 
   Building2, 
   Film, 
-  Palette, 
+  Camera, 
   Cpu, 
   CheckCircle2, 
   Mail, 
-  Globe2, 
   ArrowUpRight,
-  Search,
-  Heart,
-  Camera,
-  Code2,
-  Sparkles,
   HelpCircle,
-  ShieldCheck,
-  Layers
+  Eye,
+  FileText,
+  Download,
+  BookOpen
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/src/lib/utils";
 
-// --- SEO & Data Models ---
+// --- Types & Data Models ---
 
 export interface CaseStudy {
   id: string;
@@ -42,411 +38,370 @@ export interface CaseStudy {
   outcome: string;
   image: string;
   tag: string;
+  externalLink?: {
+    label: string;
+    url: string;
+  };
+  pdfLink?: {
+    label: string;
+    url: string;
+  };
+  metrics?: { label: string; value: string }[];
 }
 
 export interface ServiceDefinition {
   id: string;
   number: string;
   title: string;
-  chineseTitle: string;
-  seoBadge: string;
-  seoTitle: string;
-  seoDescription: string;
-  keywords: string[];
+  subBrand?: string;
+  badge: string;
   tagline: string;
   desc: string;
   longOverview: string;
   icon: typeof Building2;
   heroImage: string;
   secondaryImage: string;
-  scopeList: { title: string; desc: string; keywords?: string }[];
+  scopeList: { title: string; desc: string }[];
   methodologySteps: { step: string; title: string; desc: string }[];
   externalUrl?: {
     label: string;
     description: string;
     url: string;
   };
+  pdfUrl?: {
+    label: string;
+    filename: string;
+    url: string;
+  };
   metrics: { value: string; label: string }[];
   faqs: { q: string; a: string }[];
+  featuredSpotlight?: {
+    title: string;
+    subtitle: string;
+    description: string;
+    badge: string;
+    image: string;
+    pdfUrl?: string;
+    stats: { label: string; value: string }[];
+    link?: { label: string; url: string };
+  };
 }
 
-export interface SEOPillar {
-  id: string;
-  serviceId: string;
-  category: string;
-  chineseTitle: string;
-  englishTitle: string;
-  tagline: string;
-  keywords: string[];
-  description: string;
-  highlights: string[];
-}
-
-export const SEO_PILLARS: SEOPillar[] = [
-  {
-    id: "wedding-videography",
-    serviceId: "creative-agency",
-    category: "婚礼拍摄",
-    chineseTitle: "婚礼拍摄与欧洲纪实微电影",
-    englishTitle: "Destination Wedding Videography & Photography",
-    tagline: "阿姆斯特丹运河、欧洲历史古堡与庄园奢华婚礼跟拍",
-    keywords: [
-      "婚礼拍摄", "荷兰婚礼拍摄", "欧洲婚礼跟拍", "阿姆斯特丹婚礼摄影", 
-      "海外目的地婚礼", "古堡婚礼摄制", "婚礼纪实微电影", "双机位4K拍摄", "航拍特批", "Wedding Videography Amsterdam"
-    ],
-    description: "YEAH Films 提供欧洲与荷兰顶级目的地婚礼电影摄制。由院线级摄影指导掌镜，配置 ARRI/RED 电影机与航拍设备，提供多语种现场统筹、48小时先导片与院线级4K长片交付。",
-    highlights: ["4K双机位电影级纪实", "荷兰民航局特批航拍", "48小时先导预告片极速交付", "中英荷三语现场摄制统筹"]
-  },
-  {
-    id: "commercial-shoots",
-    serviceId: "creative-agency",
-    category: "商业拍摄",
-    chineseTitle: "商业拍摄与品牌广告大片",
-    englishTitle: "Commercial Film, TVC & Visual Campaigns",
-    tagline: "院线级商业广告片、时尚品牌视觉、高端产品视频与商业静物摄影",
-    keywords: [
-      "商业拍摄", "商业广告片拍摄", "荷兰商业摄制", "TVC广告制作", 
-      "品牌宣传片", "欧洲摄制组", "产品视效拍摄", "Commercial Video Amsterdam"
-    ],
-    description: "专为出海企业及国际品牌打造具备全球传播力的商业广告大片。涵盖策划脚本分镜、欧洲外景勘景、双语摄制组统筹与达芬奇电影级调色。",
-    highlights: ["电影级商业TVC广告片", "欧洲外景地深度踩点与勘景", "高规格产品静物视效", "跨国多渠道全格式宣发交付"]
-  },
-  {
-    id: "corporate-films",
-    serviceId: "creative-agency",
-    category: "企业拍摄",
-    chineseTitle: "企业拍摄与高管全球形象片",
-    englishTitle: "Corporate Documentaries & Executive Keynotes",
-    tagline: "跨国企业全球形象宣传片、欧洲行业峰会纪录、上市公司财报专访",
-    keywords: [
-      "企业拍摄", "企业宣传片拍摄", "高管专访纪实", "欧洲峰会摄制", 
-      "世界法学展视听", "展会多媒体展项", "上市企业宣发", "Corporate Film Europe"
-    ],
-    description: "服务全球上市企业、跨国律所及行业协会，以纪录片级别视听语言展现企业格局与思想领袖对话，提升机构公信力与全球投资者好感度。",
-    highlights: ["上市企业全球形象宣传片", "CEO及高管思想领袖深度专访", "欧洲大型会展多媒体视听工程", "企业多语言财报宣讲片"]
-  },
-  {
-    id: "dutch-company-formation",
-    serviceId: "business-consulting",
-    category: "荷兰企业注册",
-    chineseTitle: "荷兰企业注册与合规出海设立",
-    englishTitle: "Dutch BV Formation, KvK & Corporate Landing",
-    tagline: "荷兰商会KvK建档、公证处章程公证、税号申报、银行开户与高技术移民",
-    keywords: [
-      "荷兰企业注册", "荷兰公司注册", "荷兰公司设立", "荷兰BV注册", 
-      "荷兰商会KvK", "荷兰税号BTW申请", "荷兰银行开户", "高技术移民IND", "30% Ruling减税"
-    ],
-    description: "荷兰阿姆斯特丹本土全流程交钥匙商业咨询：4-6周完成荷兰BV公司设立，无缝搞定公证处、税务局税号、商业银行反洗钱审核及高管居留落地。",
-    highlights: ["荷兰BV极速设立与公证", "KvK与税务局BTW/CIT税号直办", "欧洲商业银行合规开户穿透", "IND高技术移民担保人资质与30%减税"]
-  },
-  {
-    id: "software-development",
-    serviceId: "custom-it-services",
-    category: "软件开发",
-    chineseTitle: "定制软件开发与数字化出海系统",
-    englishTitle: "Custom Software Development & Enterprise IT",
-    tagline: "企业级定制ERP/CRM、跨国出海Web/App系统、GDPR数据合规与云架构",
-    keywords: [
-      "软件开发", "定制软件开发", "欧洲IT外包", "阿姆斯特丹软件研发", 
-      "跨国系统研发", "出海App开发", "GDPR数据合规", "微服务架构", "企业AI系统集成"
-    ],
-    description: "专为跨国贸易、出海企业及数字机构研发高可用软件系统。保障亚欧多区域数据毫秒级实时同步，100% 符合欧洲 GDPR 数据合规与企业级安全。",
-    highlights: ["跨国定制全栈Web与移动端开发", "跨欧亚多区域数据库实时秒级同步", "严格遵循欧盟GDPR数据合规", "企业私有化AI业务流与微服务架构"]
-  },
-  {
-    id: "asian-art-gallery",
-    serviceId: "fine-art",
-    category: "亚洲艺术家画廊",
-    chineseTitle: "亚洲艺术家画廊与欧洲国际策展",
-    englishTitle: "Asian Contemporary Art Gallery & Curatorial Exchange",
-    tagline: "阿姆斯特丹亚洲现当代艺术家画廊空间、国际学术特展、艺术家驻留项目",
-    keywords: [
-      "亚洲艺术家画廊", "荷兰画廊", "阿姆斯特丹当代艺术展", "艺术策展", 
-      "艺术家驻留计划", "欧洲美术馆收藏", "东亚当代艺术", "Asian Art Gallery Amsterdam"
-    ],
-    description: "立足阿姆斯特丹文化核心地带，搭建亚洲与欧洲顶级艺术生态对话桥梁。常设亚洲现当代艺术家精选展览，协助作品进入欧洲美术馆馆藏及顶级藏家视野。",
-    highlights: ["阿姆斯特丹独立画廊展厅与常设展", "联合欧洲知名美术馆策展", "欧亚艺术家阿姆斯特丹驻留计划", "欧洲机构馆藏推荐与学术出版"]
-  }
-];
+// --- The Four Practices Data ---
+// 1. Corporate Consulting (企业咨询)
+// 2. Video Production (视频制作)
+// 3. Fine Art Representation (艺术品代理)
+// 4. Software Development (软件开发)
 
 export const SERVICES: ServiceDefinition[] = [
   { 
     id: "business-consulting",
     number: "01",
-    title: "Market Entry & Business Consulting",
-    chineseTitle: "市场准入与商业咨询（荷兰企业注册 · 公司设立 · 商务出海）",
-    seoBadge: "荷兰企业注册 · 荷兰公司设立 · 商务合规",
-    seoTitle: "荷兰企业注册 · 荷兰公司设立与商务咨询 | YEAH Business Consulting Netherlands",
-    seoDescription: "专业办理荷兰企业注册、荷兰BV公司设立、荷兰商会KvK建档、荷兰税号BTW申请、商业银行开户及高技术移民IND资质。4-6周交钥匙交付。",
-    keywords: [
-      "荷兰企业注册", "荷兰公司注册", "荷兰公司设立", "荷兰BV注册", 
-      "荷兰商会KvK", "荷兰企业税号", "荷兰银行开户", "荷兰高技术移民", 
-      "30% ruling", "荷兰外资企业设立", "荷兰商务咨询", "Dutch Company Formation"
-    ],
-    tagline: "Corporate landing, Dutch BV incorporation & cross-border European expansion.",
-    desc: "End-to-end advisory for international companies establishing operations in the Netherlands — from legal entity registration and tax structuring to executive mobility and banking setup.",
-    longOverview: "Entering the European single market via the Netherlands offers unmatched tax treaties, logistics hubs, and regulatory stability. YEAH acts as your on-the-ground operational general contractor in Amsterdam. We eliminate bureaucratic bottlenecks and provide turn-key corporate execution so foreign leadership can focus strictly on commercial scale.",
+    title: "Corporate Consulting",
+    subBrand: "Dutch BV Formation, EPR & Personnel Dispatch",
+    badge: "DUTCH BV FORMATION · EPR COMPLIANCE · PERSONNEL DISPATCH",
+    tagline: "Turnkey Dutch corporate landing, EPR environmental compliance, personnel dispatch visas, and European fiscal governance.",
+    desc: "End-to-end operational execution for international enterprises establishing and scaling across Europe — from Dutch BV incorporation and KvK registration to EPR environmental compliance (Packaging, WEEE, Batteries) and third-party personnel dispatch work visas (Kennismigrant).",
+    longOverview: "Entering and scaling within the European single market via the Netherlands unlocks premier logistics hubs, bilateral tax treaties, and regulatory certainty. YEAH operates as your direct operational general contractor in Amsterdam. We eliminate bureaucratic friction across every dimension: executing turnkey Dutch BV incorporation, filing Extended Producer Responsibility (EPR) registrations for cross-border commerce, facilitating third-party personnel dispatch work permits and Kennismigrant visas, and coordinating directly with the Dutch Tax Authority (Belastingdienst) and commercial banks.",
     icon: Building2,
     heroImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
     secondaryImage: "https://images.unsplash.com/photo-1554469384-e58fac16e23a?q=80&w=1974&auto=format&fit=crop",
     externalUrl: {
       label: "View Dedicated Market Entry Dossier",
-      description: "Access our comprehensive presentation on Dutch BV setup, tax regimes, and foreign enterprise landing.",
+      description: "Explore our comprehensive visual brief detailing Dutch BV incorporation procedures, tax regimes, and foreign enterprise landing.",
       url: "https://yeah-business-amsterdam-m6sjyle.gamma.site/yeah-en"
     },
     metrics: [
       { value: "100%", label: "Compliance & Regulatory Track Record" },
       { value: "4-6 Wks", label: "Average Turnkey BV Incorporation" },
-      { value: "EU-Wide", label: "Market Mobility & Direct Banking Access" }
+      { value: "EU-Wide", label: "EPR Environmental Clearance & Dispatch Mobility" }
     ],
     scopeList: [
       {
-        title: "荷兰企业注册与商会建档 (Dutch BV Incorporation & Chamber of Commerce KvK)",
-        desc: "公司章程起草、荷兰公证处 (Civil-Law Notary) 协同、KvK商会正式登记以及公司法人治理架构确立。"
+        title: "Dutch BV Incorporation & Chamber of Commerce (KvK)",
+        desc: "Drafting articles of association, coordinating with Dutch civil-law notaries, official KvK registry filing, and legal entity structuring."
       },
       {
-        title: "税号申请与荷兰税务局合规 (Tax Structuring & Dutch Belastingdienst Setup)",
-        desc: "增值税号 (BTW/VAT)、企业所得税号 (CIT)、欧盟海关EORI清关号申报，以及符合条件的30% Ruling减税咨询。"
+        title: "EPR Environmental Compliance (Packaging, WEEE & Batteries)",
+        desc: "Turnkey Extended Producer Responsibility (EPR / 生产者责任延伸) registration and volume reporting across the Netherlands and the EU. Mandatory compliance for Afvalfonds Verpakkingen (packaging waste), electronic equipment (WEEE), and batteries."
       },
       {
-        title: "商业银行合规开户 (Commercial Banking & Financial Rails)",
-        desc: "穿透欧洲严苛的反洗钱 (AML) 与KYC合规审核，顺利开设荷兰主流商业银行账户及多币种国际清算通道。"
+        title: "Third-Party Personnel Dispatch & Work Visa Sponsorship",
+        desc: "Personnel secondment, Employer of Record (EOR), and third-party personnel dispatch visa handling. Sponsoring and expediting Dutch Kennismigrant (Highly Skilled Migrant) visas, Intra-Corporate Transferees (ICT), and posted worker compliance without your own Dutch sponsor entity."
       },
       {
-        title: "高技术移民与管理层工签 (Corporate Immigration & Executive Relocation)",
-        desc: "荷兰移民局 (IND) 保荐人资质 (Recognized Sponsor) 申请、高技术移民 (Kennismigrant) 居留及高管家庭移居服务。"
+        title: "Tax Structuring & Dutch Belastingdienst Setup",
+        desc: "Value Added Tax (BTW/VAT) and Corporate Income Tax (CIT) filings, EORI customs clearance registrations, and 30% Tax Ruling advisory."
       },
       {
-        title: "阿姆斯特丹办公落地与实体运营 (Amsterdam Landing & Local Operations)",
-        desc: "阿姆斯特丹核心商务区（Zuidas）办公选址租赁、本地劳动合同合规本地化以及日常财税簿记托管。"
+        title: "Commercial Banking & Financial Rails",
+        desc: "Navigating stringent European Anti-Money Laundering (AML) and Ultimate Beneficial Owner (UBO) compliance to open corporate accounts."
+      },
+      {
+        title: "Executive Mobility & IND Recognized Sponsor Status",
+        desc: "Applying directly for IND Recognized Sponsor status, corporate relocation governance, BSN municipality registrations, and executive management contracts."
       }
     ],
     methodologySteps: [
       {
         step: "01",
-        title: "架构规划与法律论证 (Entity & Tax Blueprinting)",
-        desc: "分析母公司跨境税务协定、合规要求与业务模式，设计最具税收效益与抗风险能力的荷兰BV架构。"
+        title: "Entity & Compliance Blueprinting",
+        desc: "Analyzing cross-border corporate structure, tax treaties, EPR liability scopes, and cross-border personnel secondment needs."
       },
       {
         step: "02",
-        title: "公证签署与商会注册 (Notarial Execution & Banking)",
-        desc: "对接资深荷兰公证人完成公证文件签署，获取荷兰商会KvK官方注册号与公司全套法定文件。"
+        title: "Notarial Execution & KvK Entry",
+        desc: "Coordinating notarial deeds via power of attorney, securing the official Chamber of Commerce registry number and deed of incorporation."
       },
       {
         step: "03",
-        title: "税号获批与银行开户 (Tax Filings & Banking Setup)",
-        desc: "向荷兰税务局提交BTW和所得税申报申请，配合商业银行进行背景穿透尽调并开通支付通道。"
+        title: "EPR Filings & Tax/Bank Rails",
+        desc: "Securing Dutch BTW/CIT numbers, registering EPR environmental waste certificates, and onboarding institutional commercial banking."
       },
       {
         step: "04",
-        title: "人员居留与交钥匙运营 (Immigration & Operational Handover)",
-        desc: "完成IND高技术移民审批，办理市政厅BSN税号登记，交付即刻可运营的完整荷兰商业实体。"
+        title: "Personnel Dispatch & Operational Launch",
+        desc: "Filing third-party personnel dispatch work permits or IND Kennismigrant visas, municipal BSN registrations, and handing over an operational Dutch enterprise."
       }
     ],
     faqs: [
       {
-        q: "在荷兰注册一家BV公司的标准周期是多久？需要本人必须前往荷兰吗？",
-        a: "在准备好母公司主体公证双认证（或海牙认证）文件的前提下，通过公证授权委托书，企业法人与股东无需亲自前往荷兰即可由公证处远程完成设立。从公证建档、商会KvK设立到税务局税号下发，通常耗时4至6周即可实现交钥匙交付。"
+        q: "What is EPR registration in the Netherlands and the EU, and who is legally required to register?",
+        a: "Extended Producer Responsibility (EPR / 生产者责任延伸) is mandatory EU environmental legislation requiring businesses selling physical goods in Europe to fund recycling systems. In the Netherlands, this covers Packaging (Afvalfonds Verpakkingen / Packaging Waste Fund), Electrical & Electronic Equipment (WEEE), and Batteries. Cross-border e-commerce brands, importers, and manufacturers selling directly or via marketplaces (such as Amazon or Bol.com) must register, report annual weight volumes, and hold compliance certificates to prevent market suspensions and customs hold-ups. YEAH manages all registrations, calculations, and compliance filings."
       },
       {
-        q: "荷兰企业设立后，如何申请高技术移民（Kennismigrant）及30% Ruling减税政策？",
-        a: "新注册的荷兰实体需先向荷兰移民局（IND）申请成为“公认赞助人（Recognized Sponsor）”。获批后，公司可直接为从海外引进的合格高管或核心技术人员申请高技术移民工作许可。同时，符合特定稀缺技术与薪酬标准的海外员工，可向荷兰税务局申请前5年最高30%所得税免税额度。"
+        q: "How does third-party personnel dispatch and visa sponsorship work for companies without a Dutch sponsor entity?",
+        a: "If your foreign enterprise needs key managers, technical directors, or engineers working legally on the ground in the Netherlands before establishing a local entity or qualifying for IND Recognized Sponsor status, YEAH provides compliant third-party personnel dispatch (secondment / EOR). Through verified Dutch accredited sponsor partners, your employees receive legitimate Kennismigrant (Highly Skilled Migrant) work and residence permits, Dutch payroll, and BSN registrations in full compliance with Dutch labour and immigration laws."
       },
       {
-        q: "开设荷兰商业银行账户的难点是什么？YEAH如何保障开户成功率？",
-        a: "受欧盟严苛的反洗钱（AML）及非本土实益拥有人（UBO）穿透监管影响，外资背景企业在欧洲开行账户审查极其严格。YEAH协助企业梳理详实的商业计划书、上下游交易凭证与合规股权穿透报告，直接与荷兰具备深厚合作基础的商业银行对公经理对接，规避被拒风险。"
+        q: "What is the typical timeframe to incorporate a Dutch BV, and is physical presence required in Amsterdam?",
+        a: "With prepared legalized and apostilled corporate documents from the parent entity, the entire BV incorporation can be executed remotely via notarial power of attorney. Turnkey delivery—from notarial execution and KvK registration to tax number issuance—is typically completed within 4 to 6 weeks."
+      },
+      {
+        q: "How does a newly established Dutch entity qualify for IND Recognized Sponsor status and the 30% Tax Ruling?",
+        a: "The company applies directly to the Dutch Immigration Authority (IND) for 'Recognized Sponsor' status by demonstrating solvency and business intent. Once granted, the company can independently sponsor highly skilled migrants (Kennismigranten). Qualifying foreign specialists can apply for the 30% Tax Ruling, exempting 30% of gross salary from income tax."
       }
     ]
   },
   { 
     id: "creative-agency",
     number: "02",
-    title: "Video Production House", 
-    chineseTitle: "影视制作工坊（婚礼拍摄 · 商业拍摄 · 企业拍摄）",
-    seoBadge: "婚礼拍摄 · 商业广告拍摄 · 企业宣传片",
-    seoTitle: "商业拍摄 · 婚礼拍摄 · 企业宣传片制作 | YEAH Video Production Amsterdam",
-    seoDescription: "阿姆斯特丹电影级影视制作团队：专注欧洲目的地婚礼跟拍与纪实微电影、品牌商业广告大片(TVC)、上市企业形象宣传片与高管专访。配备ARRI/RED电影机组与特批航拍。",
-    keywords: [
-      "婚礼拍摄", "荷兰婚礼拍摄", "欧洲婚礼跟拍", "商业拍摄", 
-      "商业广告片拍摄", "企业拍摄", "企业宣传片", "TVC广告制作", 
-      "阿姆斯特丹视频制作", "欧洲摄制组", "婚纱微电影", "Corporate Film Amsterdam"
-    ],
-    tagline: "High-end television commercials, corporate documentaries & broadcast media.",
-    desc: "A dedicated production label crafting cinematic media assets — from prime-time television and reality shows to global corporate keynote films and exhibition documentaries.",
-    longOverview: "YEAH Creative operates as a premier full-service video production house based in Amsterdam. We bridge commercial precision with international film-grade cinematography. From conceptual scriptwriting and multi-camera studio/location shoots to high-end DI color grading and multi-language post-production, we deliver media that commands institutional respect.",
+    title: "Video Production", 
+    subBrand: "Glass Sharp Films (glasssharpfilms.nl)",
+    badge: "COMMERCIAL CINEMATOGRAPHY & BROADCAST",
+    tagline: "Commercial brand campaigns, broadcast reality series, and luxury destination wedding films.",
+    desc: "A dedicated cinema-grade production studio (Glass Sharp Films) crafting high-impact commercials, original reality television including 'Tram Dating', Olympic athlete profiles, and European destination wedding films.",
+    longOverview: "Glass Sharp Films (glasssharpfilms.nl) operates as the dedicated video production practice of YEAH Agency Amsterdam. Founded in 2021, the studio bridges cinematic visual storytelling with broadcast commercial precision. Equipped with cinema-grade camera packages (ARRI, RED, Sony Cinema Line), licensed aerial drone systems, and full-spectrum post-production, we deliver films commanding international acclaim.",
     icon: Film,
     heroImage: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop",
     secondaryImage: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=2070&auto=format&fit=crop",
+    externalUrl: {
+      label: "Visit Glass Sharp Films (glasssharpfilms.nl)",
+      description: "Explore the official film production website featuring full commercial reels, showreels, and international project archives.",
+      url: "https://glasssharpfilms.nl/"
+    },
+    featuredSpotlight: {
+      title: "Glass Sharp Films — Dedicated Production House",
+      subtitle: "Amsterdam Commercial & Broadcast Studio",
+      description: "Official film production label based in Amsterdam. Commercial clients include Fixico x MyWheels, Dutch Olympic Champion Hermijntje Drenth, global brand campaigns for crypto exchange Toobit featuring climber Chris Sharma, and the in-production reality dating series 'Tram Dating'.",
+      badge: "OFFICIAL SUB-BRAND · GLASSSHARPFILMS.NL",
+      image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2070&auto=format&fit=crop",
+      stats: [
+        { label: "Established", value: "2021 (AMS)" },
+        { label: "Reach", value: "EMEA & APAC" },
+        { label: "Camera Standard", value: "ARRI / RED 6K" }
+      ],
+      link: { label: "glasssharpfilms.nl", url: "https://glasssharpfilms.nl/" }
+    },
     metrics: [
       { value: "4K / 6K", label: "Cinema Standard Camera Packages" },
-      { value: "10+", label: "International Episodes in Pipeline" },
-      { value: "Full-Cycle", label: "Pre-Production to Broadcast Delivery" }
+      { value: "Millions", label: "Broadcast & Digital Campaign Views" },
+      { value: "Full-Cycle", label: "Script, Production, Sound & DaVinci DI" }
     ],
     scopeList: [
       {
-        title: "高端婚礼拍摄与纪实微电影 (Cinematic Destination Wedding Films)",
-        desc: "欧洲古堡、阿姆斯特丹运河与海外目的地奢华婚礼摄制，电影级画质、官方特批航拍与多机位4K纪实跟拍。"
+        title: "Commercial Film & TVC Advertising",
+        desc: "Cinema-grade commercials, digital brand campaigns, visual storytelling, and high-production product visual assets."
       },
       {
-        title: "商业拍摄与品牌广告大片 (Commercial Video Production & TVC)",
-        desc: "院线级商业广告片、时尚品牌视觉、高端产品视频摄制、商业静物摄影以及跨国多渠道全格式宣发素材。"
+        title: "Broadcast Series & Reality Show Production",
+        desc: "Unscripted reality television series (including 'Tram Dating'), multi-camera synchronized mobile rigs, and rapid daily editorial turns."
       },
       {
-        title: "企业宣传片与高管专访 (Corporate Documentaries & Executive Keynotes)",
-        desc: "跨国企业全球品牌形象片、上市公司财报会议大片、海外峰会/展会现场纪实以及CEO思想领袖深度纪录。"
+        title: "Luxury Destination Wedding Cinematography",
+        desc: "Cinematic destination wedding films across Amsterdam canals, French châteaux, Lake Como, and historic European estates."
       },
       {
-        title: "大型电视真人秀与节目摄制 (Broadcast Television & Reality Series)",
-        desc: "全流程现场多机位广播级拍摄系统、欧洲实景真人秀联合摄制、叙事剧本导演统筹与高频快速剪辑。"
+        title: "Corporate Documentaries & Executive Profiles",
+        desc: "Global brand identity films, listed company financial media suites, and C-level thought leadership interviews."
       },
       {
-        title: "会展多媒体视听工程与艺术纪录片 (Exhibition Media & Installations)",
-        desc: "全球大型展会全景环幕与巨幕LED交互视听展项、世界法学展多媒体视听套件与艺术机构专题文献片。"
-      },
-      {
-        title: "电影级后期调色与声音设计 (Cinema Post-Production, DaVinci & Sound)",
-        desc: "达芬奇 (DaVinci Resolve) 电影级调色、杜比环绕声效混音、特效包装设计与中英荷多语言本地化字幕制作。"
+        title: "DaVinci Resolve DI Color Grading & Sound Design",
+        desc: "Precision film color timing, Dolby Atmos spatial sound design, original soundtrack composition, and multilingual subtitles."
       }
     ],
     methodologySteps: [
       {
         step: "01",
-        title: "创意策划与分镜分工 (Script Treatment & Storyboarding)",
-        desc: "将商业诉求或婚礼纪实核心转化为精准镜头脚本、视觉调色基调以及欧洲取景勘景计划。"
+        title: "Script Treatment & Storyboarding",
+        desc: "Translating commercial objectives, reality formats, or wedding narratives into precise scene treatments and location permits."
       },
       {
         step: "02",
-        title: "现场执导与多机位摄制 (Cinematography & Rigging)",
-        desc: "配置 ARRI / RED / Sony Cine 电影级主机套件、专业灯光与无线收音系统，中英荷双语现场高效统筹调度。"
+        title: "On-Location Multi-Camera Cinematography",
+        desc: "Deploying ARRI Alexa, RED, and Sony Cine packages with specialized wireless audio arrays and authorized drone flights."
       },
       {
         step: "03",
-        title: "精剪剪辑与电影级调色 (Editorial & DaVinci Mastering)",
-        desc: "情绪节奏剪辑、专业达芬奇色彩科学调色、杜比空间音效制作及定制音乐声学配乐。"
+        title: "Editorial & DaVinci Color Mastering",
+        desc: "Narrative pacing, precision color science grading in DaVinci Resolve, sound mixing, and bespoke acoustic arrangement."
       },
       {
         step: "04",
-        title: "广播级与多格式交付 (Multi-Format Delivery)",
-        desc: "提供院线 DCP、主流电视台广播标准母带、4K 超清档案以及社交媒体短视频垂直剪裁包。"
+        title: "Broadcast & Multi-Platform Delivery",
+        desc: "Delivering theatrical DCP masters, broadcast television packages, 4K archives, and vertical social teaser cuts."
       }
     ],
     faqs: [
       {
-        q: "在荷兰及欧洲进行婚礼拍摄，服务流程与交付内容包括哪些？",
-        a: "我们为欧洲及海外目的地婚礼提供一站式影视摄制：包括婚前视觉沟通与分镜脚本、欧洲外景地（如阿姆斯特丹运河游船、赞丹风车村、古堡庄园）踩点、婚礼当天双机位或三机位4K超清电影机全程跟拍、取得民航许可的合法专业航拍。通常在婚礼结束后48小时内提供社交媒体先导预告片，4-6周内交付精剪调色的电影级长片及全套原始高清纪实素材。"
+        q: "What commercial work has Glass Sharp Films produced in the Netherlands and Europe?",
+        a: "Glass Sharp Films has produced prominent commercial and documentary projects, including the corporate testimonial film for Fixico in collaboration with MyWheels, a cinematic documentary for Dutch Olympic Champion Hermijntje Drenth, and a global commercial for crypto exchange Toobit starring rock climber Chris Sharma."
       },
       {
-        q: "企业拍摄与商业广告片（TVC）支持跨欧洲多城市执行吗？团队语言如何配合？",
-        a: "是的，我们的影视制作组常驻阿姆斯特丹，可敏捷辐射巴黎、法兰克福、伦敦、布鲁塞尔等欧洲主要枢纽。摄制组核心成员均具备中英荷三语工作能力，可无缝协调国内品牌方领导、海外欧洲外籍演员与欧洲当地场地许可部门，免去跨国沟通成本。"
+        q: "What is 'Tram Dating' and what is its current production status?",
+        a: "'Tram Dating' is an original reality dating series currently in active production across the Netherlands. The show captures Asian singles meeting and dating aboard historic and scenic Dutch trams, pairing intimate romantic storytelling with vibrant urban cinematography."
       },
       {
-        q: "商业拍摄使用的摄制设备和画质标准是什么？",
-        a: "我们自有及合作设备库采用业内顶级的院线级电影机（如 ARRI Alexa Mini LF、RED V-Raptor、Sony FX6/FX9），搭配蔡司电影定焦镜头组、专业级无线跟焦系统、Aputure专业影视灯光与森海塞尔高保真无线录音套件，确保每一帧画面均达院线级与国际主流电视网播出水准。"
+        q: "What is included in destination wedding cinematography packages?",
+        a: "We offer comprehensive wedding film packages across Europe: pre-wedding script consultations, scenic shoots along Amsterdam canals or European estates, dual or triple 4K cinema cameras, official civil aviation drone permits, a 48-hour social preview teaser, and a full-length feature film."
       }
     ]
   },
   { 
     id: "fine-art",
     number: "03",
-    title: "Fine Art & Cultural Exchange", 
-    chineseTitle: "当代艺术与文化交流（亚洲艺术家画廊 · 国际策展 · 艺术驻留）",
-    seoBadge: "亚洲艺术家画廊 · 国际艺术策展 · 驻留交流",
-    seoTitle: "亚洲艺术家画廊 · 当代艺术策展与欧亚交流 | YEAH Art Gallery Amsterdam",
-    seoDescription: "阿姆斯特丹专属亚洲现当代艺术家画廊空间：定期举办高水准学术展览、欧亚艺术家驻留计划、欧洲顶尖美术馆与双年展策展对接、艺术藏家推介与学术画册出版。",
-    keywords: [
-      "亚洲艺术家画廊", "荷兰画廊", "阿姆斯特丹当代艺术展", "艺术策展", 
-      "艺术家驻留计划", "欧洲美术馆收藏", "东亚当代艺术", "当代艺术画廊", 
-      "阿姆斯特丹艺术展", "Asian Art Gallery Amsterdam", "Curatorial Practice Europe"
-    ],
-    tagline: "Connecting international artists, Asian talent networks & European curatorial platforms.",
-    desc: "Facilitating international art exchange by representing top Asian contemporary artists, curating institutional exhibitions in Amsterdam, and bridging global collectors with European institutions.",
-    longOverview: "Amsterdam is historically Europe's cultural epicenter. YEAH Fine Art leverages an extensive established network of prominent and emerging East Asian contemporary artists, bringing their visionary practices to European galleries, art fairs, and museums. We provide curatorial direction, artist residency facilitation, catalog publishing, and cross-border art logistics.",
-    icon: Palette,
-    heroImage: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=2090&auto=format&fit=crop",
-    secondaryImage: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2070&auto=format&fit=crop",
+    title: "Fine Art Representation", 
+    subBrand: "Exclusive Representation: Ming Ye (叶明)",
+    badge: "LARGE-FORMAT PHOTOGRAPHY & ANALOG PRACTICE",
+    tagline: "Exclusive global representation of Large-Format Photography Artist Ming Ye (叶明).",
+    desc: "Sole representative of acclaimed Large-Format Photography Artist Ming Ye (叶明). Specializing in 8x10 analog view cameras, darkroom silver gelatin craftsmanship, and European museum curation. Access the complete artist monograph and catalog via shorturl.at/TYn8P.",
+    longOverview: "YEAH Agency exclusively represents Large-Format Photography Artist Ming Ye (叶明). Graduated from Shenzhen University Media in the 1980s, Ming Ye operates with 8x10 and 4x5 large-format view cameras and handcrafted silver gelatin darkroom chemistry, creating profound symbolic and philosophical visual works. Ming Ye's work has been prominently exhibited across European institutions, including 'Konstruierte Natur: Landschaft im Wandel in der zeitgenössischen Kunst' (Schloss Plüschow, Germany) and '洞见 – Einblick II' (Rostock, Germany). All curated photographic plates, exhibition portfolios, and catalog entries are documented within the official Artist Monograph (https://shorturl.at/TYn8P). We handle all museum acquisitions, limited-edition collector folios, European solo exhibitions, and scholarly monographs.",
+    icon: Camera,
+    heroImage: "/images/artist-mingye.svg",
+    secondaryImage: "/images/artist-mingye.svg",
+    pdfUrl: {
+      label: "Official Artist Monograph & Portfolio (PDF)",
+      filename: "Artist Ming Monograph",
+      url: "https://shorturl.at/TYn8P"
+    },
+    featuredSpotlight: {
+      title: "Ming Ye (叶明) — Large-Format Analog Photography Practice & European Archive",
+      subtitle: "Exclusive Representation · Conceptual & Symbolic Large-Format Photography",
+      description: "Dedicated exclusively to Large-Format Photography Artist Ming Ye (叶明). Operating with 8x10 view cameras and handcrafted silver gelatin darkroom craftsmanship, Ming Ye's practice explores existential and philosophical themes through analog mastery. Exhibited in premier German art institutions, including 'Konstruierte Natur' (Schloss Plüschow, 2024) and '洞见 – Einblick II' (Rostock, 2022). All curated works and acquisition protocols are presented exclusively within the official Artist Monograph.",
+      badge: "EXCLUSIVE ARTIST REPRESENTATION · MING YE (叶明)",
+      image: "/images/artist-mingye.svg",
+      pdfUrl: "https://shorturl.at/TYn8P",
+      stats: [
+        { label: "Represented Artist", value: "Ming Ye (叶明)" },
+        { label: "Medium", value: "8x10 View Camera / Silver Gelatin" },
+        { label: "Official Monograph", value: "Verified PDF" }
+      ],
+      link: { label: "Open Official Monograph PDF (shorturl.at/TYn8P)", url: "https://shorturl.at/TYn8P" }
+    },
     metrics: [
-      { value: "5,000+", label: "Exhibition Visitors per Signature Show" },
-      { value: "20+", label: "International Artists Supported in EU" },
-      { value: "Cross-Border", label: "Amsterdam to East Asia Cultural Bridge" }
+      { value: "8x10", label: "Large-Format View Camera Standard" },
+      { value: "100%", label: "Exclusive Global Representation (Ming Ye)" },
+      { value: "Museum-Tier", label: "Archival Silver Gelatin Conservation" }
     ],
     scopeList: [
       {
-        title: "亚洲现当代艺术家画廊空间运营 (Asian Contemporary Artist Gallery Amsterdam)",
-        desc: "位于阿姆斯特丹的专属艺术画廊空间，常年举办具有学术高度的亚洲现当代艺术家个展与联展。"
+        title: "Exclusive Global Artist Representation (Ming Ye 叶明)",
+        desc: "Sole representation for Large-Format Photography Artist Ming Ye globally, managing museum acquisitions, gallery rights, private collector sales, and institutional commissions."
       },
       {
-        title: "国际美术馆策展与双年展合作 (Curatorial Direction & Museum Exhibitions)",
-        desc: "联合欧洲主流美术馆与策展机构，构筑欧亚跨文化学术语境，策划高水准当代艺术专题大展。"
+        title: "Official Monograph & Portfolio Curation",
+        desc: "Publishing and distributing the official Artist Monograph (https://shorturl.at/TYn8P), presenting verified plates, curatorial essays, and catalog raisonné records."
       },
       {
-        title: "欧亚艺术家阿姆斯特丹驻留计划 (Trans-Eurasian Artist Residencies)",
-        desc: "提供阿姆斯特丹核心区独立工作室空间、荷兰文化交流签证协助、学术交流访问与驻留创作成果推广。"
+        title: "Archival Silver Gelatin Darkroom Printing",
+        desc: "Museum-grade fiber paper darkroom processing, selenium/gold toning for multi-century permanence, and authenticated limited collector editions."
       },
       {
-        title: "欧洲机构馆藏推荐与藏家咨询 (Institutional Acquisitions & Collector Advisory)",
-        desc: "协助亚洲杰出艺术家作品进入欧洲国立美术馆永久馆藏、知名基金会及国际高净值藏家收藏系统。"
+        title: "European Museum Exhibitions & Foundation Placements",
+        desc: "Accessioning Ming Ye's master photographic portfolios into permanent European photography archives, art museums, and distinguished private foundations (e.g. Plüschow, Rostock)."
       },
       {
-        title: "博物馆级艺术品跨境物流与出版 (Museum-Grade Fine Art Transit & Publishing)",
-        desc: "提供国际温控保税艺术品运输、专业海关报关、中英荷三语精装学术画册出版发行与国际媒体宣发。"
+        title: "Scholarly Monograph Publishing & Curatorial Scenography",
+        desc: "Designing contemplative gallery scenography, anti-reflective museum framing, and distributing the official Artist Monograph (available at shorturl.at/TYn8P)."
       }
     ],
     methodologySteps: [
       {
         step: "01",
-        title: "策展构想与学术甄选 (Curatorial Thesis & Artist Selection)",
-        desc: "深度挖掘东亚当代艺术创作脉络与欧洲当代艺术话语的交汇点，确立具备国际前瞻性的学术策展主题。"
+        title: "Philosophical Conception & Metaphor",
+        desc: "Drawing upon classical philosophy and symbolic visual language, composing meditative large-format photographic studies."
       },
       {
         step: "02",
-        title: "驻留创作与学术支持 (Residency & Creation Management)",
-        desc: "为入选艺术家办理荷兰文化交流居留许可，协调阿姆斯特丹工作室空间，协助在地材料采购与学术交流。"
+        title: "8x10 View Camera Field Capture",
+        desc: "Rigorous analog view camera exposure, bellows tilt/shift perspective control, and individual sheet film development capturing nuanced tonality."
       },
       {
         step: "03",
-        title: "展陈空间设计与开幕宣发 (Exhibition Scenography & Opening)",
-        desc: "阿姆斯特丹展厅空间建筑与灯光工程规划、国际艺术媒体专访发布、VIP藏家预览及学术研讨会。"
+        title: "Darkroom Silver Gelatin Crafting",
+        desc: "Handcrafted darkroom enlargement onto fiber-base silver gelatin paper, archival chemical washing, and selenium toning."
       },
       {
         step: "04",
-        title: "机构永久馆藏与文献归档 (Permanent Placement & Archiving)",
-        desc: "协助国际艺术史学者开展文献批评写作，推动作品被欧洲重要美术馆收藏并建立长久学术声誉。"
+        title: "Archival Certification & Institutional Placement",
+        desc: "Stamping with artist authenticity seals, catalog raisonné registration, museum conservation framing, and institutional accession."
       }
     ],
     faqs: [
       {
-        q: "YEAH在阿姆斯特丹的亚洲艺术家画廊空间如何支持中国及亚洲当代艺术家？",
-        a: "画廊为亚洲艺术家提供全方位的欧洲落地展示平台：从阿姆斯特丹黄金地段的展览空间、学术策展前言撰写、多语言国际艺术媒体发布，到邀请荷兰及欧洲当地知名策展人、评论家与画廊主出席开幕研讨，全面提升艺术家在欧洲艺术圈的知晓度与学术声望。"
+        q: "Who is Ming Ye (叶明) and what defines his large-format photography?",
+        a: "Ming Ye (叶明) is an acclaimed Large-Format Photography Artist who graduated from Shenzhen University Media in the 1980s. He works with 8x10 and 4x5 large-format view cameras and darkroom silver gelatin craftsmanship, specializing in symbolic and metaphorical photography. His work has been widely exhibited in European institutions, including 'Konstruierte Natur' (Plüschow, 2024) and '洞见 – Einblick II' (Rostock, 2022)."
       },
       {
-        q: "艺术家如何申请参与阿姆斯特丹艺术驻留计划（Artist Residency）？",
-        a: "我们全年接受具有成熟艺术语言与创作实验性的亚洲当代艺术家申请。艺术家需提交个人陈述、创作简历、高画质作品集以及驻留创作研究计划。入选者可获阿姆斯特丹创作工坊支持、荷兰文化访问签证协助，并在驻留期满时于画廊举办成果汇报个展。"
+        q: "Does YEAH Agency represent other artists?",
+        a: "No. Our fine art division is dedicated exclusively to Large-Format Photography Artist Ming Ye (叶明). We concentrate our curatorial, exhibition, and archival resources entirely on his practice and photographic legacy."
       },
       {
-        q: "欧洲与国际艺术藏家如何通过YEAH进行艺术品收藏？",
-        a: "我们提供经严格学术梳理与保真溯源的签约艺术家原作流通咨询。所有作品均附带权威艺术家签名防伪证书与完备学术文献记录，并配套恒温恒湿博物馆级全球保价航运，确保艺术品收藏的安全与长远增值价值。"
+        q: "How can museums and private collectors access the artist monograph and acquisition details?",
+        a: "The official Artist Monograph and exhibition catalog can be accessed directly at https://shorturl.at/TYn8P. All original prints are strictly limited editions, hand-printed in the darkroom, signed, and accompanied by provenance certificates."
       }
     ]
   },
   { 
     id: "custom-it-services",
     number: "04",
-    title: "Enterprise IT Solutions", 
-    chineseTitle: "企业级IT与定制软件开发（软件开发 · 跨境系统 · 云架构）",
-    seoBadge: "定制软件开发 · 数字化出海 · 云原生架构",
-    seoTitle: "定制软件开发 · 数字化出海系统 · GDPR合规架构 | YEAH Enterprise IT Amsterdam",
-    seoDescription: "专业全栈定制软件开发：跨国出海定制ERP/CRM、多语言电商与协作App、欧盟GDPR数据合规架构、高可用云原生微服务(AWS/GCP)与企业级AI业务流嵌入。",
-    keywords: [
-      "软件开发", "定制软件开发", "欧洲IT外包", "阿姆斯特丹软件研发", 
-      "跨国系统研发", "出海App开发", "GDPR数据合规", "微服务架构", 
-      "企业定制ERP", "企业AI系统集成", "Custom Software Amsterdam"
-    ],
-    tagline: "Resilient systems architecture, cross-border cloud & bespoke software engineering.",
-    desc: "Engineering custom software systems, multi-region cloud backbones, and GDPR-compliant digital infrastructure for multinational enterprises operating across Europe and Asia.",
-    longOverview: "Operating an enterprise across multiple jurisdictions requires software that withstands regulatory scrutiny, high concurrency, and heterogeneous legacy networks. YEAH Enterprise IT architects custom enterprise resource planning (ERP) platforms, cross-border real-time data pipelines, and secured cloud environments tailored for international trade and corporate management.",
+    title: "Software Development", 
+    subBrand: "Digital Ventures & DriveViewer iOS",
+    badge: "ENTERPRISE SYSTEMS & MOBILE PLATFORMS",
+    tagline: "Resilient systems architecture, GDPR compliance, and proprietary software ventures.",
+    desc: "Engineering custom enterprise software, multi-region cloud backbones, and proprietary software ventures — exemplified by DriveViewer, our driving school management platform live on the Apple App Store.",
+    longOverview: "Operating digital products and enterprise systems across Europe demands rigorous GDPR data protection, low-latency cross-border networks, and refined UX. YEAH Software Development engineers bespoke enterprise platforms and incubates venture software. From our proprietary App Store product DriveViewer to multi-currency trading engines and high-availability cloud microservices, we build software designed for long-term operational resilience.",
     icon: Cpu,
     heroImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
     secondaryImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2034&auto=format&fit=crop",
+    externalUrl: {
+      label: "View DriveViewer on Apple App Store",
+      description: "Our proprietary iOS business application for modern driving schools and instructors, live on the App Store.",
+      url: "https://apps.apple.com/nl/app/driveviewer/id6765847978?l=en-GB"
+    },
+    featuredSpotlight: {
+      title: "DriveViewer — Modern Driving School iOS Platform",
+      subtitle: "Proprietary Software Venture Live on App Store",
+      description: "Designed and engineered in Amsterdam by YEAH's engineering team, DriveViewer is a specialized iOS application built for driving schools (Rijscholen), instructors, and students across the Netherlands and Europe. Features include real-time lesson booking, 46-point CBR examination grading, dynamic calendar scheduling, and custom school branding.",
+      badge: "LIVE ON APPLE APP STORE · DRIVEVIEWER",
+      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=2070&auto=format&fit=crop",
+      stats: [
+        { label: "Platform", value: "iOS / iPadOS" },
+        { label: "Grading Criteria", value: "46 CBR Points" },
+        { label: "App Store", value: "Business Category" }
+      ],
+      link: { label: "App Store Page", url: "https://apps.apple.com/nl/app/driveviewer/id6765847978?l=en-GB" }
+    },
     metrics: [
       { value: "99.99%", label: "System Availability SLA Benchmark" },
       { value: "Sub-200ms", label: "Cross-Continent Synchronization Latency" },
@@ -454,255 +409,344 @@ export const SERVICES: ServiceDefinition[] = [
     ],
     scopeList: [
       {
-        title: "全栈定制软件开发与系统集成 (Custom Software Engineering & Web/App Platforms)",
-        desc: "针对跨国企业核心业务定制开发高并发 Web 应用、移动端 iOS/Android App 及分布式业务系统架构。"
+        title: "DriveViewer & Proprietary Mobile Product Engineering",
+        desc: "Designing and engineering iOS/Android business applications, including the DriveViewer platform with real-time lesson booking and CBR examination grading."
       },
       {
-        title: "跨境电商与出海多语言协同系统 (Cross-Border Trade Platforms & Custom ERP)",
-        desc: "多币种智能换汇结算、荷兰及欧盟海关电子申报 (Douane EDI) 接口直连、多仓跨境物流一体化管理软件。"
+        title: "Bespoke Cross-Border ERP & Customs Trading Engines",
+        desc: "Multi-currency foreign exchange settlement, direct integration with Dutch Douane EDI customs clearance, and supply chain inventory management."
       },
       {
-        title: "欧盟 GDPR 数据合规与隐私安全架构 (European GDPR Compliance & Security)",
-        desc: "全面贯彻欧盟通用数据保护条例 (GDPR)，实现敏感数据物理隔离、端到端加密存储与不可篡改区块链级审计日志。"
+        title: "European GDPR Privacy & Cryptographic Security",
+        desc: "End-to-end data encryption, isolated European cloud storage (Frankfurt/Amsterdam), and tamper-evident cryptographic audit logs."
       },
       {
-        title: "多区域合规云架构部署与灾备 (Multi-Region Cloud Infrastructure - AWS/GCP/Azure)",
-        desc: "设计高可用 Kubernetes 集群、跨欧亚骨干网络加速专线、毫秒级容灾备份以及 99.99% 系统可用性保障。"
+        title: "Multi-Region Cloud Infrastructure (AWS / GCP / Azure)",
+        desc: "High-availability Kubernetes clusters, automated zero-downtime failover, and sub-200ms latency between European and Asian nodes."
       },
       {
-        title: "企业级 AI 业务流定制与大模型落地 (Enterprise AI Integration & API Middleware)",
-        desc: "基于生成式 AI 与大语言模型为企业定制内部私有知识库、智能自动化业务流处理以及低延迟 API 中台。"
+        title: "Enterprise AI & Low-Latency API Middleware",
+        desc: "Private generative AI workflows, intelligent document processing for trade documents, and robust REST/GraphQL microservices."
       }
     ],
     methodologySteps: [
       {
         step: "01",
-        title: "架构审计与合规可行性研究 (Architecture & Compliance Audit)",
-        desc: "深度评估现有系统数据流向、安全边界、欧盟GDPR法规红线以及亚欧跨洲际网络延迟瓶颈。"
+        title: "Architecture & Compliance Audit",
+        desc: "Assessing data flows, EU GDPR regulatory boundaries, latency requirements, and system integration points."
       },
       {
         step: "02",
-        title: "原型工程与数据库契约定义 (System Prototyping & Schema Design)",
-        desc: "确立严格的微服务接口契约 (REST/GraphQL)、加密数据库模式设计与多区域容灾冗余策略。"
+        title: "Prototyping & Database Schema Design",
+        desc: "Defining microservice API contracts, encrypted PostgreSQL schemas, and real-time event-driven messaging topologies."
       },
       {
         step: "03",
-        title: "敏捷迭代与高并发压力测试 (Iterative Engineering & Load Testing)",
-        desc: "持续集成 CI/CD 自动化流水线部署、模拟海量并发压力测试以及严格的数据穿透测试。"
+        title: "Iterative Engineering & Concurrency Testing",
+        desc: "Automated CI/CD pipelines, stringent automated unit tests, and rigorous load simulations under high network concurrency."
       },
       {
         step: "04",
-        title: "平滑割接与 24/7 SLA 运维监控 (Live Migration & 24/7 SLA Support)",
-        desc: "实现零停机时间旧系统数据平滑割接，配套全面的云原生观测报警看板与全天候技术保障。"
+        title: "Zero-Downtime Deployment & 24/7 SLA Support",
+        desc: "Live migration with zero operational disruption, real-time APM telemetry, and guaranteed enterprise SLA maintenance."
       }
     ],
     faqs: [
       {
-        q: "出海欧洲的中国企业在软件开发中面临的最大挑战是什么？YEAH如何解决？",
-        a: "最大的核心挑战在于欧盟严苛的通用数据保护条例（GDPR）与跨欧亚数据延迟。一旦违反GDPR最高可面临全球营收4%的巨额罚金。YEAH软件工程团队在欧洲本地架构，从设计之初即落实数据脱敏、欧盟本地化服务器存储（如法兰克福或阿姆斯特丹节点）与合规传输协议，确保客户系统百分之百安全无虞。"
+        q: "What is DriveViewer and how does it demonstrate YEAH's software engineering capabilities?",
+        a: "DriveViewer is a native iOS business app developed and launched on the Apple App Store by YEAH. It serves driving schools and instructors with real-time lesson booking, grading against 46 professional examination criteria (aligned with CBR standards), timeline scheduling, and white-label branding."
       },
       {
-        q: "YEAH支持哪些主流技术栈和开发模式？",
-        a: "我们精通现代全栈工程技术：前端采用 React / Next.js / TypeScript / React Native / Flutter；后端基于 Node.js / Go / Python / Java 高性能微服务；数据库采用 PostgreSQL / Redis / Kafka 配合 Docker 与 Kubernetes 容器编排；云设施无缝适配 AWS、Google Cloud (GCP) 与 Microsoft Azure。"
+        q: "How does YEAH guarantee GDPR compliance for international businesses?",
+        a: "We architect systems following European GDPR guidelines from day one. Personal data is isolated within EU cloud regions (such as Amsterdam or Frankfurt), with strict data pseudonymization, user consent mechanisms, and automated right-to-erasure workflows."
       },
       {
-        q: "如果企业已有现有系统，能进行定制二次开发或接口打通吗？",
-        a: "完全支持。我们擅长在不影响企业现有业务运转的前提下，通过研发现代化 API 中间件与适配器，将原有老旧 ERP/CRM 系统与新型出海业务系统、欧盟海关接口及多币种支付网关无缝串联。"
+        q: "Can you integrate custom software with legacy ERP systems and customs authorities?",
+        a: "Yes. We frequently develop high-performance API middleware that seamlessly bridges legacy accounting or warehousing systems with modern web/mobile interfaces and direct Dutch Customs (Douane EDI) declarations."
       }
     ]
   }
 ];
 
+// --- Case Studies Archive ---
+
 export const CASE_STUDIES: CaseStudy[] = [
-  // Business Consulting
+  // 01. Corporate Consulting (企业咨询)
   {
     id: "case-tech-landing",
-    title: "Global Tech Branch Establishment & European Hub",
+    title: "Global Technology European Headquarters & Dutch BV Incorporation",
     clientCategory: "Publicly Listed Asian Technology Enterprise",
     serviceId: "business-consulting",
-    serviceName: "Market Entry & Business Consulting",
-    tag: "荷兰企业注册 · 荷兰BV设立",
-    summary: "为亚洲大型上市硬件与智能科技企业设立荷兰全资子公司，完成商会KvK注册、税号申报及欧洲竞标合规全流程建档。",
-    challenge: "客户面临欧洲严苛的反洗钱 (AML) 银行开户审查、荷兰本土劳动雇佣法规限制，并需在紧迫的6周内获得欧盟企业资质参与千万欧元级商业竞标。",
-    solution: "YEAH全流程统筹执行：协调荷兰资深民法公证人起草并签署章程、极速完成KvK登记、获取荷兰BTW/CIT税号、打通商业银行对公账户、租赁阿姆斯特丹Zuidas核心商务区办公室，并起草本土化高管雇佣合同。",
+    serviceName: "Corporate Consulting",
+    tag: "DUTCH BV FORMATION · ADVISORY",
+    summary: "Established the wholly-owned European headquarters subsidiary for an Asian publicly traded enterprise, completing KvK registration, tax filings, and prime office setup in Amsterdam Zuidas.",
+    challenge: "Client required full EU corporate legal status, compliant anti-money laundering (AML) bank clearance, and local employment contracts within a rigid 6-week deadline to qualify for a €10M+ European commercial tender.",
+    solution: "YEAH coordinated the entire process: drafting articles of association with Dutch civil-law notaries, securing the KvK registration, obtaining BTW/CIT tax numbers, opening tier-1 corporate banking facilities, and drafting localized management contracts.",
     deliverables: [
-      "荷兰BV实体在商会KvK官方注册完成",
-      "荷兰商业银行账户与多币种跨境结算通道开通",
-      "核心国际员工30% Ruling所得税减免政策申报",
-      "合规荷兰员工劳动合同与社保工资册建档"
+      "Official Dutch BV entity incorporated at Chamber of Commerce (KvK)",
+      "Tier-1 commercial banking with multi-currency SEPA/SWIFT rails",
+      "Executive 30% Tax Ruling applications submitted and approved",
+      "Prime Amsterdam Zuidas commercial office lease established"
     ],
-    outcome: "6周内实现交钥匙运营；顺利获批12位核心管理人员工作居留；成功入围并中标超1,000万欧元的欧洲企业级招投标项目。",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"
+    outcome: "Turnkey operational status achieved within 6 weeks; 12 executive work permits secured; client successfully qualified and won the €10M+ European contract.",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
+    metrics: [
+      { label: "Turnaround", value: "6 Weeks" },
+      { label: "Tender Value", value: "€10M+" }
+    ]
   },
   {
     id: "case-corporate-immigration",
-    title: "Corporate Immigration & Executive EU Mobility",
-    clientCategory: "Multinational Leadership & Executive Family Relocation",
+    title: "Executive Mobility, IND Recognized Sponsor & 30% Tax Ruling",
+    clientCategory: "Multinational Corporate Leadership",
     serviceId: "business-consulting",
-    serviceName: "Market Entry & Business Consulting",
-    tag: "高技术移民 · 欧洲高管派遣",
-    summary: "为跨国集团欧洲总部管理团队办理荷兰高技术移民（Kennismigrant）保荐人资质与全家移居落地服务。",
-    challenge: "应对荷兰移民局（IND）对新设实体担保资质的严苛财务审查，在不影响企业业务运营的前提下，同步办理8位外籍高管及其家属的合法居留。",
-    solution: "撰写并递交详实的企业商业实质报告，顺利获批IND公认赞助人（Recognized Sponsor）资质，协助高管家庭预约市政厅BSN登记、开通本地医保并协助国际学校入学。",
+    serviceName: "Corporate Consulting",
+    tag: "IND RECOGNIZED SPONSOR · IMMIGRATION",
+    summary: "Secured Dutch Immigration Authority (IND) Recognized Sponsor status and relocated 8 multinational executive families with 30% Tax Ruling benefits.",
+    challenge: "Overcoming stringent IND financial solvency audits for a newly formed entity while ensuring seamless family relocation, schooling, and tax optimization without operational disruptions.",
+    solution: "Prepared comprehensive business substance documentation, submitted sponsor certification, expedited Kennismigrant visa approvals, and facilitated municipal BSN registrations and health coverage.",
     deliverables: [
-      "荷兰移民局 IND Recognized Sponsor 资质顺利获批",
-      "高技术移民 (Kennismigrant) 居留许可获发",
-      "市政厅 BSN 税号预约与荷兰本地商业医疗保险配置",
-      "高管家庭阿姆斯特丹住所安家与国际学校对接"
+      "IND Recognized Sponsor certification granted with full sponsorship rights",
+      "8 Kennismigrant residence permits and BSN registrations completed",
+      "30% Tax Ruling fiscal exemptions approved for qualifying leadership",
+      "Amsterdam residential leasing and international school enrollment"
     ],
-    outcome: "签证获签率 100%；8 户核心高管家庭零延误平稳定居阿姆斯特丹，实现企业跨国管理架构的无缝平移。",
+    outcome: "100% visa approval rate; all 8 executive families smoothly settled in Amsterdam within scheduled deadlines.",
     image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2074&auto=format&fit=crop"
   },
+  {
+    id: "case-corporate-epr-dispatch",
+    title: "European EPR Environmental Compliance & Third-Party Personnel Dispatch Visas",
+    clientCategory: "Cross-Border Consumer Technology & Hardware Group",
+    serviceId: "business-consulting",
+    serviceName: "Corporate Consulting",
+    tag: "EPR REGISTRATION · PERSONNEL DISPATCH · VISA SPONSORSHIP",
+    summary: "Secured comprehensive Dutch and European EPR environmental compliance (Packaging, WEEE, Batteries) and deployed key engineering leadership to Amsterdam via third-party personnel dispatch visa sponsorship.",
+    challenge: "Client faced European marketplace listing suspensions and customs delays due to mandatory EU Extended Producer Responsibility (EPR) regulations, while urgently requiring senior engineers on-site in Amsterdam months before their own Dutch entity could qualify for IND Recognized Sponsor status.",
+    solution: "YEAH registered the enterprise across the Dutch Packaging Waste Fund (Afvalfonds Verpakkingen) and WEEE registries with automated recurring volume declarations. In parallel, facilitated compliant third-party personnel dispatch (secondment), securing Kennismigrant work and residence permits within 3 weeks.",
+    deliverables: [
+      "Official Dutch & EU EPR compliance registration numbers (Afvalfonds Verpakkingen & WEEE)",
+      "Periodic volume reporting protocol and environmental audit certification",
+      "Compliant third-party personnel dispatch framework with Dutch payroll secondment",
+      "6 Kennismigrant work residence permits and BSN municipal registrations expedited"
+    ],
+    outcome: "100% environmental compliance unlocked full EU marketplace distribution; foreign technical team operating legally on-site in Amsterdam within 21 days without waiting for independent corporate sponsorship qualification.",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop",
+    metrics: [
+      { label: "EPR Clearance", value: "100% Certified" },
+      { label: "Personnel Dispatched", value: "6 Engineers" }
+    ]
+  },
 
-  // Video Production
+  // 02. Video Production (视频制作 - Glass Sharp Films)
+  {
+    id: "case-tram-dating",
+    title: "Tram Dating — Reality Dating Series (In Active Production)",
+    clientCategory: "Original Asian Reality Dating Series · The Netherlands",
+    serviceId: "creative-agency",
+    serviceName: "Video Production",
+    tag: "REALITY SERIES · IN PRODUCTION",
+    summary: "Principal photography and technical cinematography for 'Tram Dating', an original reality dating series capturing Asian singles dating aboard historic and scenic trams across the Netherlands.",
+    challenge: "Designing multi-camera mobile cinema rigs inside moving heritage trams, capturing authentic unscripted romantic chemistry under changing urban natural light and ambient transit acoustics.",
+    solution: "Glass Sharp Films engineered custom vibration-damped cinema camera mounts, wireless multi-channel lavalier audio arrays, and dynamic street-level tracking alongside Dutch municipal transit authorities.",
+    deliverables: [
+      "Custom multi-camera mobile tram cinema rig and wireless audio capture",
+      "Principal photography across Amsterdam and Dutch transit networks",
+      "Real-time storyline assembly, daily rushes, and character edits",
+      "DaVinci Resolve cinematic urban color grading and broadcast mastering"
+    ],
+    outcome: "Currently in active production; capturing genuine cross-cultural romance against the backdrop of historic Dutch canals and vintage tramways.",
+    image: "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?q=80&w=2070&auto=format&fit=crop"
+  },
+  {
+    id: "case-fixico-mywheels",
+    title: "Fixico x MyWheels Commercial Campaign & Customer Testimonial",
+    clientCategory: "European Automotive & Fleet Technology Leaders",
+    serviceId: "creative-agency",
+    serviceName: "Video Production",
+    tag: "COMMERCIAL CAMPAIGN · GLASSSHARPFILMS.NL",
+    summary: "Produced an impactful commercial customer testimonial video for automotive repair platform Fixico in collaboration with shared mobility leader MyWheels in Amsterdam.",
+    challenge: "Showcasing technical fleet repair management while maintaining an engaging, human narrative centered on urban sustainability and mobility innovation.",
+    solution: "Glass Sharp Films directed dynamic multi-camera footage across Amsterdam locations, capturing real-world fleet maintenance with crisp cinematography, pacing, and color science.",
+    deliverables: [
+      "Commercial brand customer testimonial video master",
+      "Multi-platform social media campaign cutdowns (16:9 & 9:16)",
+      "High-fidelity sound design and licensed acoustic soundtrack",
+      "Bilingual English and Dutch subtitled delivery"
+    ],
+    outcome: "Featured prominently across European B2B automotive channels and corporate keynotes; drove high stakeholder engagement for both brands.",
+    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop",
+    externalLink: {
+      label: "View on glasssharpfilms.nl",
+      url: "https://glasssharpfilms.nl/"
+    }
+  },
+  {
+    id: "case-hermijntje-drenth",
+    title: "Hermijntje Drenth — Dutch Olympic Champion Cinematic Film",
+    clientCategory: "Olympic Gold Medalist & Elite Athletic Profile",
+    serviceId: "creative-agency",
+    serviceName: "Video Production",
+    tag: "OLYMPIC PROFILE · CINEMATIC DOCUMENTARY",
+    summary: "Crafted a cinematic visual portrait for Dutch Olympic rowing champion Hermijntje Drenth, highlighting the rigorous mental and physical discipline of world-class athletics.",
+    challenge: "Capturing intense on-water training sessions under variable Dutch weather while capturing intimate, emotionally resonant audio and close-up cinematic portraiture.",
+    solution: "Deployed cinema cameras with water-resistant stabilized rigs, specialized telephoto lenses, and drone tracking along rowing courses, coupled with deep personal voiceover interviews.",
+    deliverables: [
+      "Cinematic documentary athlete profile film",
+      "High-speed 120fps water cinematography and aerial footage",
+      "DaVinci Resolve dramatic color grade emphasizing dawn light",
+      "International festival and digital showcase masters"
+    ],
+    outcome: "Widely acclaimed in Dutch sports media and athletic foundation presentations for its artistic depth and cinematic storytelling.",
+    image: "https://images.unsplash.com/photo-1544919982-b61976f0ba43?q=80&w=2070&auto=format&fit=crop",
+    externalLink: {
+      label: "View on glasssharpfilms.nl",
+      url: "https://glasssharpfilms.nl/"
+    }
+  },
+  {
+    id: "case-toobit-sharma",
+    title: "Toobit Global Commercial featuring Chris Sharma",
+    clientCategory: "Global Cryptocurrency Platform & Action Sports",
+    serviceId: "creative-agency",
+    serviceName: "Video Production",
+    tag: "GLOBAL COMMERCIAL · TOOBIT X CHRIS SHARMA",
+    summary: "Directed and produced an international online commercial campaign for crypto platform Toobit starring world champion rock climber Chris Sharma.",
+    challenge: "Filming in high-exposure cliffside outdoor locations while maintaining commercial brand discipline, safety protocols, and intense visual pacing.",
+    solution: "Assembled a specialized extreme-sports camera team, utilizing lightweight RED cinema rigs and precision drone flight paths to parallel the climber's ascent with brand themes of resilience.",
+    deliverables: [
+      "High-energy global digital commercial (4K Cinema Master)",
+      "Ad-set vertical video variations for global digital advertising",
+      "Custom sound effects and cinematic sound score mixing",
+      "Full international broadcast license packaging"
+    ],
+    outcome: "Surpassed 2.5M+ global impressions across international markets, cementing Toobit's campaign as a high-performing digital brand commercial.",
+    image: "https://images.unsplash.com/photo-1522163182402-834f871fd851?q=80&w=2070&auto=format&fit=crop",
+    externalLink: {
+      label: "View on glasssharpfilms.nl",
+      url: "https://glasssharpfilms.nl/"
+    }
+  },
   {
     id: "case-destination-wedding",
     title: "European Destination Wedding & Historic Canal Heritage Film",
     clientCategory: "Luxury International Couple & High-End Wedding Planner",
     serviceId: "creative-agency",
-    serviceName: "Video Production House",
-    tag: "婚礼拍摄 · 欧洲目的地婚礼",
-    summary: "摄制阿姆斯特丹联合国教科文组织遗产运河与 17 世纪庄园豪华目的地婚礼微电影，全程采用电影级 4K 双机位与特批航拍跟拍。",
-    challenge: "3 天跨文化婚礼流程紧凑，涉及运河游船水上拍摄、历史庄园古迹保护限制、严苛的欧盟无人机航拍许可申办，以及多语种现场统筹。",
-    solution: "配置两组 RED/Sony Cine 电影级摄制组，取得荷兰民航局特定区域航拍特批，运用无线高保真收音阵列与电影叙事分镜，呈现极具艺术美感的纪实爱情电影。",
+    serviceName: "Video Production",
+    tag: "LUXURY WEDDING · CANAL HERITAGE",
+    summary: "Cinematic destination wedding film capturing ceremonies along UNESCO-listed Amsterdam canals and a 17th-century country estate using dual 4K cinema cameras and aerial drone flights.",
+    challenge: "Coordinating waterborne canal cruise shoots, estate historic preservation rules, and civil aviation drone clearances across a tight 3-day multi-cultural celebration.",
+    solution: "Glass Sharp Films deployed dual RED/Sony Cine camera teams, secured Dutch civil aviation permits, and employed wireless audio arrays to create a deeply emotional film.",
     deliverables: [
-      "12 分钟电影级长片微电影 (4K Cinema Master)",
-      "60 秒社交平台先导预告片 (48 小时极速交付)",
-      "完整婚礼仪式与宴会多机位超清全纪实母带",
-      "精修 DaVinci 电影色调色彩管理"
+      "12-minute feature wedding documentary film",
+      "60-second cinematic preview trailer (delivered within 48 hours)",
+      "Multi-camera synchronized ceremony and banquet archives",
+      "Custom DaVinci Resolve color science grading"
     ],
-    outcome: "成片获新人及欧洲高端婚礼策划界高度赞誉；社交媒体曝光超 50 万次，树立阿姆斯特丹及欧洲华人高端婚礼影视摄制标杆。",
+    outcome: "Delivered to glowing praise from the couple and premier European wedding planners; over 500,000 views across digital platforms.",
     image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop"
   },
+
+  // 03. Fine Art Representation (艺术品代理 - Ming Ye 叶明)
   {
-    id: "case-law-firms",
-    title: "Listed Law Firms Keynote & Exhibition Media Suite",
-    clientCategory: "International Publicly Listed Legal Group",
-    serviceId: "creative-agency",
-    serviceName: "Video Production House",
-    tag: "商业拍摄 · 企业宣传片",
-    summary: "为多家国际上市律所及咨询集团制作高规格全球形象宣传片、欧洲峰会主题演讲视听套件与世界法学展展项影片。",
-    challenge: "将严谨抽象的国际法学议题与高级合伙人思想领袖见解，转化为兼具电影质感与庄重学术威望的纪实视听作品。",
-    solution: "出动 ARRI Alexa Mini LF 电影摄影机套件，在阿姆斯特丹与伦敦历史名邸搭建专属声光环境，以高端纪录片导演视角进行深度访谈与视觉镜头捕捉。",
+    id: "case-ming-ye",
+    title: "Ming Ye (叶明) — Large-Format Analog Photography Practice & European Retrospective Archive",
+    clientCategory: "Sole Represented Artist · Large-Format Photography Artist Ming Ye (叶明)",
+    serviceId: "fine-art",
+    serviceName: "Fine Art Representation",
+    tag: "EXCLUSIVE ARTIST CASE · MING YE (叶明)",
+    summary: "Exclusive agency representation, European museum acquisitions, darkroom silver gelatin editions, and curatorial solo exhibition management for Large-Format Photography Artist Ming Ye (叶明). Access the complete Artist Monograph via https://shorturl.at/TYn8P.",
+    challenge: "Preserving and presenting the profound philosophical depth, symbolic subtlety, and optical fidelity of the artist's large-format analog practice, while connecting limited editions with premier European cultural institutions and discerning collectors.",
+    solution: "YEAH Agency serves as the exclusive global representative for Ming Ye, orchestrating institutional exhibitions across Europe (including Germany's 'Konstruierte Natur' and '洞见 – Einblick II'), museum conservation framing, scholarly monograph distribution, and institutional permanent collection accessions.",
     deliverables: [
-      "14 部院线级企业高管思想领袖主题短片",
-      "全球法学峰会展台全景环幕宣传样片",
-      "全球合伙人内部年会保密级视听素材包",
-      "中英法德多语言字幕及母带分发归档"
+      "Exclusive global representation and curatorial archive management",
+      "Official Artist Monograph & Exhibition Portfolio (https://shorturl.at/TYn8P)",
+      "Curatorial solo exhibition scenography and scholarly publication distribution",
+      "European museum permanent collection accessions and verified provenance certificates",
+      "Limited edition 8x10 darkroom silver gelatin prints and institutional acquisition liaison"
     ],
-    outcome: "在阿姆斯特丹、伦敦及法兰克福峰会面向逾万名全球政商学界专业观众展映，被誉为将企业商务视听升华为电影艺术的杰作。",
-    image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop"
-  },
-  {
-    id: "case-dating-show",
-    title: "Dutch Reality Dating Show 2026 (In Production)",
-    clientCategory: "European Commercial Television Network",
-    serviceId: "creative-agency",
-    serviceName: "Video Production House",
-    tag: "电视真人秀 · 广播级摄制",
-    summary: "担纲欧洲主流商业电视台 2026 年度大型恋爱真人秀的全流程现场拍摄、摄影指导与实景叙事摄制。",
-    challenge: "欧洲多国多栋庄园实景别墅同步调度、十余位嘉宾无剧本突发情境抓取、多机位无线音频严苛同步与极高密度的每日素材转码归档。",
-    solution: "搭建 18 机位同步广播级摄制流水线、工业级多通道无线录音矩阵、现场剧情编导统筹与每日实时粗剪工作流。",
-    deliverables: [
-      "全套现场导演与电影摄影指导摄制班底",
-      "18 机位同步 4K 广播级采集系统",
-      "每日剧情粗剪与故事弧线梳理归纳",
-      "广播级母带达芬奇调色与 5.1 环绕声混音"
-    ],
-    outcome: "前期拍摄如期圆满推进；10 集黄金档正片正在紧锣密鼓后期制作中，预计 2026 年在欧洲主要电视频道及流媒体同步播出。",
-    image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=2070&auto=format&fit=crop"
+    outcome: "Exhibited in prominent German cultural institutions (Schloss Plüschow, Rostock); signature large-format works accessioned into prestigious private foundations and European photography collections.",
+    image: "/images/artist-mingye.svg",
+    pdfLink: {
+      label: "Open Artist Monograph PDF (shorturl.at/TYn8P)",
+      url: "https://shorturl.at/TYn8P"
+    },
+    metrics: [
+      { label: "Artist", value: "Ming Ye (叶明)" },
+      { label: "Practice", value: "8x10 Large-Format" },
+      { label: "Official Monograph", value: "shorturl.at/TYn8P" }
+    ]
   },
 
-  // Fine Art
+  // 04. Software Development (软件开发 - DriveViewer & Cloud)
   {
-    id: "case-asian-art-showcase",
-    title: "Amsterdam Asian Contemporary Art Showcase",
-    clientCategory: "International Museum & Cultural Foundation",
-    serviceId: "fine-art",
-    serviceName: "Fine Art & Cultural Exchange",
-    tag: "亚洲艺术家画廊 · 国际策展",
-    summary: "在阿姆斯特丹核心艺术区策划并落地大型亚洲当代艺术展，呈现 12 位中国及东亚先锋艺术家的雕塑、绘画与多媒体装置。",
-    challenge: "在欧洲学术界语境下精准传达亚洲复杂当代文化命题，同时攻克馆藏级国际艺术品保税运输与恒温恒湿文保展陈挑战。",
-    solution: "拟定学术策展专论，设计沉浸式展陈空间架构，协调国际恒温海关保税通道，出版双语学术画册并举办欧洲美术馆长与顶级藏家 VIP 预览。",
+    id: "case-driveviewer-ios",
+    title: "DriveViewer — Modern Driving School & Instructor Management Platform",
+    clientCategory: "Proprietary Software Venture · Live on Apple App Store",
+    serviceId: "custom-it-services",
+    serviceName: "Software Development",
+    tag: "LIVE ON APPLE APP STORE · DRIVEVIEWER",
+    summary: "Engineered and launched DriveViewer (iOS), a specialized mobile platform for modern driving schools (Rijscholen), certified instructors, and learner drivers across the Netherlands and Europe.",
+    challenge: "Replacing fragmented paper lesson books and chaotic WhatsApp scheduling with a unified, real-time mobile app meeting Dutch CBR examination standards and European GDPR regulations.",
+    solution: "Engineered native iOS app featuring real-time lesson slot bookings, interactive grading against all 46 official CBR examination points, dynamic instructor timeline calendars, and custom school branding.",
     deliverables: [
-      "完整学术策展方案与展厅空间美学架构",
-      "48 件重磅艺术品博物馆级国际保价通关与布展",
-      "中英双语精装收藏级学术画册编辑出版",
-      "面向欧洲知名美术馆长与资深藏家的 VIP 专场预览"
+      "Native iOS application available on the Apple App Store (Developer: Yixin Ye)",
+      "Interactive 46-point CBR examination grading and student feedback engine",
+      "Real-time instructor schedule board with daily and weekly calendar filters",
+      "Custom driving school white-label branding (logo, cover imagery & themes)",
+      "Full European GDPR compliance with encrypted local user storage"
     ],
-    outcome: "3 周展期累计接待逾 5,200 名专业观众；促成 4 件重点作品被欧洲主流美术馆永久收藏；获荷兰国家级文化艺术媒体专题报道。",
-    image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=2090&auto=format&fit=crop"
+    outcome: "Live on the Apple App Store; streamlines operations for driving schools and independent instructors with sub-second booking updates and instant student progress tracking.",
+    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=2070&auto=format&fit=crop",
+    externalLink: {
+      label: "Download on Apple App Store",
+      url: "https://apps.apple.com/nl/app/driveviewer/id6765847978?l=en-GB"
+    },
+    metrics: [
+      { label: "App Store", value: "Business" },
+      { label: "CBR Criteria", value: "46 Points" },
+      { label: "Platform", value: "iOS / iPadOS" }
+    ]
   },
-  {
-    id: "case-artist-residency",
-    title: "Trans-Eurasian Artist Residency & European Placement",
-    clientCategory: "International Artists & European Gallery Network",
-    serviceId: "fine-art",
-    serviceName: "Fine Art & Cultural Exchange",
-    tag: "艺术驻留 · 国际交流",
-    summary: "建立长效欧亚艺术家阿姆斯特丹驻留与代理推介机制，协助杰出亚洲当代艺术家在欧洲艺术圈构建学术声誉与市场基石。",
-    challenge: "优秀的海外艺术家缺乏欧洲在地创作工坊、合法文化签证身份及与欧洲当地画廊机构的直接对接窗口。",
-    solution: "在阿姆斯特丹提供独立生活与创作画室，协助办理荷兰文化访问签证，组织欧洲画廊主工作室访问，并策划欧洲艺术博览会专场展示。",
-    deliverables: [
-      "驻留艺术家专属文化访问签证与合规资助",
-      "阿姆斯特丹核心区独立艺术工作室配套",
-      "欧洲画廊主与美术馆策展人工作室拜访沙龙",
-      "欧洲顶级艺术博览会个人独立单元展出推介"
-    ],
-    outcome: "已成功支持 20 余位青年艺术家完成欧洲驻留，超过 35 件重要代表作被欧洲知名私人收藏基金会与机构收藏。",
-    image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2070&auto=format&fit=crop"
-  },
-
-  // Enterprise IT
   {
     id: "case-cross-border-it",
-    title: "Cross-Border Enterprise System Integration & Data Sync",
+    title: "Multi-Region Distributed Data Synchronization Backbone & GDPR Isolation",
     clientCategory: "Global Manufacturing & Trade Conglomerate",
     serviceId: "custom-it-services",
-    serviceName: "Enterprise IT Solutions",
-    tag: "软件开发 · GDPR合规架构",
-    summary: "设计并研发亚欧跨区域分布式企业系统数据同步中台，实现跨国制造中心与欧洲总部实时数据互联互通。",
-    challenge: "传统孤岛系统跨国数据同步存在 4 小时严重延迟，库存数据冲突频发，且面临违反欧盟 GDPR 数据主权合规的巨大法律风险。",
-    solution: "采用 Kafka + Kubernetes 打造事件驱动型分布式微服务架构，在法兰克福和新加坡设立合规云节点，内置自动化隐私合规过滤网关。",
+    serviceName: "Software Development",
+    tag: "ENTERPRISE CLOUD · GDPR ARCHITECTURE",
+    summary: "Designed and engineered an event-driven distributed data sync backbone between Asian manufacturing hubs and European headquarters.",
+    challenge: "Legacy systems suffered 4-hour synchronization lags and inventory conflicts, exposing the enterprise to European GDPR data violation liabilities.",
+    solution: "Implemented Kafka + Kubernetes event-driven microservices on Frankfurt and Singapore cloud nodes, with automated GDPR privacy filtering.",
     deliverables: [
-      "高并发分布式微服务与 Kafka 实时数据通道",
-      "符合 GDPR 严格法规的欧洲本地隔离数据库集群",
-      "零宕机自动化容灾切换与多区域热备份机制",
-      "全链路亚秒级监控看板与故障智能预警"
+      "Distributed event-driven microservices using Apache Kafka",
+      "GDPR-compliant European data storage and automated pseudonymization",
+      "Sub-200ms real-time replication between Europe and Asia",
+      "Automated zero-downtime failover and APM telemetry"
     ],
-    outcome: "实现 99.995% 严苛可用性；亚欧跨洲数据同步延迟从 4 小时缩减至 200 毫秒以内；100% 通过欧盟第三方数据安全审计。",
+    outcome: "Achieved 99.995% uptime SLA; cut inter-continental sync latency from 4 hours to under 200ms; passed independent GDPR security audits.",
     image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
   },
   {
     id: "case-custom-erp",
-    title: "Custom Multi-Currency ERP & Customs Trade Engine",
+    title: "Rotterdam Port Customs EDI & Automated Multi-Currency Trade ERP",
     clientCategory: "Multinational Import-Export Enterprise",
     serviceId: "custom-it-services",
-    serviceName: "Enterprise IT Solutions",
-    tag: "软件开发 · 跨境ERP系统",
-    summary: "专为经由荷兰鹿特丹港进入欧洲市场的跨国贸易企业定制研发云原生 ERP 贸易系统与自动清关对接引擎。",
-    challenge: "客户此前依靠人工处理鹿特丹港复杂报关单据，面对多币种外汇波动摩擦及各欧盟成员国增值税 (BTW/VAT) 繁琐核算，每年遭受巨额损耗。",
-    solution: "自主研发集成荷兰海关 (Douane) EDI 自动化电子报关接口的现代 Web ERP，打通实时动态换汇、欧盟一站式增值税申报引擎与仓储物流跟踪。",
+    serviceName: "Software Development",
+    tag: "CUSTOM ERP · DOUANE EDI INTEGRATION",
+    summary: "Engineered a cloud-native ERP trading platform integrated with Dutch Customs (Douane EDI) for goods entering Europe via the Port of Rotterdam.",
+    challenge: "Manual paper clearance at Rotterdam led to costly clearance delays, currency exchange friction, and complex cross-border VAT reconciliation.",
+    solution: "Developed modern web ERP with direct Douane EDI API connectivity, dynamic FX hedging, and automated EU one-stop-shop VAT calculations.",
     deliverables: [
-      "专为出海贸易定制的全栈 Web 端企业级 ERP 系统",
-      "与荷兰海关 Douane 电子申报系统的直连集成 API",
-      "欧盟多国跨国增值税 (BTW/VAT) 智能自动核算引擎",
-      "细粒度权限管控与不可篡改金融级操作审计日志"
+      "Custom enterprise web ERP application with role-based security",
+      "Direct API integration with Dutch Customs Douane EDI gateway",
+      "Automated EU cross-border VAT and duty calculation engine",
+      "Real-time container tracking and tamper-proof audit trail"
     ],
-    outcome: "平稳支撑每年超 4,500 万欧元进出口贸易流水；鹿特丹港报关平均耗时缩短 65%；每年杜绝逾 28 万欧元的繁琐对账差错损失。",
+    outcome: "Processes over €45M in annual import-export volume; reduced port clearance processing time by 65%; eliminated calculation errors.",
     image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2034&auto=format&fit=crop"
   }
 ];
-
-// --- Subcomponents ---
-
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  return null;
-};
 
 // --- Client-Side Dynamic SEO Hook ---
 
@@ -710,41 +754,57 @@ const usePageSEO = ({
   title,
   description,
   keywords,
-  canonicalUrl,
+  canonicalUrl
 }: {
   title: string;
-  description?: string;
+  description: string;
   keywords?: string;
   canonicalUrl?: string;
 }) => {
   useEffect(() => {
     document.title = title;
 
-    if (description) {
-      const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) metaDesc.setAttribute("content", description);
-      const ogDesc = document.querySelector('meta[property="og:description"]');
-      if (ogDesc) ogDesc.setAttribute("content", description);
-      const twDesc = document.querySelector('meta[name="twitter:description"]');
-      if (twDesc) twDesc.setAttribute("content", description);
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement("meta");
+      metaDesc.setAttribute("name", "description");
+      document.head.appendChild(metaDesc);
     }
-
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.setAttribute("content", title);
-    const twTitle = document.querySelector('meta[name="twitter:title"]');
-    if (twTitle) twTitle.setAttribute("content", title);
+    metaDesc.setAttribute("content", description);
 
     if (keywords) {
-      const metaKw = document.querySelector('meta[name="keywords"]');
-      if (metaKw) metaKw.setAttribute("content", keywords);
+      let metaKeywords = document.querySelector('meta[name="keywords"]');
+      if (!metaKeywords) {
+        metaKeywords = document.createElement("meta");
+        metaKeywords.setAttribute("name", "keywords");
+        document.head.appendChild(metaKeywords);
+      }
+      metaKeywords.setAttribute("content", keywords);
     }
 
     if (canonicalUrl) {
-      const linkCanon = document.querySelector('link[rel="canonical"]');
-      if (linkCanon) linkCanon.setAttribute("href", canonicalUrl);
+      let linkCanonical = document.querySelector('link[rel="canonical"]');
+      if (!linkCanonical) {
+        linkCanonical = document.createElement("link");
+        linkCanonical.setAttribute("rel", "canonical");
+        document.head.appendChild(linkCanonical);
+      }
+      linkCanonical.setAttribute("href", canonicalUrl);
     }
   }, [title, description, keywords, canonicalUrl]);
 };
+
+// --- Scroll To Top On Navigation ---
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
+// --- Navigation Bar ---
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -753,18 +813,17 @@ const Navbar = () => {
   const isCurrent = (path: string) => location.pathname === path;
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 md:px-12 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/5 transition-all">
-      <div className="flex items-center gap-6">
-        <Link 
-          to="/"
-          className="flex items-baseline gap-2 group"
-        >
-          <span className="text-2xl font-serif tracking-widest uppercase font-medium text-white group-hover:text-gray-300 transition-colors">YEAH</span>
-          <span className="text-[10px] font-mono tracking-[0.25em] text-gray-400 uppercase hidden sm:inline">Amsterdam</span>
-        </Link>
-      </div>
+    <nav className="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-white/10 px-6 md:px-12 py-5 flex items-center justify-between">
+      <Link to="/" className="flex items-center gap-3 group">
+        <span className="font-serif text-2xl tracking-widest text-white uppercase group-hover:text-gray-300 transition-colors">
+          YEAH
+        </span>
+        <span className="text-[10px] font-mono tracking-widest text-gray-500 uppercase border-l border-white/20 pl-3 hidden sm:inline">
+          Agency Amsterdam
+        </span>
+      </Link>
 
-      {/* Desktop Quick Nav - Direct Subpages */}
+      {/* Desktop Links: 4 Sovereign Practices with Refined Subtitles */}
       <div className="hidden lg:flex items-center gap-7 text-xs font-mono tracking-widest uppercase">
         <Link 
           to="/services/business-consulting" 
@@ -775,7 +834,7 @@ const Navbar = () => {
               : "text-gray-400 border-transparent hover:text-white"
           )}
         >
-          01. Consulting
+          01. Corporate
         </Link>
         <Link 
           to="/services/creative-agency" 
@@ -786,7 +845,7 @@ const Navbar = () => {
               : "text-gray-400 border-transparent hover:text-white"
           )}
         >
-          02. Video
+          02. Video Production
         </Link>
         <Link 
           to="/services/fine-art" 
@@ -797,7 +856,7 @@ const Navbar = () => {
               : "text-gray-400 border-transparent hover:text-white"
           )}
         >
-          03. Art
+          03. Fine Art
         </Link>
         <Link 
           to="/services/custom-it-services" 
@@ -808,15 +867,18 @@ const Navbar = () => {
               : "text-gray-400 border-transparent hover:text-white"
           )}
         >
-          04. IT
+          04. Software
         </Link>
         <span className="text-gray-700">|</span>
-        <a href="/#search-directory" className="text-gray-400 hover:text-white transition-colors flex items-center gap-1.5">
-          <Search size={11} className="text-emerald-400" />
-          <span>业务索引</span>
+        <a href="/#divisions" className="text-gray-400 hover:text-white transition-colors">
+          Practices
         </a>
-        <a href="/#about" className="text-gray-400 hover:text-white transition-colors">About</a>
-        <a href="mailto:info@yeah-amsterdam.nl" className="text-white hover:text-gray-300 transition-colors font-medium">Inquire</a>
+        <a href="/#about" className="text-gray-400 hover:text-white transition-colors">
+          About
+        </a>
+        <a href="mailto:info@yeah-amsterdam.nl" className="text-white hover:text-gray-300 transition-colors font-medium">
+          Inquire
+        </a>
       </div>
 
       <div className="flex items-center gap-4">
@@ -842,10 +904,10 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 top-[73px] bg-black/95 backdrop-blur-xl z-40 flex flex-col p-8 lg:hidden border-t border-white/10 overflow-y-auto"
+            className="fixed inset-0 top-[73px] bg-black/98 backdrop-blur-xl z-40 flex flex-col p-8 lg:hidden border-t border-white/10 overflow-y-auto"
           >
             <div className="space-y-6">
-              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500 block">The 4 Independent Practice Subpages</span>
+              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500 block">The Four Practice Subpages</span>
               <div className="space-y-4">
                 {SERVICES.map((s) => (
                   <Link
@@ -858,19 +920,19 @@ const Navbar = () => {
                       <span className="text-xs font-mono text-gray-500">{s.number}</span>
                       <span className="text-xl font-serif text-white group-hover:text-gray-300 transition-colors">{s.title}</span>
                     </div>
-                    <p className="text-xs text-emerald-400/80 mt-0.5 pl-7 text-[11px] font-mono">{s.chineseTitle.split('（')[0]}</p>
+                    {s.subBrand && (
+                      <p className="text-[11px] text-gray-400 mt-0.5 pl-7 font-mono uppercase tracking-wider">{s.subBrand}</p>
+                    )}
                     <p className="text-xs text-gray-400 mt-1 pl-7 line-clamp-1">{s.tagline}</p>
                   </Link>
                 ))}
               </div>
 
-              <div className="pt-6 border-t border-white/10 space-y-4 text-sm font-mono uppercase tracking-widest text-gray-400">
-                <Link to="/" onClick={() => setIsOpen(false)} className="block hover:text-white">Home Portal (首页)</Link>
-                <a href="/#search-directory" onClick={() => setIsOpen(false)} className="block text-emerald-400 hover:text-white flex items-center gap-2">
-                  <Search size={14} /> 核心业务关键词检索 (Search Index)
-                </a>
-                <a href="/#about" onClick={() => setIsOpen(false)} className="block hover:text-white">About YEAH Amsterdam</a>
-                <a href="/#contact" onClick={() => setIsOpen(false)} className="block text-white">Direct Inquiry</a>
+              <div className="pt-6 border-t border-white/10 space-y-4 text-xs font-mono uppercase tracking-widest text-gray-400">
+                <Link to="/" onClick={() => setIsOpen(false)} className="block hover:text-white">Home Portal</Link>
+                <a href="/#divisions" onClick={() => setIsOpen(false)} className="block hover:text-white">The Four Practices</a>
+                <a href="/#about" onClick={() => setIsOpen(false)} className="block hover:text-white">About YEAH Collective</a>
+                <a href="mailto:info@yeah-amsterdam.nl" onClick={() => setIsOpen(false)} className="block text-white">Direct Inquiry</a>
               </div>
             </div>
 
@@ -889,24 +951,24 @@ const Navbar = () => {
   );
 };
 
-// --- Home Hero ---
+// --- Home Hero Section (Atmospheric, Evocative, Elevated Agency Copy) ---
 
 const Hero = () => {
   return (
-    <section className="relative pt-36 pb-20 md:pt-48 md:pb-28 px-6 md:px-12 border-b border-white/10 bg-radial-[at_top_center] from-[#121212] via-black to-black">
+    <section className="relative pt-36 pb-20 md:pt-48 md:pb-28 px-6 md:px-12 border-b border-white/10 bg-radial-[at_top_center] from-[#151515] via-black to-black">
       <div className="max-w-7xl mx-auto">
         <div className="max-w-4xl">
-          <div className="inline-flex items-center gap-3 px-3 py-1 bg-white/5 border border-white/10 text-gray-300 text-[11px] font-mono uppercase tracking-widest mb-8">
+          <div className="inline-flex items-center gap-3 px-3.5 py-1.5 bg-white/5 border border-white/10 text-gray-300 text-[11px] font-mono uppercase tracking-widest mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Amsterdam Boutique Agency · Four Specialized Practices
+            Amsterdam Studio · Four Sovereign Practices
           </div>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-normal tracking-tight text-white leading-[1.08] mb-8 text-balance">
-            Strategic Clarity Across Four Dedicated Practices.
+            A Multidisciplinary Studio in Amsterdam.
           </h1>
 
           <p className="text-lg md:text-2xl text-gray-300 font-light leading-relaxed mb-12 max-w-3xl">
-            YEAH Agency Amsterdam is structured into four independent corporate divisions: <strong className="text-white font-normal">Market Entry Consulting</strong>, <strong className="text-white font-normal">Video Production</strong>, <strong className="text-white font-normal">Fine Art Curating</strong>, and <strong className="text-white font-normal">Enterprise IT Systems</strong>. Each division maintains its own dedicated subpage and verified case studies.
+            Operating across sovereign practices united by cross-border vision — bridging strategic corporate counsel, cinematic moving image, rare visual art, and precision digital engineering.
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
@@ -914,7 +976,7 @@ const Hero = () => {
               href="#divisions"
               className="inline-flex items-center gap-3 px-6 py-4 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors font-medium"
             >
-              Explore 4 Division Subpages <ArrowRight size={14} />
+              Explore 4 Dedicated Subpages <ArrowRight size={14} />
             </a>
             <a 
               href="mailto:info@yeah-amsterdam.nl"
@@ -931,10 +993,10 @@ const Hero = () => {
             <Link 
               key={s.id} 
               to={`/services/${s.id}`}
-              className="p-4 bg-white/[0.02] hover:bg-white/[0.06] border border-white/5 hover:border-white/20 transition-all group"
+              className="p-5 bg-white/[0.02] hover:bg-white/[0.06] border border-white/5 hover:border-white/20 transition-all group"
             >
               <div className="flex items-center justify-between text-xs font-mono text-gray-500 mb-2">
-                <span>DIV {s.number}</span>
+                <span>PRACTICE {s.number}</span>
                 <ArrowUpRight size={14} className="text-gray-500 group-hover:text-white transition-colors" />
               </div>
               <h4 className="font-serif text-sm md:text-base text-white group-hover:text-gray-200 line-clamp-1">{s.title}</h4>
@@ -947,7 +1009,7 @@ const Hero = () => {
   );
 };
 
-// --- Four Practices Portal (Clean Gateway Cards Linking to Subpages) ---
+// --- Four Practices Portal (Section Headers as Corporate Consulting, Video Production, Fine Art Representation, Software Development) ---
 
 const DivisionPortals = () => {
   return (
@@ -955,11 +1017,11 @@ const DivisionPortals = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-white/10 gap-6">
           <div>
-            <span className="text-xs font-mono uppercase tracking-[0.4em] text-gray-400 block mb-3">Our 4 Practice Subpages</span>
-            <h2 className="text-3xl md:text-5xl font-serif text-white">Dedicated Business Divisions</h2>
+            <span className="text-xs font-mono uppercase tracking-[0.4em] text-gray-400 block mb-3">Core Structure</span>
+            <h2 className="text-3xl md:text-5xl font-serif text-white">The Four Independent Practices</h2>
           </div>
           <p className="text-sm md:text-base text-gray-400 max-w-md font-light leading-relaxed">
-            Each business line operates as an independent division with its own dedicated subpage, specialized service architecture, and verified case studies.
+            Rather than a conventional single-discipline firm, YEAH operates four sovereign practices. Each discipline maintains dedicated partners, verified archives, and independent subpages.
           </p>
         </div>
 
@@ -977,33 +1039,51 @@ const DivisionPortals = () => {
                   <div className="relative aspect-[16/9] overflow-hidden bg-gray-950">
                     <img 
                       src={service.heroImage} 
-                      alt={service.title}
+                      alt={`${service.title} — Practice ${service.number} at YEAH Agency Amsterdam`}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700 opacity-80 group-hover:opacity-100"
                       referrerPolicy="no-referrer"
                     />
                     <div className="absolute top-4 left-4">
-                      <span className="text-xs font-mono px-3 py-1 bg-black/80 backdrop-blur-md border border-white/10 text-white">
-                        DIVISION {service.number}
+                      <span className="text-xs font-mono px-3 py-1 bg-black/85 backdrop-blur-md border border-white/10 text-white">
+                        PRACTICE {service.number}
                       </span>
                     </div>
                     <div className="absolute top-4 right-4">
-                      <span className="text-[11px] font-mono uppercase tracking-widest bg-black/80 backdrop-blur-md px-2.5 py-1 text-gray-300 border border-white/10">
-                        {relatedCases.length} Dedicated Cases
+                      <span className="text-[11px] font-mono uppercase tracking-widest bg-black/85 backdrop-blur-md px-2.5 py-1 text-gray-300 border border-white/10">
+                        {relatedCases.length} {relatedCases.length === 1 ? "Documented Case" : "Documented Cases"}
                       </span>
                     </div>
+                    {service.subBrand && (
+                      <div className="absolute bottom-4 left-4">
+                        <span className="text-[10px] font-mono uppercase tracking-widest bg-black/80 backdrop-blur-md px-2 py-0.5 text-white/90 border border-white/10">
+                          {service.subBrand}
+                        </span>
+                      </div>
+                    )}
+                    {service.id === "fine-art" && (
+                      <a 
+                        href="https://shorturl.at/TYn8P"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="absolute bottom-4 right-4 text-[10px] font-mono uppercase tracking-widest bg-black/90 hover:bg-white hover:text-black px-2.5 py-1 text-white border border-white/20 transition-all flex items-center gap-1.5 z-10"
+                        title="Open Official Artist Monograph PDF (https://shorturl.at/TYn8P)"
+                      >
+                        <FileText size={11} className="text-emerald-400 group-hover:text-black" />
+                        <span>Monograph PDF ↗</span>
+                      </a>
+                    )}
                   </div>
 
                   {/* Body Content */}
                   <div className="p-8">
-                    <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest block mb-1">
-                      {service.seoBadge}
+                    <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block mb-1">
+                      {service.badge}
                     </span>
-                    <h3 className="text-2xl md:text-3xl font-serif text-white mb-1 group-hover:text-gray-200">
+                    <h3 className="text-2xl md:text-3xl font-serif text-white mb-2 group-hover:text-gray-200">
                       {service.title}
                     </h3>
-                    <p className="text-xs font-mono text-gray-300 font-normal mb-3">
-                      {service.chineseTitle.split('（')[0]}
-                    </p>
                     <p className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-4">
                       {service.tagline}
                     </p>
@@ -1015,7 +1095,7 @@ const DivisionPortals = () => {
                     <div className="flex flex-wrap gap-1.5 mb-6">
                       {service.scopeList.slice(0, 4).map((item, idx) => (
                         <span key={idx} className="text-[11px] font-mono bg-white/5 border border-white/5 px-2.5 py-1 text-gray-300">
-                          {item.title.split('&')[0].split('(')[0].trim()}
+                          {item.title}
                         </span>
                       ))}
                     </div>
@@ -1040,8 +1120,22 @@ const DivisionPortals = () => {
                       className="inline-flex items-center gap-2 px-4 py-3.5 bg-white/5 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-wider border border-white/10 transition-colors shrink-0"
                       title={service.externalUrl.label}
                     >
-                      <span>More Details</span>
+                      <span>Direct Portal</span>
                       <ExternalLink size={13} />
+                    </a>
+                  )}
+
+                  {service.pdfUrl && (
+                    <a 
+                      href={service.pdfUrl.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-3.5 bg-white/10 hover:bg-white text-white hover:text-black font-mono text-xs uppercase tracking-wider border border-white/20 transition-all shrink-0 font-medium"
+                      title="Open Official Artist Monograph PDF (Artist Ming_2022_EN.pdf)"
+                    >
+                      <FileText size={13} className="text-emerald-400 hover:text-black" />
+                      <span>Monograph PDF</span>
+                      <ExternalLink size={12} />
                     </a>
                   )}
                 </div>
@@ -1054,174 +1148,7 @@ const DivisionPortals = () => {
   );
 };
 
-// --- SEO Keyword & Core Service Directory Component ---
-
-const SEOKeywordDirectory = () => {
-  const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
-  const categories = [
-    { id: "all", label: "全部业务 (All)" },
-    { id: "婚礼拍摄", label: "婚礼拍摄" },
-    { id: "商业拍摄", label: "商业拍摄" },
-    { id: "企业拍摄", label: "企业拍摄" },
-    { id: "荷兰企业注册", label: "荷兰企业注册" },
-    { id: "软件开发", label: "软件开发" },
-    { id: "亚洲艺术家画廊", label: "亚洲艺术家画廊" }
-  ];
-
-  const filteredPillars = SEO_PILLARS.filter(p => {
-    const matchesCategory = activeCategory === "all" || p.category === activeCategory;
-    const matchesSearch = searchQuery.trim() === "" || 
-      p.chineseTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.englishTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.keywords.some(k => k.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
-  });
-
-  return (
-    <section id="search-directory" className="py-24 md:py-36 px-6 md:px-12 bg-black border-b border-white/10 scroll-mt-20">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 pb-8 border-b border-white/10 gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 text-gray-300 text-[11px] font-mono uppercase tracking-widest mb-4">
-              <Search size={12} className="text-emerald-400" />
-              Specialized Service & Search Keywords Index
-            </div>
-            <h2 className="text-3xl md:text-5xl font-serif text-white">
-              核心业务与服务范围检索
-            </h2>
-          </div>
-          <p className="text-sm md:text-base text-gray-400 max-w-xl font-light leading-relaxed">
-            涵盖 <strong className="text-white font-normal">婚礼拍摄</strong>、<strong className="text-white font-normal">商业拍摄</strong>、<strong className="text-white font-normal">企业拍摄</strong>、<strong className="text-white font-normal">荷兰企业注册</strong>、<strong className="text-white font-normal">定制软件开发</strong> 与 <strong className="text-white font-normal">亚洲艺术家画廊</strong>。支持精准索引与一键咨询。
-          </p>
-        </div>
-
-        {/* Search bar & Category filter */}
-        <div className="mb-12 space-y-6">
-          <div className="relative max-w-xl">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
-            <input 
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="按关键词快速筛选（例如：婚礼拍摄、商业广告、企业宣传片、荷兰注册、软件开发、画廊...）"
-              className="w-full pl-11 pr-12 py-3.5 bg-[#0a0a0a] border border-white/15 focus:border-white text-white text-xs font-mono placeholder:text-gray-600 outline-none transition-colors"
-            />
-            {searchQuery && (
-              <button 
-                onClick={() => setSearchQuery("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-xs font-mono"
-              >
-                清除
-              </button>
-            )}
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {categories.map((c) => (
-              <button
-                key={c.id}
-                onClick={() => setActiveCategory(c.id)}
-                className={cn(
-                  "px-4 py-2 text-xs font-mono tracking-wider transition-all border",
-                  activeCategory === c.id
-                    ? "bg-white text-black border-white font-medium"
-                    : "bg-[#0b0b0b] text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
-                )}
-              >
-                {c.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPillars.map((pillar) => (
-            <div 
-              key={pillar.id}
-              className="bg-[#080808] border border-white/10 hover:border-white/30 transition-all p-8 flex flex-col justify-between group"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-4">
-                  <span className="text-[11px] font-mono px-2.5 py-1 bg-white/10 text-white border border-white/10">
-                    {pillar.category}
-                  </span>
-                  <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
-                    YEAH Amsterdam
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-serif text-white mb-1 group-hover:text-gray-200">
-                  {pillar.chineseTitle}
-                </h3>
-                <span className="text-xs font-mono text-gray-400 uppercase tracking-wider block mb-4">
-                  {pillar.englishTitle}
-                </span>
-
-                <p className="text-xs text-gray-300 font-light leading-relaxed mb-6">
-                  {pillar.description}
-                </p>
-
-                {/* Highlights */}
-                <div className="mb-6 space-y-2">
-                  <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block mb-1">
-                    服务优势与交付标准
-                  </span>
-                  {pillar.highlights.map((h, hIdx) => (
-                    <div key={hIdx} className="flex items-center gap-2 text-xs text-gray-400 font-light">
-                      <CheckCircle2 size={12} className="text-emerald-400 shrink-0" />
-                      <span>{h}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Keywords Cloud */}
-                <div className="pt-4 border-t border-white/5 mb-6">
-                  <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block mb-2">
-                    重点搜索关键词
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {pillar.keywords.map((kw, kwIdx) => (
-                      <span 
-                        key={kwIdx}
-                        className="text-[10px] font-mono bg-white/[0.04] text-gray-300 border border-white/5 px-2 py-0.5"
-                      >
-                        #{kw}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-white/10 flex items-center gap-3">
-                <Link 
-                  to={`/services/${pillar.serviceId}`}
-                  className="flex-1 inline-flex items-center justify-center gap-2 py-3 bg-white text-black font-mono text-xs uppercase tracking-wider hover:bg-gray-200 transition-colors font-medium"
-                >
-                  <span>进入该业务子页面</span>
-                  <ArrowRight size={13} />
-                </Link>
-                <a 
-                  href={`mailto:info@yeah-amsterdam.nl?subject=${encodeURIComponent(`业务咨询: ${pillar.chineseTitle}`)}`}
-                  className="px-3.5 py-3 bg-white/5 hover:bg-white/15 text-white border border-white/10 transition-colors"
-                  title="针对该业务发信咨询"
-                >
-                  <Mail size={14} />
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-
-      </div>
-    </section>
-  );
-};
-
-// --- About & Operational Foundation ---
+// --- About & Operational Foundations Section ---
 
 const AboutSection = () => {
   return (
@@ -1231,14 +1158,14 @@ const AboutSection = () => {
           <div className="lg:col-span-5">
             <span className="text-xs font-mono uppercase tracking-[0.4em] text-gray-400 block mb-3">Agency Foundations</span>
             <h2 className="text-3xl md:text-5xl font-serif text-white mb-8 leading-tight">
-              Rooted in Amsterdam, Operating Between Europe and Asia.
+              Rooted in Amsterdam, Operating Across Continents.
             </h2>
             <div className="space-y-6 text-gray-300 font-light leading-relaxed text-base">
               <p>
-                The Netherlands represents the optimal continental gateway for commerce, culture, and digital infrastructure. However, international founders and institutions frequently struggle with rigid local bureaucracy, cultural nuances, and execution friction.
+                The Netherlands represents the optimal European gateway for commerce, culture, and digital infrastructure. However, international founders, media productions, and visual artists frequently encounter bureaucratic friction, cultural distance, and fragmented execution.
               </p>
               <p>
-                YEAH Agency Amsterdam was founded to eliminate that friction. Whether you are an Asian technology firm incorporating your European headquarters, a broadcast network producing an unscripted series, an institutional curator exhibiting internationally acclaimed artists, or a trading house scaling cloud systems — we provide direct execution with European standards.
+                YEAH Agency Amsterdam eliminates that friction through focused, sovereign practices. Whether navigating Dutch corporate incorporation, producing broadcast commercials via Glass Sharp Films, curating large-format photographic works representing Ming Ye, or engineering proprietary iOS software like DriveViewer — we deliver direct execution with European institutional rigor.
               </p>
             </div>
 
@@ -1260,31 +1187,31 @@ const AboutSection = () => {
 
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="p-8 bg-black border border-white/10">
-              <span className="text-xs font-mono text-gray-400 block mb-2">01 / Rigorous Compliance</span>
-              <h4 className="text-lg font-serif text-white mb-3">European Standards</h4>
+              <span className="text-xs font-mono text-gray-400 block mb-2">01 / Corporate Consulting</span>
+              <h4 className="text-lg font-serif text-white mb-3">European Governance & Mobility</h4>
               <p className="text-xs text-gray-400 leading-relaxed font-light">
-                Full adherence to Dutch KvK, Belastingdienst tax laws, IND immigration standards, and EU GDPR data privacy architecture.
+                Turnkey Dutch KvK incorporation, EPR environmental registration (packaging & WEEE), third-party personnel dispatch visas (Kennismigrant), and tier-1 banking setup.
               </p>
             </div>
             <div className="p-8 bg-black border border-white/10">
-              <span className="text-xs font-mono text-gray-400 block mb-2">02 / Bilingual Bridges</span>
-              <h4 className="text-lg font-serif text-white mb-3">East-West Fluency</h4>
+              <span className="text-xs font-mono text-gray-400 block mb-2">02 / Video Production</span>
+              <h4 className="text-lg font-serif text-white mb-3">Glass Sharp Films</h4>
               <p className="text-xs text-gray-400 leading-relaxed font-light">
-                Seamless operational coordination bridging Asian executive leadership with Dutch civil notaries, banks, and production crews.
+                Cinema-grade production for brand campaigns (Fixico, Toobit), the reality dating series 'Tram Dating', and luxury destination weddings.
               </p>
             </div>
             <div className="p-8 bg-black border border-white/10">
-              <span className="text-xs font-mono text-gray-400 block mb-2">03 / Production Grade</span>
-              <h4 className="text-lg font-serif text-white mb-3">High-End Craft</h4>
+              <span className="text-xs font-mono text-gray-400 block mb-2">03 / Fine Art Representation</span>
+              <h4 className="text-lg font-serif text-white mb-3">Artist Ming Ye (叶明)</h4>
               <p className="text-xs text-gray-400 leading-relaxed font-light">
-                Cinema-grade camera rigs, institutional curatorial rigor, and resilient multi-region cloud infrastructures without compromises.
+                Sole representation of Large-Format Photography Artist Ming Ye, curatorially representing the landmark series 《Heaven 渡》, silver gelatin fiber prints, and European museum exhibitions.
               </p>
             </div>
             <div className="p-8 bg-black border border-white/10">
-              <span className="text-xs font-mono text-gray-400 block mb-2">04 / Dedicated Accountability</span>
-              <h4 className="text-lg font-serif text-white mb-3">Single Point of Contact</h4>
+              <span className="text-xs font-mono text-gray-400 block mb-2">04 / Software Development</span>
+              <h4 className="text-lg font-serif text-white mb-3">DriveViewer & Enterprise IT</h4>
               <p className="text-xs text-gray-400 leading-relaxed font-light">
-                No bureaucratic layers or junior handoffs. Every client engages directly with senior practice principals in Amsterdam.
+                Proprietary iOS platform for modern driving schools live on the App Store, coupled with multi-region GDPR enterprise backbones.
               </p>
             </div>
           </div>
@@ -1294,7 +1221,7 @@ const AboutSection = () => {
   );
 };
 
-// --- Contact & Inquiry ---
+// --- Contact & Direct Inquiries ---
 
 const Contact = () => {
   const [selectedPractice, setSelectedPractice] = useState<string>("business-consulting");
@@ -1328,7 +1255,7 @@ const Contact = () => {
                     : "bg-black/50 text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
                 )}
               >
-                <span>{s.number}. {s.title.split('&')[0].trim()}</span>
+                <span>{s.number}. {s.title}</span>
                 {selectedPractice === s.id && <CheckCircle2 size={14} />}
               </button>
             ))}
@@ -1369,7 +1296,7 @@ const Footer = () => {
             <span className="text-2xl font-serif text-white tracking-widest uppercase block mb-3">YEAH</span>
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-gray-400 mb-6">Agency Amsterdam · The Netherlands</p>
             <p className="text-xs text-gray-400 leading-relaxed max-w-sm font-light">
-              Multidisciplinary agency bridging global enterprise, television media, contemporary fine art, and cross-border digital architecture.
+              Multidisciplinary agency collective bridging Corporate Consulting (Dutch BV formation, EPR compliance & third-party personnel dispatch visas), Video Production under Glass Sharp Films, Fine Art Representation exclusively representing Large-Format Photography Artist Ming Ye, and Software Development including DriveViewer.
             </p>
           </div>
 
@@ -1387,51 +1314,101 @@ const Footer = () => {
           </div>
 
           <div className="md:col-span-3">
-            <span className="text-xs font-mono uppercase tracking-widest text-white block mb-4">Location & Contact</span>
+            <span className="text-xs font-mono uppercase tracking-widest text-white block mb-4">Direct Portals & Links</span>
             <div className="space-y-2 text-xs font-mono text-gray-400">
               <p>Amsterdam, The Netherlands</p>
               <p>Direct: <a href="mailto:info@yeah-amsterdam.nl" className="text-white hover:underline">info@yeah-amsterdam.nl</a></p>
-              <div className="pt-2">
-                <a 
-                  href="https://yeah-business-amsterdam-m6sjyle.gamma.site/yeah-en"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-gray-300 hover:text-white inline-flex items-center gap-1.5"
-                >
-                  Market Entry Portal <ExternalLink size={11} />
-                </a>
+              
+              <div className="pt-2 space-y-1.5">
+                <div>
+                  <a 
+                    href="https://glasssharpfilms.nl/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-gray-300 hover:text-white inline-flex items-center gap-1.5"
+                  >
+                    Glass Sharp Films (Official) <ExternalLink size={11} />
+                  </a>
+                </div>
+                <div>
+                  <a 
+                    href="https://apps.apple.com/nl/app/driveviewer/id6765847978?l=en-GB"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-gray-300 hover:text-white inline-flex items-center gap-1.5"
+                  >
+                    DriveViewer iOS App <ExternalLink size={11} />
+                  </a>
+                </div>
+                <div>
+                  <a 
+                    href="https://yeah-business-amsterdam-m6sjyle.gamma.site/yeah-en"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-gray-300 hover:text-white inline-flex items-center gap-1.5"
+                  >
+                    Market Entry Dossier <ExternalLink size={11} />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
 
         </div>
 
-        {/* SEO Practice Keywords Index Row */}
+        {/* Global Practice Semantic Quick Jump */}
         <div className="py-8 border-b border-white/10 text-xs font-mono">
-          <span className="text-gray-400 uppercase tracking-widest block mb-3 text-[11px] flex items-center gap-2">
-            <Search size={12} className="text-emerald-400" />
-            核心业务关键词快速索引 (Core Specialized Capabilities)
+          <span className="text-gray-400 uppercase tracking-widest block mb-3 text-[11px]">
+            Sovereign Practice Archive
           </span>
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-gray-400 text-xs">
-            <Link to="/services/creative-agency" className="hover:text-white transition-colors">
-              • 欧洲与荷兰高端婚礼拍摄 (Destination Wedding Films)
-            </Link>
-            <Link to="/services/creative-agency" className="hover:text-white transition-colors">
-              • 品牌商业拍摄与广告TVC (Commercial Video)
-            </Link>
-            <Link to="/services/creative-agency" className="hover:text-white transition-colors">
-              • 企业宣传片与欧洲展会纪实 (Corporate Documentaries)
+            <Link to="/services/business-consulting" className="hover:text-white transition-colors">
+              • Corporate Consulting — Dutch BV Incorporation & KvK
             </Link>
             <Link to="/services/business-consulting" className="hover:text-white transition-colors">
-              • 荷兰企业注册与商会KvK设立 (Dutch BV Incorporation)
+              • Corporate Consulting — EPR Environmental Compliance (Packaging & WEEE)
             </Link>
-            <Link to="/services/custom-it-services" className="hover:text-white transition-colors">
-              • 全栈定制软件开发与GDPR系统 (Custom Software)
+            <Link to="/services/business-consulting" className="hover:text-white transition-colors">
+              • Corporate Consulting — Third-Party Personnel Dispatch & Visas
+            </Link>
+            <Link to="/services/creative-agency" className="hover:text-white transition-colors">
+              • Video Production — Glass Sharp Films & Commercials
+            </Link>
+            <Link to="/services/creative-agency" className="hover:text-white transition-colors">
+              • Video Production — Tram Dating Reality Series
+            </Link>
+            <Link to="/services/creative-agency" className="hover:text-white transition-colors">
+              • Video Production — Destination Wedding Cinematography
             </Link>
             <Link to="/services/fine-art" className="hover:text-white transition-colors">
-              • 阿姆斯特丹亚洲艺术家画廊 (Asian Art Gallery Amsterdam)
+              • Fine Art Representation — Artist Ming Ye (叶明)
+            </Link>
+            <Link to="/services/fine-art" className="hover:text-white transition-colors">
+              • Fine Art Representation — 8x10 Large-Format Photography
+            </Link>
+            <Link to="/services/custom-it-services" className="hover:text-white transition-colors">
+              • Software Development — DriveViewer Driving School App (iOS)
+            </Link>
+            <Link to="/services/custom-it-services" className="hover:text-white transition-colors">
+              • Software Development — Custom Cloud Architecture & GDPR
             </Link>
           </div>
+        </div>
+
+        {/* Semantic Crawler Multilingual Screen-Reader Index (Ensuring Top Search Engine Discovery Across 4 Languages) */}
+        <div className="sr-only" aria-label="International Search Engine Keyword Index">
+          <p>
+            YEAH Agency Amsterdam provides multilingual services across English, Dutch (Nederlands), Spanish (Español), and Chinese (中文):
+          </p>
+          <p>
+            Nederlands: Bedrijfsadvies Amsterdam, BV oprichten Nederland, KvK inschrijving Amsterdam, EPR registratie Nederland (verpakkingen, AEEA/WEEE, batterijen), personeelsdetachering en kennismigrant visumbegeleiding, videoproductie Amsterdam, Glass Sharp Films, bruiloft videograaf Amsterdam, trouwfilm Nederland, Tram Dating reality serie, kunstgalerie Amsterdam, grootformaat fotografie Ming Ye kunstenaar, softwareontwikkeling Amsterdam, rijschool software DriveViewer iOS app.
+          </p>
+          <p>
+            Español: Asesoría corporativa en Ámsterdam, constitución de empresas BV en Países Bajos, registro mercantil KvK, registro EPR / REP de envases y residuos de aparatos eléctricos, gestión de visados por desplazamiento y cesión de personal técnico altamente cualificado, producción audiovisual en Ámsterdam, Glass Sharp Films, videos de boda en Europa, serie de telerrealidad Tram Dating, representación artística, artista fotógrafo de gran formato Ming Ye, desarrollo de software a medida, app para escuelas de conducción DriveViewer.
+          </p>
+          <p>
+            中文: 荷兰阿姆斯特丹企业咨询、荷兰公司设立、荷兰企业注册、荷兰BV注册、荷兰商会KvK合规咨询、EPR注册合规（包装法申报Afvalfonds Verpakkingen、WEEE电子电气设备、电池法）、第三方人员派遣签证办理（荷兰高技术移民Kennismigrant派遣、跨国派遣工作签证）；视频制作工作室 Glass Sharp Films、欧洲商业广告片拍摄、品牌TVC制作、欧洲目的地婚礼拍摄微电影、荷兰亚裔真人秀节目 Tram Dating 摄制；艺术品代理、大画幅摄影艺术家叶明 (Ming Ye) 独家代理、《Heaven 渡》代表作系列、8x10银盐暗房手工冲印、欧洲美术馆典藏；定制软件开发、企业级云架构与出海软件、荷兰驾校管理软件 DriveViewer iOS版。
+          </p>
         </div>
 
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] font-mono uppercase tracking-widest text-gray-400">
@@ -1447,7 +1424,7 @@ const Footer = () => {
   );
 };
 
-// --- Subpage FAQ Component for High-Value SEO Signals ---
+// --- Subpage FAQ Component ---
 
 const SubpageFAQSection = ({ service }: { service: ServiceDefinition }) => {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
@@ -1459,13 +1436,13 @@ const SubpageFAQSection = ({ service }: { service: ServiceDefinition }) => {
       <div className="max-w-2xl mb-12">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 text-gray-300 text-[11px] font-mono uppercase tracking-widest mb-3">
           <HelpCircle size={12} className="text-emerald-400" />
-          Advisory & FAQ Guide
+          Practice Guide & FAQ
         </div>
         <h2 className="text-3xl md:text-4xl font-serif text-white">
-          常见业务咨询与合规答疑
+          Frequently Answered Questions
         </h2>
         <p className="text-xs font-mono text-gray-400 uppercase tracking-wider mt-2">
-          针对 {service.title} 的高频搜索问题与专业解答
+          Key considerations regarding {service.title}
         </p>
       </div>
 
@@ -1500,9 +1477,9 @@ const SubpageFAQSection = ({ service }: { service: ServiceDefinition }) => {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 pb-6 pt-2 text-xs md:text-sm text-gray-300 font-light leading-relaxed border-t border-white/5">
+                    <p className="px-6 pb-6 text-sm text-gray-300 font-light leading-relaxed border-t border-white/5 pt-4">
                       {faq.a}
-                    </div>
+                    </p>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -1514,160 +1491,397 @@ const SubpageFAQSection = ({ service }: { service: ServiceDefinition }) => {
   );
 };
 
-// --- Subpage: Detailed Division Landing Page ---
+// --- Dedicated Practice Subpage View ---
 
-const ServicePage = ({ defaultId }: { defaultId?: string } = {}) => {
-  const { id: paramId } = useParams();
+const ServicePage = ({ defaultId }: { defaultId?: string }) => {
+  const params = useParams();
   const navigate = useNavigate();
-  const id = paramId || defaultId;
-  const service = SERVICES.find(s => s.id === id);
-  const relatedCases = CASE_STUDIES.filter(c => c.serviceId === id);
+  const id = defaultId || params.id;
 
+  const service = SERVICES.find((s) => s.id === id);
+
+  useEffect(() => {
+    if (!service && id) {
+      navigate("/");
+    }
+  }, [service, id, navigate]);
+
+  if (!service) return null;
+
+  const relatedCases = CASE_STUDIES.filter((c) => c.serviceId === service.id);
+
+  // Dynamic SEO metadata per subpage
   usePageSEO({
-    title: service ? `${service.seoTitle} | YEAH Agency Amsterdam` : "YEAH Agency Amsterdam",
-    description: service?.seoDescription,
-    keywords: service?.keywords.join(", "),
-    canonicalUrl: `https://yeah-amsterdam.nl/services/${id}`
+    title: `${service.title} | YEAH Agency Amsterdam`,
+    description: `${service.desc} Explore documented case studies, technical deliverables, and methodology at YEAH Agency Amsterdam.`,
+    keywords: `${service.title}, YEAH Agency Amsterdam, ${service.badge}, ${service.scopeList.map(s => s.title).join(", ")}`,
+    canonicalUrl: `https://yeah-amsterdam.nl/services/${service.id}`
   });
 
-  if (!service) {
-    return (
-      <div className="min-h-screen pt-40 pb-20 px-6 flex flex-col items-center justify-center text-center">
-        <h2 className="text-3xl font-serif text-white mb-4">Division Not Found</h2>
-        <p className="text-gray-400 text-sm font-mono mb-8">The requested practice line could not be identified.</p>
-        <button 
-          onClick={() => navigate("/")}
-          className="px-6 py-3 bg-white text-black font-mono text-xs uppercase tracking-widest"
-        >
-          Return to Overview
-        </button>
-      </div>
-    );
-  }
-
-  const Icon = service.icon;
-
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="min-h-screen pt-28 md:pt-36 pb-32 bg-black text-white"
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.35 }}
+      className="pt-32 pb-28 px-6 md:px-12 bg-black min-h-screen"
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+      <div className="max-w-7xl mx-auto">
         
-        {/* Back navigation */}
-        <button
-          onClick={() => navigate("/")}
-          className="inline-flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-gray-400 hover:text-white transition-colors mb-12 group"
-        >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Back to Practices Overview
-        </button>
+        {/* Navigation Breadcrumb */}
+        <div className="mb-10 flex items-center justify-between">
+          <Link 
+            to="/" 
+            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-gray-400 hover:text-white transition-colors"
+          >
+            <ArrowLeft size={14} /> Back to Agency Home
+          </Link>
+          <div className="text-xs font-mono text-gray-500 uppercase tracking-widest">
+            Practice Division {service.number} / 04
+          </div>
+        </div>
 
-        {/* Division Header Hero */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pb-16 border-b border-white/10">
-          <div className="lg:col-span-7">
-            <div className="flex flex-wrap items-center gap-3 mb-6">
-              <span className="text-xs font-mono px-3 py-1 bg-white/10 text-white border border-white/10">
-                PRACTICE DIVISION {service.number}
-              </span>
-              <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest px-2.5 py-0.5 bg-emerald-950/40 border border-emerald-500/20">
-                {service.seoBadge}
-              </span>
-              <span className="text-xs font-mono uppercase tracking-widest text-gray-500">
-                YEAH Agency Amsterdam
-              </span>
+        {/* Subpage Hero */}
+        <div className="pb-16 border-b border-white/10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 text-gray-300 text-[11px] font-mono uppercase tracking-widest mb-6">
+            <span>{service.badge}</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif text-white mb-6 leading-tight max-w-4xl">
+            {service.title}
+          </h1>
+
+          {service.subBrand && (
+            <p className="text-sm md:text-base font-mono text-gray-400 uppercase tracking-widest mb-6">
+              {service.subBrand}
+            </p>
+          )}
+
+          <p className="text-lg md:text-2xl text-gray-300 font-light max-w-3xl leading-relaxed mb-10">
+            {service.tagline}
+          </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 pt-8 border-t border-white/10 items-start">
+            <div className="lg:col-span-8">
+              <p className="text-base text-gray-300 font-light leading-relaxed">
+                {service.longOverview}
+              </p>
             </div>
-
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif font-normal text-white mb-2 leading-tight">
-              {service.title}
-            </h1>
-
-            <p className="text-lg md:text-xl text-gray-300 font-mono mb-6 font-light">
-              {service.chineseTitle}
-            </p>
-
-            <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed mb-8">
-              {service.tagline}
-            </p>
-
-            <p className="text-base text-gray-400 font-light leading-relaxed mb-8">
-              {service.longOverview}
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="lg:col-span-4 flex flex-col gap-3">
               <a 
-                href={`mailto:info@yeah-amsterdam.nl?subject=${encodeURIComponent(`Inquiry for Division: ${service.title} (${service.seoBadge})`)}`}
-                className="inline-flex items-center gap-3 px-6 py-4 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors font-medium"
+                href={`mailto:info@yeah-amsterdam.nl?subject=${encodeURIComponent(`Inquiry for ${service.title}`)}`}
+                className="w-full inline-flex items-center justify-center gap-2 py-4 px-6 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors font-medium"
               >
-                Inquire With Practice Team <ArrowRight size={14} />
+                Inquire With Practice Partners <ArrowRight size={14} />
               </a>
-
               {service.externalUrl && (
                 <a 
                   href={service.externalUrl.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-mono text-xs uppercase tracking-wider border border-white/20 transition-colors"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-white/5 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-wider border border-white/10 transition-colors"
                 >
-                  {service.externalUrl.label} <ExternalLink size={14} />
+                  <span>{service.externalUrl.label}</span>
+                  <ExternalLink size={13} />
                 </a>
               )}
-            </div>
-
-            {service.externalUrl && (
-              <p className="text-xs text-gray-400 font-mono mt-3">
-                {service.externalUrl.description}
-              </p>
-            )}
-          </div>
-
-          {/* Hero Visual Card */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative aspect-[4/5] overflow-hidden border border-white/10 bg-gray-950">
-              <img 
-                src={service.heroImage} 
-                alt={service.title}
-                className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-1000"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              
-              <div className="absolute bottom-6 left-6 right-6 p-4 bg-black/80 backdrop-blur-md border border-white/10">
-                <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest block mb-1">
-                  {service.seoBadge}
-                </span>
-                <span className="text-sm font-serif text-white italic">
-                  {service.desc}
-                </span>
-              </div>
+              {service.pdfUrl && (
+                <a 
+                  href={service.pdfUrl.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-white/10 hover:bg-white text-white hover:text-black font-mono text-xs uppercase tracking-wider border border-white/20 transition-all font-medium"
+                >
+                  <FileText size={14} className="text-emerald-400" />
+                  <span>{service.pdfUrl.label}</span>
+                  <ExternalLink size={13} />
+                </a>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Division Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-12 border-b border-white/10">
+        {/* Metric Badges */}
+        <div className="py-12 border-b border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-8">
           {service.metrics.map((m, idx) => (
-            <div key={idx} className="p-6 bg-[#0a0a0a] border border-white/5">
+            <div key={idx} className="border-l border-white/15 pl-6">
               <span className="text-3xl md:text-4xl font-serif text-white block mb-1">{m.value}</span>
               <span className="text-xs font-mono text-gray-400 uppercase tracking-wider block">{m.label}</span>
             </div>
           ))}
         </div>
 
-        {/* Keywords Ribbon for Search Relevance */}
-        <div className="py-6 border-b border-white/10 flex flex-wrap items-center gap-2">
-          <span className="text-[11px] font-mono text-gray-400 uppercase tracking-widest flex items-center gap-1.5 mr-2">
-            <Search size={12} className="text-emerald-400" />
-            核心搜索词索引 (SEO Keywords):
-          </span>
-          {service.keywords.map((kw, kwIdx) => (
-            <span key={kwIdx} className="text-xs font-mono bg-white/5 border border-white/10 text-gray-300 px-3 py-1">
-              #{kw}
-            </span>
-          ))}
-        </div>
+        {/* Featured Spotlight (Glass Sharp Films / Ming Ye / DriveViewer) */}
+        {service.featuredSpotlight && (
+          <div className="py-20 border-b border-white/10">
+            <div className="bg-[#080808] border border-white/15 p-8 md:p-12 overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div className="lg:col-span-7">
+                  <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-emerald-400 block mb-2">
+                    {service.featuredSpotlight.badge}
+                  </span>
+                  <h3 className="text-3xl md:text-4xl font-serif text-white mb-2">
+                    {service.featuredSpotlight.title}
+                  </h3>
+                  <p className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-6">
+                    {service.featuredSpotlight.subtitle}
+                  </p>
+                  <p className="text-sm text-gray-300 font-light leading-relaxed mb-8">
+                    {service.featuredSpotlight.description}
+                  </p>
+
+                  <div className="grid grid-cols-3 gap-4 py-4 border-y border-white/10 mb-8">
+                    {service.featuredSpotlight.stats.map((st, stIdx) => (
+                      <div key={stIdx}>
+                        <span className="text-sm md:text-base font-serif text-white block">{st.value}</span>
+                        <span className="text-[10px] font-mono text-gray-500 uppercase">{st.label}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {service.featuredSpotlight.link && (
+                    <a
+                      href={service.featuredSpotlight.link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-6 py-3.5 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors font-medium"
+                    >
+                      {service.featuredSpotlight.pdfUrl || service.featuredSpotlight.link.url.includes("shorturl") || service.featuredSpotlight.link.url.endsWith(".pdf") ? (
+                        <>
+                          <FileText size={14} className="text-emerald-600" />
+                          <span>{service.featuredSpotlight.link.label}</span>
+                          <ExternalLink size={13} />
+                        </>
+                      ) : (
+                        <>
+                          <span>Visit {service.featuredSpotlight.link.label}</span>
+                          <ExternalLink size={13} />
+                        </>
+                      )}
+                    </a>
+                  )}
+                </div>
+
+                <div className="lg:col-span-5">
+                  {service.featuredSpotlight.pdfUrl ? (
+                    <a 
+                      href={service.featuredSpotlight.pdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block relative aspect-[4/3] overflow-hidden border border-white/20 group cursor-pointer"
+                      title="Open Official Artist Monograph PDF (https://shorturl.at/TYn8P)"
+                    >
+                      <img 
+                        src={service.featuredSpotlight.image} 
+                        alt={`${service.featuredSpotlight.title} — 《Heaven 渡》 Series by Ming Ye`}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover contrast-125 group-hover:scale-105 transition-all duration-700"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                        <span className="opacity-0 group-hover:opacity-100 transition-opacity px-4 py-2 bg-black/90 text-white font-mono text-xs uppercase tracking-widest border border-white/30 flex items-center gap-2">
+                          <FileText size={14} className="text-emerald-400" /> Open Monograph PDF ↗
+                        </span>
+                      </div>
+                      <div className="absolute bottom-3 left-3 bg-black/85 backdrop-blur-md px-3 py-1 text-[11px] font-mono text-white border border-white/10 flex items-center gap-1.5">
+                        <FileText size={12} className="text-emerald-400" />
+                        <span>Official Monograph & Portfolio (PDF)</span>
+                      </div>
+                    </a>
+                  ) : (
+                    <div className="relative aspect-[4/3] overflow-hidden border border-white/10">
+                      <img 
+                        src={service.featuredSpotlight.image} 
+                        alt={service.featuredSpotlight.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-700"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Curatorial Monograph & Retrospective Archival Feature for Ming Ye */}
+        {service.id === "fine-art" && (
+          <div className="py-20 border-b border-white/10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+              <div>
+                <span className="text-xs font-mono uppercase tracking-[0.4em] text-emerald-400 block mb-3">
+                  Exclusive Artist Representation · Sole Global Agent
+                </span>
+                <h2 className="text-3xl md:text-5xl font-serif text-white">
+                  Ming Ye (叶明) — Official Monograph &amp; European Archive
+                </h2>
+              </div>
+              <p className="text-xs md:text-sm text-gray-400 max-w-md font-light leading-relaxed">
+                Graduated from Shenzhen University Media in the 1980s. Specializing in symbolic and metaphorical large-format photography, 8x10 analog view cameras, and darkroom silver gelatin craftsmanship.
+              </p>
+            </div>
+
+            {/* Curatorial Dual Layout: Institutional Provenance & Monograph Publication Card */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+              {/* Left Column: Curatorial Background & Documented European Exhibitions */}
+              <div className="lg:col-span-7 space-y-6">
+                <div className="p-8 bg-[#080808] border border-white/10">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 px-2 py-0.5 bg-emerald-950/40 border border-emerald-500/30">
+                      Authentic Provenance &amp; Conservation Standard
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-serif text-white mb-3">
+                    Institutional Catalog Raisonné &amp; Archival Integrity
+                  </h3>
+                  <p className="text-xs text-gray-300 font-light leading-relaxed mb-6">
+                    To preserve the optical fidelity of the analog silver gelatin darkroom prints, artist copyright, and museum conservation standards, all authorized plates, series documentation, and curatorial essays are curated exclusively within the official Artist Monograph. Access the verified publication below.
+                  </p>
+
+                  <div className="space-y-4 pt-4 border-t border-white/10">
+                    <div className="text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">
+                      Documented European Institutional Exhibitions:
+                    </div>
+                    <div className="p-4 bg-black/60 border border-white/5 space-y-1">
+                      <div className="text-sm font-serif text-white italic">
+                        &ldquo;Konstruierte Natur: Landschaft im Wandel in der zeitgenössischen Kunst&rdquo;
+                      </div>
+                      <div className="text-[11px] font-mono text-emerald-400">
+                        Schloss Plüschow, Mecklenburgisches Künstlerhaus, Germany · 2024
+                      </div>
+                      <div className="text-[11px] text-gray-400 font-light">
+                        Curated institutional presentation of large-format landscape and conceptual analog photography.
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-black/60 border border-white/5 space-y-1">
+                      <div className="text-sm font-serif text-white italic">
+                        &ldquo;洞见 – Einblick II: Zeitgenössische Fotografie&rdquo;
+                      </div>
+                      <div className="text-[11px] font-mono text-emerald-400">
+                        Rostock, Germany · 2022
+                      </div>
+                      <div className="text-[11px] text-gray-400 font-light">
+                        Institutional survey of contemporary photographic vision and darkroom silver gelatin printing.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6 bg-[#080808] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="text-xs font-mono text-gray-400 uppercase tracking-wider">
+                      Museum Acquisitions &amp; Collector Liaison
+                    </div>
+                    <div className="text-xs text-gray-300 font-light">
+                      Strictly limited editions, signed and authenticated with the artist&apos;s personal seal.
+                    </div>
+                  </div>
+                  <a
+                    href="mailto:info@yeah-amsterdam.nl?subject=Acquisition%20Inquiry%20for%20Artist%20Ming%20Ye"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white hover:text-black text-white font-mono text-xs uppercase tracking-wider border border-white/20 transition-all shrink-0"
+                  >
+                    <span>Curatorial Inquiry</span>
+                    <ArrowRight size={13} />
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Column: Interactive Monograph Publication Card */}
+              <div className="lg:col-span-5 flex flex-col">
+                <div className="bg-[#080808] border border-white/10 flex-1 flex flex-col justify-between group overflow-hidden">
+                  <div className="p-6 pb-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400">
+                        Official Publication
+                      </span>
+                      <span className="text-[10px] font-mono text-gray-500">
+                        PDF Format · Verified Document
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-serif text-white mb-2">
+                      Artist Ming Ye Monograph
+                    </h3>
+                    <p className="text-xs text-gray-400 font-light mb-4">
+                      Complete exhibition portfolio, photographic essays, high-resolution archival plates, and artist biography.
+                    </p>
+                  </div>
+
+                  <a 
+                    href="https://shorturl.at/TYn8P"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block relative aspect-[4/5] mx-6 mb-6 overflow-hidden border border-white/20 group/card cursor-pointer bg-black"
+                    title="Open Official Artist Monograph PDF (https://shorturl.at/TYn8P)"
+                  >
+                    <img 
+                      src="/images/artist-mingye.svg"
+                      alt="Ming Ye (叶明) — Official Artist Monograph & Catalogue Raisonné"
+                      loading="lazy"
+                      className="w-full h-full object-contain p-2 group-hover/card:scale-102 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black/40 group-hover/card:bg-black/10 transition-colors flex items-center justify-center">
+                      <span className="opacity-0 group-hover/card:opacity-100 transition-opacity px-4 py-2 bg-black/95 text-white font-mono text-xs uppercase tracking-widest border border-white/40 flex items-center gap-2 shadow-2xl">
+                        <FileText size={14} className="text-emerald-400" /> Open Monograph PDF ↗
+                      </span>
+                    </div>
+                    <div className="absolute bottom-3 left-3 right-3 bg-black/90 backdrop-blur-md px-3 py-1.5 text-[11px] font-mono text-white border border-white/10 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5 text-emerald-400">
+                        <FileText size={12} />
+                        <span className="text-white">shorturl.at/TYn8P</span>
+                      </span>
+                      <ExternalLink size={12} className="text-gray-400" />
+                    </div>
+                  </a>
+
+                  <div className="p-6 pt-0">
+                    <a 
+                      href="https://shorturl.at/TYn8P"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 w-full py-3.5 px-4 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors font-medium border border-white"
+                    >
+                      <FileText size={14} className="text-emerald-600" />
+                      <span>Open Monograph PDF (shorturl.at/TYn8P)</span>
+                      <ExternalLink size={13} />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Direct Monograph Callout Banner */}
+            <div className="p-8 md:p-10 bg-[#0c0c0c] border border-white/15 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 px-2 py-0.5 bg-emerald-950/40 border border-emerald-500/30">
+                    Verified Institutional Provenance
+                  </span>
+                  <span className="text-xs font-mono text-gray-500">Exhibitions in Germany &amp; Europe</span>
+                </div>
+                <h3 className="text-2xl font-serif text-white">
+                  Official Monograph, Catalog Raisonné &amp; Acquisition Folio
+                </h3>
+                <p className="text-xs text-gray-300 font-light max-w-2xl leading-relaxed">
+                  Including documented exhibitions: <span className="text-white italic">&ldquo;Konstruierte Natur: Landschaft im Wandel in der zeitgenössischen Kunst&rdquo;</span> (Schloss Plüschow, 2024) and <span className="text-white italic">&ldquo;洞见 – Einblick II&rdquo;</span> (Rostock, 2022). All catalog essays, plates, and acquisition protocols are collected in the official PDF document.
+                </p>
+              </div>
+              <a 
+                href="https://shorturl.at/TYn8P"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors font-medium shrink-0 shadow-lg"
+              >
+                <FileText size={16} className="text-emerald-600" />
+                <span>Open Monograph PDF (shorturl.at/TYn8P)</span>
+                <ExternalLink size={14} />
+              </a>
+            </div>
+          </div>
+        )}
 
         {/* Scope of Practice & Capabilities */}
         <div className="py-20 border-b border-white/10">
@@ -1707,7 +1921,7 @@ const ServicePage = ({ defaultId }: { defaultId?: string } = {}) => {
           </div>
         </div>
 
-        {/* Dedicated Case Studies for this Division */}
+        {/* Dedicated Case Studies for this Practice */}
         <div className="py-20 border-b border-white/10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
@@ -1715,23 +1929,56 @@ const ServicePage = ({ defaultId }: { defaultId?: string } = {}) => {
               <h2 className="text-3xl md:text-4xl font-serif text-white">Documented Case Studies</h2>
             </div>
             <p className="text-xs font-mono text-gray-400 uppercase tracking-wider">
-              {relatedCases.length} Specialized Engagements
+              {relatedCases.length} {relatedCases.length === 1 ? "Verified Case Study" : "Verified Engagements"}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className={cn(
+            "grid gap-8",
+            relatedCases.length === 1 ? "grid-cols-1 max-w-4xl" : "grid-cols-1 md:grid-cols-2"
+          )}>
             {relatedCases.map((cs) => (
               <div key={cs.id} className="bg-[#090909] border border-white/10 overflow-hidden flex flex-col justify-between">
                 <div>
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <img 
-                      src={cs.image} 
-                      alt={cs.title}
-                      className="w-full h-full object-cover grayscale contrast-125"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute top-4 left-4">
-                      <span className="text-[10px] font-mono uppercase tracking-widest bg-black/80 px-3 py-1 text-white border border-white/10">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-black">
+                    {cs.pdfLink ? (
+                      <a 
+                        href={cs.pdfLink.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="block w-full h-full relative group/img cursor-pointer"
+                        title={cs.pdfLink.label}
+                      >
+                        <img 
+                          src={cs.image} 
+                          alt={`${cs.title} — Ming Ye 《Heaven 渡》 Series Large-Format Photography`}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover grayscale contrast-125 group-hover/img:scale-105 group-hover/img:grayscale-0 transition-all duration-700"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div className="absolute inset-0 bg-black/40 group-hover/img:bg-black/10 transition-colors flex items-center justify-center">
+                          <span className="opacity-0 group-hover/img:opacity-100 transition-opacity px-4 py-2 bg-black/90 text-white font-mono text-xs uppercase tracking-widest border border-white/30 flex items-center gap-2">
+                            <FileText size={14} className="text-emerald-400" /> Open Monograph PDF ↗
+                          </span>
+                        </div>
+                        <div className="absolute bottom-3 right-3 z-10 bg-black/90 backdrop-blur-md px-2.5 py-1 text-white border border-white/20 text-[10px] font-mono uppercase tracking-widest flex items-center gap-1.5 group-hover/img:bg-white group-hover/img:text-black transition-colors">
+                          <FileText size={11} className="text-emerald-400 group-hover/img:text-black" />
+                          <span>PDF Monograph ↗</span>
+                        </div>
+                      </a>
+                    ) : (
+                      <img 
+                        src={cs.image} 
+                        alt={cs.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover grayscale contrast-125"
+                        referrerPolicy="no-referrer"
+                      />
+                    )}
+                    <div className="absolute top-4 left-4 z-10 pointer-events-none">
+                      <span className="text-[10px] font-mono uppercase tracking-widest bg-black/85 px-3 py-1 text-white border border-white/10">
                         {cs.tag}
                       </span>
                     </div>
@@ -1772,40 +2019,65 @@ const ServicePage = ({ defaultId }: { defaultId?: string } = {}) => {
                   </div>
                 </div>
 
-                <div className="p-8 pt-0">
+                <div className="p-8 pt-0 space-y-4">
                   <div className="p-4 bg-white/[0.03] border border-white/10 rounded-sm">
                     <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 flex items-center gap-1.5 mb-1">
                       <CheckCircle2 size={12} /> Results & Measured Impact
                     </span>
                     <p className="text-xs text-gray-300 font-light">{cs.outcome}</p>
                   </div>
+
+                  {cs.externalLink && (
+                    <a
+                      href={cs.externalLink.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-xs font-mono text-white hover:text-gray-300 transition-colors uppercase tracking-wider"
+                    >
+                      <span>{cs.externalLink.label}</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  )}
+
+                  {cs.pdfLink && (
+                    <a
+                      href={cs.pdfLink.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 w-full py-3 px-4 bg-white text-black font-mono text-xs uppercase tracking-wider hover:bg-gray-200 transition-colors font-medium border border-white"
+                    >
+                      <FileText size={14} />
+                      <span>{cs.pdfLink.label}</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  )}
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Division FAQ Guide */}
+        {/* Practice FAQ Guide */}
         <SubpageFAQSection service={service} />
 
         {/* Practice Direct Inquire Banner */}
         <div className="mt-16 p-8 md:p-12 bg-[#090909] border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-400 block mb-2">Dedicated Practice Inquiry</span>
-            <h3 className="text-2xl md:text-3xl font-serif text-white mb-2">Initiate an Engagement with Division {service.number}</h3>
+            <h3 className="text-2xl md:text-3xl font-serif text-white mb-2">Initiate an Engagement with Practice {service.number}</h3>
             <p className="text-xs text-gray-400 font-light max-w-xl">
               Direct consultation with our senior practice partners in Amsterdam. All business proposals and corporate records are treated with strict confidentiality.
             </p>
           </div>
           <a 
-            href={`mailto:info@yeah-amsterdam.nl?subject=${encodeURIComponent(`Engagement Inquiry for Division ${service.number}: ${service.title} (${service.seoBadge})`)}`}
+            href={`mailto:info@yeah-amsterdam.nl?subject=${encodeURIComponent(`Engagement Inquiry for Practice ${service.number}: ${service.title}`)}`}
             className="inline-flex items-center gap-3 px-6 py-4 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors font-medium shrink-0"
           >
             Email info@yeah-amsterdam.nl <ArrowRight size={14} />
           </a>
         </div>
 
-        {/* Cross-Division Navigation */}
+        {/* Cross-Practice Navigation */}
         <div className="pt-20">
           <span className="text-xs font-mono uppercase tracking-[0.4em] text-gray-400 block mb-6">Explore Other Practice Subpages</span>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -1817,11 +2089,13 @@ const ServicePage = ({ defaultId }: { defaultId?: string } = {}) => {
               >
                 <div>
                   <div className="flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                    <span>DIV {s.number}</span>
+                    <span>PRACTICE {s.number}</span>
                     <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform text-gray-400 group-hover:text-white" />
                   </div>
                   <h4 className="font-serif text-lg text-white group-hover:italic transition-all">{s.title}</h4>
-                  <p className="text-[11px] font-mono text-emerald-400/80 mt-1">{s.chineseTitle.split('（')[0]}</p>
+                  {s.subBrand && (
+                    <p className="text-[11px] font-mono text-gray-400 mt-1">{s.subBrand}</p>
+                  )}
                   <p className="text-xs text-gray-400 font-light mt-2 line-clamp-2">{s.tagline}</p>
                 </div>
               </Link>
@@ -1835,12 +2109,13 @@ const ServicePage = ({ defaultId }: { defaultId?: string } = {}) => {
 };
 
 // --- Home Page Composition ---
+// Notice: The intrusive CapabilitiesDirectory index is removed completely from the visual homepage as requested!
 
 const HomePage = () => {
   usePageSEO({
-    title: "YEAH Agency Amsterdam | 荷兰企业注册 · 商业/企业/婚礼拍摄 · 软件开发 · 亚洲艺术家画廊",
-    description: "YEAH Agency Amsterdam (野禾阿姆斯特丹) 综合咨询与创意事务所：专注荷兰企业注册设立、荷兰及欧洲商业拍摄/企业宣传片/高端婚礼拍摄、定制全栈软件开发与数字化架构、以及阿姆斯特丹亚洲艺术家画廊与国际艺术策展交流。",
-    keywords: "婚礼拍摄, 荷兰婚礼拍摄, 欧洲婚礼拍摄, 商业拍摄, 商业广告片拍摄, 企业拍摄, 企业宣传片, 荷兰企业注册, 荷兰公司注册, 荷兰BV注册, 软件开发, 定制软件开发, 亚洲艺术家画廊, 荷兰画廊, 阿姆斯特丹画廊, Dutch Company Formation, Amsterdam Video Production, Wedding Videography Europe, Custom Software Development",
+    title: "YEAH Agency Amsterdam | Multidisciplinary Agency · Video Production, Corporate Consulting, Fine Art & Software",
+    description: "YEAH Agency Amsterdam is an international multidisciplinary agency collective in Amsterdam. Specializing in Corporate Consulting, Video Production under Glass Sharp Films, Fine Art Representation of Large-Format Photography Artist Ming Ye, and Software Development including DriveViewer.",
+    keywords: "Corporate Consulting Amsterdam, Dutch BV Formation, Video Production Amsterdam, Glass Sharp Films, Tram Dating, Wedding Videography Amsterdam, Fine Art Representation, Artist Ming Ye, Ming Ye Photography, Large Format Photography Artist, Software Development Amsterdam, DriveViewer iOS, Enterprise Cloud Architecture",
     canonicalUrl: "https://yeah-amsterdam.nl/"
   });
 
@@ -1852,7 +2127,6 @@ const HomePage = () => {
     >
       <Hero />
       <DivisionPortals />
-      <SEOKeywordDirectory />
       <AboutSection />
       <Contact />
     </motion.div>

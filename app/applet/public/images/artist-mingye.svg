@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0a" />
+      <stop offset="50%" stop-color="#121212" />
+      <stop offset="100%" stop-color="#080808" />
+    </linearGradient>
+    <linearGradient id="borderGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25" />
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.18" />
+    </linearGradient>
+    <linearGradient id="silverText" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#cccccc" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="1000" fill="url(#bg)" />
+
+  <!-- Outer Editorial Border -->
+  <rect x="40" y="40" width="720" height="920" fill="none" stroke="url(#borderGlow)" stroke-width="1.5" />
+  <rect x="48" y="48" width="704" height="904" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1" />
+
+  <!-- Corner Crop Registration Marks (Analog Large-Format Darkroom Style) -->
+  <path d="M30 40 H50 M40 30 V50" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1" />
+  <path d="M750 40 H770 M760 30 V50" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1" />
+  <path d="M30 960 H50 M40 950 V970" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1" />
+  <path d="M750 960 H770 M760 950 V970" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1" />
+
+  <!-- Top Header Metadata -->
+  <text x="80" y="95" font-family="'Courier New', monospace" font-size="11" fill="#10b981" letter-spacing="4" font-weight="600">
+    OFFICIAL ARTIST MONOGRAPH &amp; CATALOGUE RAISONNÉ
+  </text>
+  <text x="720" y="95" font-family="'Courier New', monospace" font-size="11" fill="#888888" letter-spacing="2" text-anchor="end">
+    REF: MY-EU-ARCHIVE
+  </text>
+  <line x1="80" y1="115" x2="720" y2="115" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+
+  <!-- Institutional Stamp Box -->
+  <g transform="translate(80, 140)">
+    <rect x="0" y="0" width="220" height="34" fill="#ffffff" fill-opacity="0.03" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1" />
+    <text x="12" y="21" font-family="'Courier New', monospace" font-size="10" fill="#cccccc" letter-spacing="2">
+      EXCLUSIVE REPRESENTATION
+    </text>
+  </g>
+
+  <!-- Large Central Artist Typography -->
+  <text x="80" y="280" font-family="serif, 'Times New Roman'" font-size="64" fill="url(#silverText)" font-weight="300" letter-spacing="2">
+    MING YE
+  </text>
+  <text x="80" y="350" font-family="sans-serif, 'PingFang SC', 'Source Han Sans'" font-size="44" fill="#a0a0a0" font-weight="300" letter-spacing="6">
+    叶 明
+  </text>
+
+  <!-- Medium & Practice Descriptor -->
+  <text x="80" y="415" font-family="'Courier New', monospace" font-size="13" fill="#10b981" letter-spacing="3" font-weight="500">
+    LARGE-FORMAT PHOTOGRAPHY &amp; ANALOG PRACTICE
+  </text>
+  
+  <line x1="80" y1="445" x2="320" y2="445" stroke="#10b981" stroke-opacity="0.4" stroke-width="2" />
+
+  <!-- Curatorial Overview Block -->
+  <g transform="translate(80, 480)">
+    <rect x="0" y="0" width="640" height="230" fill="#000000" fill-opacity="0.4" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" />
+    
+    <text x="32" y="40" font-family="'Courier New', monospace" font-size="11" fill="#888888" letter-spacing="3">
+      CURATORIAL RETROSPECTIVE &amp; EUROPEAN EXHIBITIONS
+    </text>
+    
+    <text x="32" y="80" font-family="serif, 'Times New Roman'" font-size="18" fill="#ffffff" font-style="italic">
+      &ldquo;Konstruierte Natur: Landschaft im Wandel in der zeitgenössischen Kunst&rdquo;
+    </text>
+    <text x="32" y="105" font-family="'Courier New', monospace" font-size="11" fill="#9ca3af">
+      Schloss Plüschow, Germany · 2024
+    </text>
+
+    <line x1="32" y1="125" x2="608" y2="125" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1" />
+
+    <text x="32" y="155" font-family="serif, 'Times New Roman'" font-size="18" fill="#ffffff" font-style="italic">
+      &ldquo;洞见 – Einblick II: Zeitgenössische Fotografie&rdquo;
+    </text>
+    <text x="32" y="180" font-family="'Courier New', monospace" font-size="11" fill="#9ca3af">
+      Rostock, Germany · 2022
+    </text>
+
+    <text x="32" y="210" font-family="'Courier New', monospace" font-size="10" fill="#6b7280" letter-spacing="1">
+      Graduated from Shenzhen University Media (1980s) · 8x10 View Camera &amp; Darkroom Fiber Print
+    </text>
+  </g>
+
+  <!-- Interactive Document / Monograph Callout -->
+  <g transform="translate(80, 740)">
+    <rect x="0" y="0" width="640" height="110" fill="#141414" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1" />
+    
+    <!-- PDF Document Icon -->
+    <g transform="translate(28, 26)">
+      <rect x="0" y="0" width="40" height="56" rx="4" fill="#000000" stroke="#10b981" stroke-width="1.5" />
+      <path d="M26 0 L40 14 H26 Z" fill="#10b981" fill-opacity="0.3" stroke="#10b981" stroke-width="1.5" />
+      <text x="8" y="38" font-family="'Courier New', monospace" font-size="11" font-weight="700" fill="#10b981">PDF</text>
+    </g>
+
+    <text x="88" y="44" font-family="serif, 'Times New Roman'" font-size="20" fill="#ffffff">
+      Official Artist Monograph &amp; Acquisition Portfolio
+    </text>
+    <text x="88" y="68" font-family="'Courier New', monospace" font-size="12" fill="#9ca3af">
+      Verified Monograph Document: <tspan fill="#10b981" font-weight="600">shorturl.at/TYn8P</tspan>
+    </text>
+    <text x="88" y="88" font-family="'Courier New', monospace" font-size="10" fill="#666666">
+      Authorized Plates, Catalog Raisonné, &amp; Curatorial Essays
+    </text>
+
+    <!-- Arrow icon -->
+    <circle cx="590" cy="55" r="20" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1" />
+    <path d="M584 55 H596 M591 50 L596 55 L591 60" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+
+  <!-- Footer Provenance & Agency Note -->
+  <line x1="80" y1="885" x2="720" y2="885" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
+  <text x="80" y="915" font-family="'Courier New', monospace" font-size="10" fill="#666666" letter-spacing="2">
+    YEAH AGENCY · SOLE GLOBAL ARTIST REPRESENTATION
+  </text>
+  <text x="720" y="915" font-family="'Courier New', monospace" font-size="10" fill="#10b981" letter-spacing="2" text-anchor="end">
+    HTTPS://SHORTURL.AT/TYN8P
+  </text>
+</svg>
