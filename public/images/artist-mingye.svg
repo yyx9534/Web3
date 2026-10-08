@@ -16,20 +16,16 @@
     </linearGradient>
   </defs>
 
-  <!-- Background -->
   <rect width="800" height="1000" fill="url(#bg)" />
 
-  <!-- Outer Editorial Border -->
   <rect x="40" y="40" width="720" height="920" fill="none" stroke="url(#borderGlow)" stroke-width="1.5" />
   <rect x="48" y="48" width="704" height="904" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1" />
 
-  <!-- Corner Crop Registration Marks (Analog Large-Format Darkroom Style) -->
   <path d="M30 40 H50 M40 30 V50" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1" />
   <path d="M750 40 H770 M760 30 V50" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1" />
   <path d="M30 960 H50 M40 950 V970" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1" />
   <path d="M750 960 H770 M760 950 V970" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1" />
 
-  <!-- Top Header Metadata -->
   <text x="80" y="95" font-family="'Courier New', monospace" font-size="11" fill="#10b981" letter-spacing="4" font-weight="600">
     OFFICIAL ARTIST MONOGRAPH &amp; CATALOGUE RAISONNÉ
   </text>
@@ -38,7 +34,6 @@
   </text>
   <line x1="80" y1="115" x2="720" y2="115" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
 
-  <!-- Institutional Stamp Box -->
   <g transform="translate(80, 140)">
     <rect x="0" y="0" width="220" height="34" fill="#ffffff" fill-opacity="0.03" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1" />
     <text x="12" y="21" font-family="'Courier New', monospace" font-size="10" fill="#cccccc" letter-spacing="2">
@@ -46,7 +41,6 @@
     </text>
   </g>
 
-  <!-- Large Central Artist Typography -->
   <text x="80" y="280" font-family="serif, 'Times New Roman'" font-size="64" fill="url(#silverText)" font-weight="300" letter-spacing="2">
     MING YE
   </text>
@@ -54,14 +48,12 @@
     叶 明
   </text>
 
-  <!-- Medium & Practice Descriptor -->
   <text x="80" y="415" font-family="'Courier New', monospace" font-size="13" fill="#10b981" letter-spacing="3" font-weight="500">
     LARGE-FORMAT PHOTOGRAPHY &amp; ANALOG PRACTICE
   </text>
   
   <line x1="80" y1="445" x2="320" y2="445" stroke="#10b981" stroke-opacity="0.4" stroke-width="2" />
 
-  <!-- Curatorial Overview Block -->
   <g transform="translate(80, 480)">
     <rect x="0" y="0" width="640" height="230" fill="#000000" fill-opacity="0.4" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" />
     
@@ -90,11 +82,9 @@
     </text>
   </g>
 
-  <!-- Interactive Document / Monograph Callout -->
   <g transform="translate(80, 740)">
     <rect x="0" y="0" width="640" height="110" fill="#141414" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1" />
     
-    <!-- PDF Document Icon -->
     <g transform="translate(28, 26)">
       <rect x="0" y="0" width="40" height="56" rx="4" fill="#000000" stroke="#10b981" stroke-width="1.5" />
       <path d="M26 0 L40 14 H26 Z" fill="#10b981" fill-opacity="0.3" stroke="#10b981" stroke-width="1.5" />
@@ -111,12 +101,10 @@
       Authorized Plates, Catalog Raisonné, &amp; Curatorial Essays
     </text>
 
-    <!-- Arrow icon -->
     <circle cx="590" cy="55" r="20" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1" />
     <path d="M584 55 H596 M591 50 L596 55 L591 60" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
   </g>
 
-  <!-- Footer Provenance & Agency Note -->
   <line x1="80" y1="885" x2="720" y2="885" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" />
   <text x="80" y="915" font-family="'Courier New', monospace" font-size="10" fill="#666666" letter-spacing="2">
     YEAH AGENCY · SOLE GLOBAL ARTIST REPRESENTATION

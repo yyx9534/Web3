@@ -287,23 +287,23 @@ export const SERVICES: ServiceDefinition[] = [
     desc: "Sole representative of acclaimed Large-Format Photography Artist Ming Ye (叶明). Specializing in 8x10 analog view cameras, darkroom silver gelatin craftsmanship, and European museum curation. Access the complete artist monograph and catalog via shorturl.at/TYn8P.",
     longOverview: "YEAH Agency exclusively represents Large-Format Photography Artist Ming Ye (叶明). Graduated from Shenzhen University Media in the 1980s, Ming Ye operates with 8x10 and 4x5 large-format view cameras and handcrafted silver gelatin darkroom chemistry, creating profound symbolic and philosophical visual works. Ming Ye's work has been prominently exhibited across European institutions, including 'Konstruierte Natur: Landschaft im Wandel in der zeitgenössischen Kunst' (Schloss Plüschow, Germany) and '洞见 – Einblick II' (Rostock, Germany). All curated photographic plates, exhibition portfolios, and catalog entries are documented within the official Artist Monograph (https://shorturl.at/TYn8P). We handle all museum acquisitions, limited-edition collector folios, European solo exhibitions, and scholarly monographs.",
     icon: Camera,
-    heroImage: "/images/artist-mingye.svg",
-    secondaryImage: "/images/artist-mingye.svg",
+    heroImage: "/images/artwork-heaven-0102.jpg",
+    secondaryImage: "/images/artwork-lies-0305.jpg",
     pdfUrl: {
       label: "Official Artist Monograph & Portfolio (PDF)",
       filename: "Artist Ming Monograph",
       url: "https://shorturl.at/TYn8P"
     },
     featuredSpotlight: {
-      title: "Ming Ye (叶明) — Large-Format Analog Photography Practice & European Archive",
+      title: "Ming Ye (叶明) — Featured Master Series: 《Heaven 渡》, 《Lies 谎言》, 《Prophecy 预言》",
       subtitle: "Exclusive Representation · Conceptual & Symbolic Large-Format Photography",
-      description: "Dedicated exclusively to Large-Format Photography Artist Ming Ye (叶明). Operating with 8x10 view cameras and handcrafted silver gelatin darkroom craftsmanship, Ming Ye's practice explores existential and philosophical themes through analog mastery. Exhibited in premier German art institutions, including 'Konstruierte Natur' (Schloss Plüschow, 2024) and '洞见 – Einblick II' (Rostock, 2022). All curated works and acquisition protocols are presented exclusively within the official Artist Monograph.",
+      description: "Dedicated exclusively to Large-Format Photography Artist Ming Ye (叶明). Operating with 8x10 view cameras and handcrafted silver gelatin darkroom craftsmanship, Ming Ye's practice explores existential and philosophical themes across master series including 《Heaven 渡》, 《Lies 谎言》, and 《Prophecy 预言》. Exhibited in premier German art institutions ('Konstruierte Natur', Schloss Plüschow, 2024; '洞见 – Einblick II', Rostock, 2022). All curated works and acquisition protocols are presented within the official Artist Monograph.",
       badge: "EXCLUSIVE ARTIST REPRESENTATION · MING YE (叶明)",
-      image: "/images/artist-mingye.svg",
+      image: "/images/artwork-heaven-0102.jpg",
       pdfUrl: "https://shorturl.at/TYn8P",
       stats: [
         { label: "Represented Artist", value: "Ming Ye (叶明)" },
-        { label: "Medium", value: "8x10 View Camera / Silver Gelatin" },
+        { label: "Master Series", value: "Heaven · Lies · Prophecy" },
         { label: "Official Monograph", value: "Verified PDF" }
       ],
       link: { label: "Open Official Monograph PDF (shorturl.at/TYn8P)", url: "https://shorturl.at/TYn8P" }
@@ -650,23 +650,24 @@ export const CASE_STUDIES: CaseStudy[] = [
   // 03. Fine Art Representation (艺术品代理 - Ming Ye 叶明)
   {
     id: "case-ming-ye",
-    title: "Ming Ye (叶明) — Large-Format Analog Photography Practice & European Retrospective Archive",
+    title: "Ming Ye (叶明) — Large-Format Analog Photography: 《Heaven 渡》, 《Lies 谎言》, 《Prophecy 预言》",
     clientCategory: "Sole Represented Artist · Large-Format Photography Artist Ming Ye (叶明)",
     serviceId: "fine-art",
     serviceName: "Fine Art Representation",
     tag: "EXCLUSIVE ARTIST CASE · MING YE (叶明)",
     summary: "Exclusive agency representation, European museum acquisitions, darkroom silver gelatin editions, and curatorial solo exhibition management for Large-Format Photography Artist Ming Ye (叶明). Access the complete Artist Monograph via https://shorturl.at/TYn8P.",
-    challenge: "Preserving and presenting the profound philosophical depth, symbolic subtlety, and optical fidelity of the artist's large-format analog practice, while connecting limited editions with premier European cultural institutions and discerning collectors.",
+    challenge: "Preserving and presenting the profound philosophical depth, symbolic subtlety, and optical fidelity of the artist's large-format analog practice across the master series 《Heaven 渡》, 《Lies 谎言》, and 《Prophecy 预言》, while connecting limited editions with premier European cultural institutions and discerning collectors.",
     solution: "YEAH Agency serves as the exclusive global representative for Ming Ye, orchestrating institutional exhibitions across Europe (including Germany's 'Konstruierte Natur' and '洞见 – Einblick II'), museum conservation framing, scholarly monograph distribution, and institutional permanent collection accessions.",
     deliverables: [
       "Exclusive global representation and curatorial archive management",
+      "Signature large-format works: 《Heaven No.0102》, 《Lies No.0305》, 《Prophecy No.0009》",
       "Official Artist Monograph & Exhibition Portfolio (https://shorturl.at/TYn8P)",
       "Curatorial solo exhibition scenography and scholarly publication distribution",
       "European museum permanent collection accessions and verified provenance certificates",
       "Limited edition 8x10 darkroom silver gelatin prints and institutional acquisition liaison"
     ],
     outcome: "Exhibited in prominent German cultural institutions (Schloss Plüschow, Rostock); signature large-format works accessioned into prestigious private foundations and European photography collections.",
-    image: "/images/artist-mingye.svg",
+    image: "/images/artwork-heaven-0102.jpg",
     pdfLink: {
       label: "Open Artist Monograph PDF (shorturl.at/TYn8P)",
       url: "https://shorturl.at/TYn8P"
@@ -1707,21 +1708,201 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
           </div>
         )}
 
-        {/* Curatorial Monograph & Retrospective Archival Feature for Ming Ye */}
+        {/* Curated Authentic Artworks Showcase by Ming Ye */}
         {service.id === "fine-art" && (
           <div className="py-20 border-b border-white/10">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
               <div>
                 <span className="text-xs font-mono uppercase tracking-[0.4em] text-emerald-400 block mb-3">
-                  Exclusive Artist Representation · Sole Global Agent
+                  Curated Oeuvre · Master Analog Photography
                 </span>
                 <h2 className="text-3xl md:text-5xl font-serif text-white">
-                  Ming Ye (叶明) — Official Monograph &amp; European Archive
+                  Signature Works by Ming Ye (叶明)
                 </h2>
               </div>
               <p className="text-xs md:text-sm text-gray-400 max-w-md font-light leading-relaxed">
-                Graduated from Shenzhen University Media in the 1980s. Specializing in symbolic and metaphorical large-format photography, 8x10 analog view cameras, and darkroom silver gelatin craftsmanship.
+                Authentic plates from the master series 《Heaven 渡》, 《Lies 谎言》, and 《Prophecy 预言》. Handcrafted 8x10 analog view camera darkroom silver gelatin fiber prints.
               </p>
+            </div>
+
+            {/* 3 Authentic Artworks Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+              {/* Work 01: Heaven No.0102 */}
+              <div className="bg-[#080808] border border-white/10 flex flex-col justify-between group overflow-hidden">
+                <div>
+                  <a 
+                    href="https://shorturl.at/TYn8P"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block relative aspect-[16/10] overflow-hidden bg-black cursor-pointer"
+                    title="View 《Heaven No.0102》 in Official Monograph PDF"
+                  >
+                    <img 
+                      src="/images/artwork-heaven-0102.jpg"
+                      alt="Ming Ye (叶明) — Heaven No.0102 Large-Format Analog Photograph"
+                      loading="lazy"
+                      decoding="async"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover contrast-110 group-hover:scale-105 transition-all duration-700"
+                    />
+                    <div className="absolute top-3 left-3 bg-black/85 backdrop-blur-md px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-white border border-white/10">
+                      Series 《Heaven 渡》
+                    </div>
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <span className="px-3 py-1.5 bg-black/90 text-white font-mono text-[11px] uppercase tracking-wider border border-white/20 flex items-center gap-1.5 shadow-xl">
+                        <FileText size={12} className="text-emerald-400" /> View in PDF ↗
+                      </span>
+                    </div>
+                  </a>
+                  <div className="p-6">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 block mb-1">
+                      Series 《Heaven 渡》 · Plate No.0102
+                    </span>
+                    <h4 className="text-xl font-serif text-white mb-2">《Heaven No.0102》</h4>
+                    <p className="text-xs text-gray-300 font-light leading-relaxed mb-4">
+                      Contemplative figures upon monumental coastal boulders and animal skeletons, investigating spiritual transcendence, mortality, and the Buddhist philosophy of crossing over (&ldquo;渡&rdquo;).
+                    </p>
+                    <div className="text-[11px] font-mono text-gray-400 space-y-1 pt-3 border-t border-white/10">
+                      <div>Medium: 8x10 View Camera · Silver Gelatin Print</div>
+                      <div>Curated Status: Permanent European Archive</div>
+                      <div>Authenticity: Artist Red Seal &amp; Provenance Certificate</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 pt-0">
+                  <a 
+                    href="https://shorturl.at/TYn8P"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-between w-full py-2.5 px-3 bg-white/5 hover:bg-white hover:text-black text-white font-mono text-[11px] uppercase tracking-wider border border-white/10 transition-all"
+                  >
+                    <span>Inspect Monograph Sheet</span>
+                    <ExternalLink size={12} />
+                  </a>
+                </div>
+              </div>
+
+              {/* Work 02: Lies No.0305 */}
+              <div className="bg-[#080808] border border-white/10 flex flex-col justify-between group overflow-hidden">
+                <div>
+                  <a 
+                    href="https://shorturl.at/TYn8P"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block relative aspect-[16/10] overflow-hidden bg-black cursor-pointer"
+                    title="View 《Lies No.0305》 in Official Monograph PDF"
+                  >
+                    <img 
+                      src="/images/artwork-lies-0305.jpg"
+                      alt="Ming Ye (叶明) — Lies No.0305 Large-Format Darkroom Photograph"
+                      loading="lazy"
+                      decoding="async"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover contrast-110 group-hover:scale-105 transition-all duration-700"
+                    />
+                    <div className="absolute top-3 left-3 bg-black/85 backdrop-blur-md px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-white border border-white/10">
+                      Series 《Lies 谎言》
+                    </div>
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <span className="px-3 py-1.5 bg-black/90 text-white font-mono text-[11px] uppercase tracking-wider border border-white/20 flex items-center gap-1.5 shadow-xl">
+                        <FileText size={12} className="text-emerald-400" /> View in PDF ↗
+                      </span>
+                    </div>
+                  </a>
+                  <div className="p-6">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 block mb-1">
+                      Series 《Lies 谎言》 · Plate No.0305
+                    </span>
+                    <h4 className="text-xl font-serif text-white mb-2">《Lies No.0305》</h4>
+                    <p className="text-xs text-gray-300 font-light leading-relaxed mb-4">
+                      An avian bird skeleton perched delicately on dark scholar stone amidst blooming white plum blossoms, contrasting the vanity of truth, ephemeral beauty, and silence.
+                    </p>
+                    <div className="text-[11px] font-mono text-gray-400 space-y-1 pt-3 border-t border-white/10">
+                      <div>Medium: Large-Format Darkroom Fiber Print</div>
+                      <div>Theme: Vanitas &amp; Philosophical Stillness</div>
+                      <div>Curated Status: Museum Exhibition Catalogued</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 pt-0">
+                  <a 
+                    href="https://shorturl.at/TYn8P"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-between w-full py-2.5 px-3 bg-white/5 hover:bg-white hover:text-black text-white font-mono text-[11px] uppercase tracking-wider border border-white/10 transition-all"
+                  >
+                    <span>Inspect Monograph Sheet</span>
+                    <ExternalLink size={12} />
+                  </a>
+                </div>
+              </div>
+
+              {/* Work 03: Prophecy No.0009 */}
+              <div className="bg-[#080808] border border-white/10 flex flex-col justify-between group overflow-hidden">
+                <div>
+                  <a 
+                    href="https://shorturl.at/TYn8P"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block relative aspect-[16/10] overflow-hidden bg-black cursor-pointer"
+                    title="View 《Prophecy No.0009》 in Official Monograph PDF"
+                  >
+                    <img 
+                      src="/images/artwork-prophecy-0009.jpg"
+                      alt="Ming Ye (叶明) — Prophecy No.0009 Large-Format Analog Photograph"
+                      loading="lazy"
+                      decoding="async"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover contrast-110 group-hover:scale-105 transition-all duration-700"
+                    />
+                    <div className="absolute top-3 left-3 bg-black/85 backdrop-blur-md px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-white border border-white/10">
+                      Series 《Prophecy 预言》
+                    </div>
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <span className="px-3 py-1.5 bg-black/90 text-white font-mono text-[11px] uppercase tracking-wider border border-white/20 flex items-center gap-1.5 shadow-xl">
+                        <FileText size={12} className="text-emerald-400" /> View in PDF ↗
+                      </span>
+                    </div>
+                  </a>
+                  <div className="p-6">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 block mb-1">
+                      Series 《Prophecy 预言》 · Plate No.0009
+                    </span>
+                    <h4 className="text-xl font-serif text-white mb-2">《Prophecy No.0009》</h4>
+                    <p className="text-xs text-gray-300 font-light leading-relaxed mb-4">
+                      A hooded contemplative figure seated upon a desolate rocky shore with an animal skull resting on the sand, exploring prophetic visions, cosmic stillness, and existential time.
+                    </p>
+                    <div className="text-[11px] font-mono text-gray-400 space-y-1 pt-3 border-t border-white/10">
+                      <div>Medium: 8x10 View Camera · Archival Silver Gelatin</div>
+                      <div>Theme: Metaphysical Prophecy &amp; Solitude</div>
+                      <div>Representation: Sole Global Agent (YEAH Agency)</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 pt-0">
+                  <a 
+                    href="https://shorturl.at/TYn8P"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-between w-full py-2.5 px-3 bg-white/5 hover:bg-white hover:text-black text-white font-mono text-[11px] uppercase tracking-wider border border-white/10 transition-all"
+                  >
+                    <span>Inspect Monograph Sheet</span>
+                    <ExternalLink size={12} />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Institutional Provenance & Monograph Publication Layout */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
+              <div>
+                <span className="text-xs font-mono uppercase tracking-[0.4em] text-emerald-400 block mb-3">
+                  Institutional Archives · European Museum Provenance
+                </span>
+                <h3 className="text-2xl md:text-4xl font-serif text-white">
+                  Official Monograph &amp; European Retrospective Record
+                </h3>
+              </div>
             </div>
 
             {/* Curatorial Dual Layout: Institutional Provenance & Monograph Publication Card */}
@@ -1821,6 +2002,8 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
                       src="/images/artist-mingye.svg"
                       alt="Ming Ye (叶明) — Official Artist Monograph & Catalogue Raisonné"
                       loading="lazy"
+                      decoding="async"
+                      referrerPolicy="no-referrer"
                       className="w-full h-full object-contain p-2 group-hover/card:scale-102 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-black/40 group-hover/card:bg-black/10 transition-colors flex items-center justify-center">
