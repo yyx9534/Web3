@@ -3,56 +3,116 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://yeah-amsterdam.nl/</loc>
-    <lastmod>2026-10-07</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- High-Authority Long-Tail Dossiers (SEO Topic Clusters) -->
+  <url>
+    <loc>https://yeah-amsterdam.nl/guides/dutch-branch-office-formation</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://yeah-amsterdam.nl/dutch-branch-office</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://yeah-amsterdam.nl/dutch-branch-office.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <url>
+    <loc>https://yeah-amsterdam.nl/guides/video-production-amsterdam</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://yeah-amsterdam.nl/video-production-amsterdam</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://yeah-amsterdam.nl/video-production.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <url>
+    <loc>https://yeah-amsterdam.nl/guides/wedding-photography-amsterdam</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://yeah-amsterdam.nl/wedding-photography</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://yeah-amsterdam.nl/wedding-photography.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- Core Practice Pages -->
   <url>
     <loc>https://yeah-amsterdam.nl/services/business-consulting</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yeah-amsterdam.nl/business-consulting</loc>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yeah-amsterdam.nl/services/creative-agency</loc>
-    <lastmod>2026-10-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yeah-amsterdam.nl/services/fine-art</loc>
-    <lastmod>2026-10-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yeah-amsterdam.nl/services/custom-it-services</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yeah-amsterdam.nl/video-production</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yeah-amsterdam.nl/business-consulting</loc>
-    <lastmod>2026-10-07</lastmod>
+    <loc>https://yeah-amsterdam.nl/services/fine-art</loc>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yeah-amsterdam.nl/fine-art</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yeah-amsterdam.nl/services/custom-it-services</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yeah-amsterdam.nl/enterprise-it</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
 </urlset>

@@ -22,6 +22,8 @@ import {
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/src/lib/utils";
+import { GuidePage } from "./GuidePage";
+import { DETAILED_GUIDES } from "./guidesData";
 
 // --- Types & Data Models ---
 
@@ -871,6 +873,17 @@ const Navbar = () => {
           04. Software
         </Link>
         <span className="text-gray-700">|</span>
+        <Link 
+          to="/guides/dutch-branch-office-formation"
+          className={cn(
+            "transition-colors py-1 border-b",
+            location.pathname.startsWith("/guides") || location.pathname.includes("wedding-photography") || location.pathname.includes("branch-office")
+              ? "text-emerald-400 border-emerald-400 font-medium"
+              : "text-gray-400 border-transparent hover:text-white"
+          )}
+        >
+          Dossiers &amp; Guides
+        </Link>
         <a href="/#divisions" className="text-gray-400 hover:text-white transition-colors">
           Practices
         </a>
@@ -931,6 +944,7 @@ const Navbar = () => {
 
               <div className="pt-6 border-t border-white/10 space-y-4 text-xs font-mono uppercase tracking-widest text-gray-400">
                 <Link to="/" onClick={() => setIsOpen(false)} className="block hover:text-white">Home Portal</Link>
+                <Link to="/guides/dutch-branch-office-formation" onClick={() => setIsOpen(false)} className="block text-emerald-400 hover:text-white">Dossiers &amp; SEO Guides (专栏)</Link>
                 <a href="/#divisions" onClick={() => setIsOpen(false)} className="block hover:text-white">The Four Practices</a>
                 <a href="/#about" onClick={() => setIsOpen(false)} className="block hover:text-white">About YEAH Collective</a>
                 <a href="mailto:info@yeah-amsterdam.nl" onClick={() => setIsOpen(false)} className="block text-white">Direct Inquiry</a>
@@ -1392,6 +1406,59 @@ const Footer = () => {
             </Link>
             <Link to="/services/custom-it-services" className="hover:text-white transition-colors">
               • Software Development — Custom Cloud Architecture & GDPR
+            </Link>
+          </div>
+        </div>
+
+        {/* High-Authority Practice Dossiers & Topic Clusters (SEO Long-Tail Authority Hub) */}
+        <div className="py-8 border-b border-white/10 text-xs">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-emerald-400 font-mono uppercase tracking-widest text-[11px] flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              High-Authority Practice Dossiers &amp; Topic Guides (行业深度专栏与出海指南)
+            </span>
+            <span className="text-gray-500 font-mono text-[10px] uppercase tracking-wider hidden sm:inline">
+              Verified Practice Knowledge
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Link 
+              to="/guides/dutch-branch-office-formation"
+              className="p-4 bg-[#0a0a0a] border border-white/10 hover:border-emerald-500/40 transition-all group rounded-sm"
+            >
+              <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider mb-1">Corporate · 出海合规</div>
+              <h5 className="font-serif text-sm text-white group-hover:text-emerald-300 transition-colors mb-1">
+                荷兰开分公司全流程实操指南
+              </h5>
+              <p className="text-[11px] text-gray-400 font-light line-clamp-2">
+                分公司(Branch Office) vs 荷兰BV子公司对比、商会KvK注册、公证海牙认证与外派员工工作签证全攻略。
+              </p>
+            </Link>
+
+            <Link 
+              to="/guides/video-production-amsterdam"
+              className="p-4 bg-[#0a0a0a] border border-white/10 hover:border-emerald-500/40 transition-all group rounded-sm"
+            >
+              <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider mb-1">Film · 影视制作</div>
+              <h5 className="font-serif text-sm text-white group-hover:text-emerald-300 transition-colors mb-1">
+                Commercial Video Production in Amsterdam
+              </h5>
+              <p className="text-[11px] text-gray-400 font-light line-clamp-2">
+                Cinema commercials, reality series ('Tram Dating'), 4K/6K ARRI &amp; RED packages, and Dutch drone filming permits.
+              </p>
+            </Link>
+
+            <Link 
+              to="/guides/wedding-photography-amsterdam"
+              className="p-4 bg-[#0a0a0a] border border-white/10 hover:border-emerald-500/40 transition-all group rounded-sm"
+            >
+              <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider mb-1">Weddings · 婚礼旅拍</div>
+              <h5 className="font-serif text-sm text-white group-hover:text-emerald-300 transition-colors mb-1">
+                Destination Wedding Photography &amp; Cinema
+              </h5>
+              <p className="text-[11px] text-gray-400 font-light line-clamp-2">
+                Amsterdam canal elopements, Kasteel De Haar castles, tulip fields &amp; bilingual Chinese-European film crew.
+              </p>
             </Link>
           </div>
         </div>
@@ -2336,6 +2403,15 @@ export default function App() {
               <Route path="/fine-art" element={<ServicePage defaultId="fine-art" />} />
               <Route path="/custom-it-services" element={<ServicePage defaultId="custom-it-services" />} />
               <Route path="/enterprise-it" element={<ServicePage defaultId="custom-it-services" />} />
+
+              {/* Dedicated High-Authority SEO Topic Dossiers & Long-Tail Landing Routes */}
+              <Route path="/guides/:slug" element={<GuidePage />} />
+              <Route path="/guides/dutch-branch-office-formation" element={<GuidePage defaultSlug="dutch-branch-office-formation" />} />
+              <Route path="/dutch-branch-office" element={<GuidePage defaultSlug="dutch-branch-office-formation" />} />
+              <Route path="/guides/video-production-amsterdam" element={<GuidePage defaultSlug="video-production-amsterdam" />} />
+              <Route path="/video-production-amsterdam" element={<GuidePage defaultSlug="video-production-amsterdam" />} />
+              <Route path="/guides/wedding-photography-amsterdam" element={<GuidePage defaultSlug="wedding-photography-amsterdam" />} />
+              <Route path="/wedding-photography" element={<GuidePage defaultSlug="wedding-photography-amsterdam" />} />
             </Routes>
           </AnimatePresence>
         </main>
