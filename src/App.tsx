@@ -17,13 +17,21 @@ import {
   Eye,
   FileText,
   Download,
-  BookOpen
+  BookOpen,
+  Search,
+  Calculator,
+  Sparkles,
+  Copy,
+  Check
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/src/lib/utils";
 import { GuidePage } from "./GuidePage";
 import { DETAILED_GUIDES } from "./guidesData";
+import { EstimateCalculatorModal } from "./EstimateCalculatorModal";
+import { GlobalSearchModal } from "./GlobalSearchModal";
+import { ContactModal } from "./ContactModal";
 
 // --- Types & Data Models ---
 
@@ -809,14 +817,22 @@ function ScrollToTop() {
 
 // --- Navigation Bar ---
 
-const Navbar = () => {
+const Navbar = ({ 
+  onOpenSearch, 
+  onOpenCalc,
+  onOpenContact
+}: { 
+  onOpenSearch?: () => void; 
+  onOpenCalc?: () => void; 
+  onOpenContact?: () => void;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   const isCurrent = (path: string) => location.pathname === path;
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-white/10 px-6 md:px-12 py-5 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-white/10 px-6 md:px-12 py-4 flex items-center justify-between no-print">
       <Link to="/" className="flex items-center gap-3 group">
         <span className="font-serif text-2xl tracking-widest text-white uppercase group-hover:text-gray-300 transition-colors">
           YEAH
@@ -827,7 +843,7 @@ const Navbar = () => {
       </Link>
 
       {/* Desktop Links: 4 Sovereign Practices with Refined Subtitles */}
-      <div className="hidden lg:flex items-center gap-7 text-xs font-mono tracking-widest uppercase">
+      <div className="hidden lg:flex items-center gap-6 text-xs font-mono tracking-widest uppercase">
         <Link 
           to="/services/business-consulting" 
           className={cn(
@@ -890,18 +906,37 @@ const Navbar = () => {
         <a href="/#about" className="text-gray-400 hover:text-white transition-colors">
           About
         </a>
-        <a href="mailto:info@yeah-amsterdam.nl" className="text-white hover:text-gray-300 transition-colors font-medium">
-          Inquire
-        </a>
       </div>
 
-      <div className="flex items-center gap-4">
-        <a 
-          href="mailto:info@yeah-amsterdam.nl"
-          className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-[11px] font-mono uppercase tracking-wider bg-white/10 hover:bg-white hover:text-black text-white transition-all rounded-sm border border-white/10"
+      <div className="flex items-center gap-3">
+        {/* Estimator Button */}
+        <button
+          onClick={onOpenCalc}
+          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-sm transition-all cursor-pointer"
+          title="Project Scope & Feasibility Estimator"
         >
-          <Mail size={12} /> info@yeah-amsterdam.nl
-        </a>
+          <Calculator size={12} />
+          <span>Estimator</span>
+        </button>
+
+        {/* Global Search Button */}
+        <button
+          onClick={onOpenSearch}
+          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-[11px] font-mono text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-sm transition-all cursor-pointer"
+          title="Global Practice & Guide Search (Cmd+K)"
+        >
+          <Search size={12} />
+          <kbd className="hidden md:inline text-[9px] bg-white/10 px-1 py-0.5 rounded font-mono text-gray-400">⌘K</kbd>
+        </button>
+
+        <button 
+          onClick={onOpenContact}
+          className="hidden lg:inline-flex items-center gap-2 px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider bg-white/10 hover:bg-white hover:text-black text-white transition-all rounded-sm border border-white/10 cursor-pointer"
+          title="Contact Direct Mailbox"
+        >
+          <Mail size={12} /> Inquire
+        </button>
+
         <button 
           onClick={() => setIsOpen(!isOpen)}
           className="p-2 text-white hover:text-gray-400 transition-colors lg:hidden"
@@ -918,8 +953,26 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 top-[73px] bg-black/98 backdrop-blur-xl z-40 flex flex-col p-8 lg:hidden border-t border-white/10 overflow-y-auto"
+            className="fixed inset-0 top-[65px] bg-black/98 backdrop-blur-xl z-40 flex flex-col p-6 lg:hidden border-t border-white/10 overflow-y-auto"
           >
+            {/* Quick Actions in Mobile */}
+            <div className="grid grid-cols-2 gap-2 mb-6">
+              <button
+                onClick={() => { setIsOpen(false); onOpenCalc?.(); }}
+                className="py-2.5 px-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono rounded flex items-center justify-center gap-1.5"
+              >
+                <Calculator size={13} />
+                <span>Scope Estimator</span>
+              </button>
+              <button
+                onClick={() => { setIsOpen(false); onOpenSearch?.(); }}
+                className="py-2.5 px-3 bg-white/5 border border-white/10 text-white text-xs font-mono rounded flex items-center justify-center gap-1.5"
+              >
+                <Search size={13} />
+                <span>Search (⌘K)</span>
+              </button>
+            </div>
+
             <div className="space-y-6">
               <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500 block">The Four Practice Subpages</span>
               <div className="space-y-4">
@@ -944,20 +997,25 @@ const Navbar = () => {
 
               <div className="pt-6 border-t border-white/10 space-y-4 text-xs font-mono uppercase tracking-widest text-gray-400">
                 <Link to="/" onClick={() => setIsOpen(false)} className="block hover:text-white">Home Portal</Link>
-                <Link to="/guides/dutch-branch-office-formation" onClick={() => setIsOpen(false)} className="block text-emerald-400 hover:text-white">Dossiers &amp; SEO Guides (专栏)</Link>
+                <Link to="/guides/dutch-branch-office-formation" onClick={() => setIsOpen(false)} className="block text-emerald-400 hover:text-white">Dossiers &amp; Guides</Link>
                 <a href="/#divisions" onClick={() => setIsOpen(false)} className="block hover:text-white">The Four Practices</a>
                 <a href="/#about" onClick={() => setIsOpen(false)} className="block hover:text-white">About YEAH Collective</a>
-                <a href="mailto:info@yeah-amsterdam.nl" onClick={() => setIsOpen(false)} className="block text-white">Direct Inquiry</a>
+                <button 
+                  onClick={() => { setIsOpen(false); onOpenContact?.(); }} 
+                  className="block text-left text-white hover:text-emerald-400 transition-colors w-full"
+                >
+                  Direct Inquiry
+                </button>
               </div>
             </div>
 
             <div className="mt-auto pt-8 border-t border-white/10">
-              <a 
-                href="mailto:info@yeah-amsterdam.nl"
-                className="w-full flex items-center justify-center gap-2 py-3 bg-white text-black font-mono text-xs uppercase tracking-widest font-medium"
+              <button 
+                onClick={() => { setIsOpen(false); onOpenContact?.(); }}
+                className="w-full flex items-center justify-center gap-2 py-3 bg-white text-black font-mono text-xs uppercase tracking-widest font-medium hover:bg-gray-200 transition-colors"
               >
                 <Mail size={14} /> info@yeah-amsterdam.nl
-              </a>
+              </button>
             </div>
           </motion.div>
         )}
@@ -1238,10 +1296,17 @@ const AboutSection = () => {
 
 // --- Contact & Direct Inquiries ---
 
-const Contact = () => {
+const Contact = ({ onOpenContact }: { onOpenContact?: (practiceId?: string) => void }) => {
   const [selectedPractice, setSelectedPractice] = useState<string>("business-consulting");
+  const [copied, setCopied] = useState(false);
 
   const currentService = SERVICES.find(s => s.id === selectedPractice) || SERVICES[0];
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("info@yeah-amsterdam.nl");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <section id="contact" className="py-24 md:py-36 px-6 md:px-12 bg-black border-b border-white/10">
@@ -1279,15 +1344,28 @@ const Contact = () => {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-white/10">
             <div>
               <span className="text-[11px] font-mono text-gray-400 block">Default Direct Channel:</span>
-              <span className="text-sm font-mono text-white">info@yeah-amsterdam.nl</span>
+              <button 
+                type="button"
+                onClick={handleCopyEmail}
+                className="text-sm font-mono text-white hover:text-emerald-400 transition-colors flex items-center gap-2 cursor-pointer"
+                title="Click to copy email address"
+              >
+                <span>info@yeah-amsterdam.nl</span>
+                {copied ? (
+                  <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-mono">Copied!</span>
+                ) : (
+                  <Copy size={13} className="text-gray-400 hover:text-white" />
+                )}
+              </button>
             </div>
 
-            <a 
-              href={`mailto:info@yeah-amsterdam.nl?subject=${encodeURIComponent(`Inquiry for ${currentService.title}`)}`}
-              className="inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors font-medium"
+            <button 
+              type="button"
+              onClick={() => onOpenContact?.(selectedPractice)}
+              className="inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors font-medium cursor-pointer"
             >
               Compose Email to Amsterdam <ArrowRight size={14} />
-            </a>
+            </button>
           </div>
         </div>
 
@@ -1301,7 +1379,7 @@ const Contact = () => {
 
 // --- Footer ---
 
-const Footer = () => {
+const Footer = ({ onOpenContact }: { onOpenContact?: () => void }) => {
   return (
     <footer className="py-16 px-6 md:px-12 bg-black text-gray-500 border-t border-white/10">
       <div className="max-w-7xl mx-auto">
@@ -1332,7 +1410,7 @@ const Footer = () => {
             <span className="text-xs font-mono uppercase tracking-widest text-white block mb-4">Direct Portals & Links</span>
             <div className="space-y-2 text-xs font-mono text-gray-400">
               <p>Amsterdam, The Netherlands</p>
-              <p>Direct: <a href="mailto:info@yeah-amsterdam.nl" className="text-white hover:underline">info@yeah-amsterdam.nl</a></p>
+              <p>Direct: <button onClick={onOpenContact} className="text-white hover:underline text-left cursor-pointer">info@yeah-amsterdam.nl</button></p>
               
               <div className="pt-2 space-y-1.5">
                 <div>
@@ -1415,7 +1493,7 @@ const Footer = () => {
           <div className="flex items-center justify-between mb-4">
             <span className="text-emerald-400 font-mono uppercase tracking-widest text-[11px] flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              High-Authority Practice Dossiers &amp; Topic Guides (行业深度专栏与出海指南)
+              Practice Dossiers &amp; Guides
             </span>
             <span className="text-gray-500 font-mono text-[10px] uppercase tracking-wider hidden sm:inline">
               Verified Practice Knowledge
@@ -1426,12 +1504,12 @@ const Footer = () => {
               to="/guides/dutch-branch-office-formation"
               className="p-4 bg-[#0a0a0a] border border-white/10 hover:border-emerald-500/40 transition-all group rounded-sm"
             >
-              <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider mb-1">Corporate · 出海合规</div>
+              <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider mb-1">Corporate Landing</div>
               <h5 className="font-serif text-sm text-white group-hover:text-emerald-300 transition-colors mb-1">
-                荷兰开分公司全流程实操指南
+                Netherlands Branch &amp; BV Formation Guide
               </h5>
               <p className="text-[11px] text-gray-400 font-light line-clamp-2">
-                分公司(Branch Office) vs 荷兰BV子公司对比、商会KvK注册、公证海牙认证与外派员工工作签证全攻略。
+                Branch Office vs. Dutch BV subsidiary comparison, KvK commercial chamber registration, notarization, and expatriate visa execution.
               </p>
             </Link>
 
@@ -1439,7 +1517,7 @@ const Footer = () => {
               to="/guides/video-production-amsterdam"
               className="p-4 bg-[#0a0a0a] border border-white/10 hover:border-emerald-500/40 transition-all group rounded-sm"
             >
-              <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider mb-1">Film · 影视制作</div>
+              <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider mb-1">Film &amp; Commercials</div>
               <h5 className="font-serif text-sm text-white group-hover:text-emerald-300 transition-colors mb-1">
                 Commercial Video Production in Amsterdam
               </h5>
@@ -1452,7 +1530,7 @@ const Footer = () => {
               to="/guides/wedding-photography-amsterdam"
               className="p-4 bg-[#0a0a0a] border border-white/10 hover:border-emerald-500/40 transition-all group rounded-sm"
             >
-              <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider mb-1">Weddings · 婚礼旅拍</div>
+              <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider mb-1">Weddings &amp; Cinema</div>
               <h5 className="font-serif text-sm text-white group-hover:text-emerald-300 transition-colors mb-1">
                 Destination Wedding Photography &amp; Cinema
               </h5>
@@ -2361,7 +2439,7 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
 // --- Home Page Composition ---
 // Notice: The intrusive CapabilitiesDirectory index is removed completely from the visual homepage as requested!
 
-const HomePage = () => {
+const HomePage = ({ onOpenContact }: { onOpenContact?: (practiceId?: string) => void }) => {
   usePageSEO({
     title: "YEAH Agency Amsterdam | Multidisciplinary Agency · Video Production, Corporate Consulting, Fine Art & Software",
     description: "YEAH Agency Amsterdam is an international multidisciplinary agency collective in Amsterdam. Specializing in Corporate Consulting, Video Production under Glass Sharp Films, Fine Art Representation of Large-Format Photography Artist Ming Ye, and Software Development including DriveViewer.",
@@ -2378,7 +2456,7 @@ const HomePage = () => {
       <Hero />
       <DivisionPortals />
       <AboutSection />
-      <Contact />
+      <Contact onOpenContact={onOpenContact} />
     </motion.div>
   );
 };
@@ -2386,16 +2464,48 @@ const HomePage = () => {
 // --- Root Application ---
 
 export default function App() {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isCalcOpen, setIsCalcOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [contactPractice, setContactPractice] = useState<string>("corporate-consulting");
+  const [calcCategory, setCalcCategory] = useState<"consulting" | "video" | "wedding" | "software">("consulting");
+
+  // Global Command+K shortcut
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const openCalcWithCategory = (cat?: "consulting" | "video" | "wedding" | "software") => {
+    if (cat) setCalcCategory(cat);
+    setIsCalcOpen(true);
+  };
+
+  const openContactWithPractice = (practiceId?: string) => {
+    if (practiceId) setContactPractice(practiceId);
+    setIsContactOpen(true);
+  };
+
   return (
     <Router>
       <ScrollToTop />
       <div className="relative min-h-screen font-sans selection:bg-white selection:text-black bg-black text-white">
         <div className="grain" />
-        <Navbar />
+        <Navbar 
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenCalc={() => openCalcWithCategory("consulting")}
+          onOpenContact={() => openContactWithPractice()}
+        />
         <main>
           <AnimatePresence mode="wait">
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<HomePage onOpenContact={openContactWithPractice} />} />
               <Route path="/services/:id" element={<ServicePage />} />
               <Route path="/business-consulting" element={<ServicePage defaultId="business-consulting" />} />
               <Route path="/video-production" element={<ServicePage defaultId="creative-agency" />} />
@@ -2405,17 +2515,83 @@ export default function App() {
               <Route path="/enterprise-it" element={<ServicePage defaultId="custom-it-services" />} />
 
               {/* Dedicated High-Authority SEO Topic Dossiers & Long-Tail Landing Routes */}
-              <Route path="/guides/:slug" element={<GuidePage />} />
-              <Route path="/guides/dutch-branch-office-formation" element={<GuidePage defaultSlug="dutch-branch-office-formation" />} />
-              <Route path="/dutch-branch-office" element={<GuidePage defaultSlug="dutch-branch-office-formation" />} />
-              <Route path="/guides/video-production-amsterdam" element={<GuidePage defaultSlug="video-production-amsterdam" />} />
-              <Route path="/video-production-amsterdam" element={<GuidePage defaultSlug="video-production-amsterdam" />} />
-              <Route path="/guides/wedding-photography-amsterdam" element={<GuidePage defaultSlug="wedding-photography-amsterdam" />} />
-              <Route path="/wedding-photography" element={<GuidePage defaultSlug="wedding-photography-amsterdam" />} />
+              <Route 
+                path="/guides/:slug" 
+                element={<GuidePage onOpenCalculator={openCalcWithCategory} />} 
+              />
+              <Route 
+                path="/guides/dutch-branch-office-formation" 
+                element={<GuidePage defaultSlug="dutch-branch-office-formation" onOpenCalculator={openCalcWithCategory} />} 
+              />
+              <Route 
+                path="/dutch-branch-office" 
+                element={<GuidePage defaultSlug="dutch-branch-office-formation" onOpenCalculator={openCalcWithCategory} />} 
+              />
+              <Route 
+                path="/guides/video-production-amsterdam" 
+                element={<GuidePage defaultSlug="video-production-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
+              />
+              <Route 
+                path="/video-production-amsterdam" 
+                element={<GuidePage defaultSlug="video-production-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
+              />
+              <Route 
+                path="/guides/wedding-photography-amsterdam" 
+                element={<GuidePage defaultSlug="wedding-photography-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
+              />
+              <Route 
+                path="/wedding-photography" 
+                element={<GuidePage defaultSlug="wedding-photography-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
+              />
             </Routes>
           </AnimatePresence>
         </main>
-        <Footer />
+        <Footer onOpenContact={() => openContactWithPractice()} />
+
+        {/* Floating Quick Utility Dock */}
+        <div className="fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-neutral-900/95 backdrop-blur-md px-3 py-2 border border-white/20 rounded-full shadow-2xl no-print">
+          <button 
+            onClick={() => setIsSearchOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white text-xs font-mono transition-all cursor-pointer"
+            title="Global Search (Cmd+K)"
+          >
+            <Search size={13} className="text-gray-400" />
+            <span className="hidden sm:inline">Search</span>
+            <kbd className="hidden md:inline px-1 py-0.2 bg-white/10 rounded text-[9px] text-gray-400">⌘K</kbd>
+          </button>
+          <button 
+            onClick={() => openCalcWithCategory("consulting")}
+            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-mono transition-all cursor-pointer"
+            title="Project Scope & Feasibility Estimator"
+          >
+            <Calculator size={13} />
+            <span className="font-medium">Estimator</span>
+          </button>
+          <button 
+            onClick={() => openContactWithPractice()}
+            className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all flex items-center justify-center cursor-pointer"
+            title="Contact Direct Mailbox (info@yeah-amsterdam.nl)"
+          >
+            <Mail size={13} />
+          </button>
+        </div>
+
+        {/* Global Modals */}
+        <EstimateCalculatorModal 
+          isOpen={isCalcOpen}
+          onClose={() => setIsCalcOpen(false)}
+          defaultCategory={calcCategory}
+        />
+        <GlobalSearchModal 
+          isOpen={isSearchOpen}
+          onClose={() => setIsSearchOpen(false)}
+          onOpenCalculator={() => openCalcWithCategory("consulting")}
+        />
+        <ContactModal
+          isOpen={isContactOpen}
+          onClose={() => setIsContactOpen(false)}
+          defaultPractice={contactPractice}
+        />
       </div>
     </Router>
   );

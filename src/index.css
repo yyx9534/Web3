@@ -26,17 +26,25 @@
   animation: noise 8s steps(10) infinite;
 }
 
-@keyframes noise {
-  0% { transform: translate(0,0); }
-  10% { transform: translate(-5%,-5%); }
-  20% { transform: translate(-10%,5%); }
-  30% { transform: translate(5%,-10%); }
-  40% { transform: translate(-5%,15%); }
-  50% { transform: translate(-10%,5%); }
-  60% { transform: translate(15%,0); }
-  70% { transform: translate(0,10%); }
-  80% { transform: translate(-15%,0); }
-  90% { transform: translate(10%,5%); }
-  100% { transform: translate(5%,0); }
+@media print {
+  nav, .grain, .no-print, button {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  h1, h2, h3, h4, h5, p, span, div, li, th, td {
+    color: black !important;
+    text-shadow: none !important;
+  }
+  .bg-black, .bg-\[#0a0a0a\], .bg-\[#090909\], .bg-neutral-900, .bg-white\/5 {
+    background: white !important;
+    border-color: #e5e7eb !important;
+  }
+  table, th, td {
+    border: 1px solid #d1d5db !important;
+    color: black !important;
+  }
 }
 

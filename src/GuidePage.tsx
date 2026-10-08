@@ -16,11 +16,17 @@ import {
   Sparkles,
   Building2,
   Film,
-  Camera
+  Camera,
+  Printer,
+  Calculator,
+  Download
 } from "lucide-react";
 import { DETAILED_GUIDES, DetailedGuide } from "./guidesData";
 
-export const GuidePage: React.FC<{ defaultSlug?: string }> = ({ defaultSlug }) => {
+export const GuidePage: React.FC<{ 
+  defaultSlug?: string;
+  onOpenCalculator?: (cat?: "consulting" | "video" | "wedding" | "software") => void;
+}> = ({ defaultSlug, onOpenCalculator }) => {
   const params = useParams();
   const navigate = useNavigate();
   const slug = defaultSlug || params.slug;
@@ -28,6 +34,17 @@ export const GuidePage: React.FC<{ defaultSlug?: string }> = ({ defaultSlug }) =
   const guide = DETAILED_GUIDES.find((g) => g.slug === slug);
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
   const [copied, setCopied] = useState(false);
+
+  const getCalcCategory = () => {
+    if (guide?.slug.includes("branch-office")) return "consulting";
+    if (guide?.slug.includes("video-production")) return "video";
+    if (guide?.slug.includes("wedding-photography")) return "wedding";
+    return "consulting";
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
 
   useEffect(() => {
     if (!guide && slug) {
@@ -91,17 +108,33 @@ export const GuidePage: React.FC<{ defaultSlug?: string }> = ({ defaultSlug }) =
           >
             <ArrowLeft size={14} /> Back to Agency Home
           </Link>
-          <div className="flex items-center gap-4 text-xs font-mono text-gray-400">
-            <span className="hidden sm:inline-flex items-center gap-1.5 text-emerald-400">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-mono text-gray-400 no-print">
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-emerald-400 mr-2">
               <Sparkles size={12} /> {guide.category}
             </span>
             <button
+              onClick={() => onOpenCalculator?.(getCalcCategory())}
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-colors rounded-sm"
+              title="测算预算与周期"
+            >
+              <Calculator size={12} />
+              <span>智能测算方案</span>
+            </button>
+            <button
+              onClick={handlePrint}
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/10 transition-colors rounded-sm"
+              title="保存/打印为 PDF 备忘录"
+            >
+              <Printer size={12} />
+              <span className="hidden sm:inline">导出 PDF</span>
+            </button>
+            <button
               onClick={handleCopyLink}
               className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/10 transition-colors rounded-sm"
-              title="Copy share link"
+              title="复制分享链接"
             >
               <Share2 size={12} />
-              <span>{copied ? "Copied!" : "Share Dossier"}</span>
+              <span>{copied ? "已复制链接!" : "分享"}</span>
             </button>
           </div>
         </div>
@@ -296,13 +329,20 @@ export const GuidePage: React.FC<{ defaultSlug?: string }> = ({ defaultSlug }) =
               Contact our senior practice partners in Amsterdam for bespoke legal assessment, production quotation, or wedding booking availability.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0 no-print">
+            <button 
+              onClick={() => onOpenCalculator?.(getCalcCategory())}
+              className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs uppercase tracking-widest transition-colors font-medium"
+            >
+              <Calculator size={14} />
+              <span>智能预算测算</span>
+            </button>
             <a 
               href={`mailto:info@yeah-amsterdam.nl?subject=${encodeURIComponent(`Engagement Inquiry regarding ${guide.title}`)}`}
               className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors font-medium"
             >
               <Mail size={14} />
-              <span>Email Practice Partners</span>
+              <span>Email Practice</span>
             </a>
             <Link
               to={`/services/${guide.relatedPracticeId}`}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>YEAH Agency Amsterdam | Publications, Whitepapers &amp; Practice Insights</title>
+    <link>https://yeah-amsterdam.nl/</link>
+    <description>Authoritative practice dossiers, legal compliance briefings, Dutch branch office formation guides, and commercial cinema production insights from YEAH Agency Amsterdam.</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 08 Oct 2026 12:00:00 +0200</lastBuildDate>
+    <atom:link href="https://yeah-amsterdam.nl/feed.xml" rel="self" type="application/rss+xml" />
+
+    <item>
+      <title>荷兰开分公司全流程实操指南 | 外资企业设立分公司流程、KvK注册、公认证与人员派遣详解</title>
+      <link>https://yeah-amsterdam.nl/guides/dutch-branch-office-formation</link>
+      <guid>https://yeah-amsterdam.nl/guides/dutch-branch-office-formation</guid>
+      <pubDate>Thu, 08 Oct 2026 09:00:00 +0200</pubDate>
+      <description>为中国企业赴荷兰及欧洲出海提供权威实操指南：涵盖荷兰分公司(Branch Office / Nevenvestiging)与荷兰BV有限责任公司的法律责任对比、KvK商会公证与海牙认证(Apostille)、法定注册地址设立、IND高技术移民人员派遣(Kennismigrant)、30% Ruling外派税优政策及EPR包装环保申报。</description>
+      <category>Corporate Consulting</category>
+    </item>
+
+    <item>
+      <title>Commercial Video Production in Amsterdam &amp; Europe | Cinema Equipment, Crew &amp; Permitting Guide</title>
+      <link>https://yeah-amsterdam.nl/guides/video-production-amsterdam</link>
+      <guid>https://yeah-amsterdam.nl/guides/video-production-amsterdam</guid>
+      <pubDate>Thu, 08 Oct 2026 09:00:00 +0200</pubDate>
+      <description>Glass Sharp Films guide to commercial filmmaking, documentary direction, corporate commercials, and film crew hire in Amsterdam. Covers RED V-Raptor / ARRI Alexa LF cinema equipment packages, municipal canal permits, certified drone cinematography, and DaVinci Resolve color grading.</description>
+      <category>Video Production</category>
+    </item>
+
+    <item>
+      <title>Wedding Photography Amsterdam &amp; Netherlands | Luxury Destination Elopement &amp; Cinema Guide</title>
+      <link>https://yeah-amsterdam.nl/guides/wedding-photography-amsterdam</link>
+      <guid>https://yeah-amsterdam.nl/guides/wedding-photography-amsterdam</guid>
+      <pubDate>Thu, 08 Oct 2026 09:00:00 +0200</pubDate>
+      <description>Comprehensive destination wedding photography and cinematic videography guide for Amsterdam, Zaanse Schans, Giethoorn, and European castles. 4K dual-camera coverage, Kodak Portra medium format film photography, licensed drone aerials, and full post-production.</description>
+      <category>Wedding Photography</category>
+    </item>
+
+    <item>
+      <title>Practice Overview: Corporate Consulting &amp; European Market Entry</title>
+      <link>https://yeah-amsterdam.nl/services/business-consulting</link>
+      <guid>https://yeah-amsterdam.nl/services/business-consulting</guid>
+      <pubDate>Thu, 08 Oct 2026 08:00:00 +0200</pubDate>
+      <description>Strategic advisory for multinational firms establishing operations in the Netherlands: KvK registration, Afvalfonds Verpakkingen EPR compliance, third-party personnel dispatch, and Kennismigrant sponsorship.</description>
+      <category>Services</category>
+    </item>
+
+    <item>
+      <title>Practice Overview: Glass Sharp Films Commercial &amp; Series Production</title>
+      <link>https://yeah-amsterdam.nl/services/creative-agency</link>
+      <guid>https://yeah-amsterdam.nl/services/creative-agency</guid>
+      <pubDate>Thu, 08 Oct 2026 08:00:00 +0200</pubDate>
+      <description>Production banner behind the Tram Dating reality series and high-end commercial cinema campaigns across Western Europe.</description>
+      <category>Services</category>
+    </item>
+  </channel>
+</rss>
