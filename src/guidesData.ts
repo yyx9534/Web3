@@ -154,8 +154,8 @@ export const DETAILED_GUIDES: DetailedGuide[] = [
     category: "Video Production · 影视制作",
     badge: "CINEMA STANDARD · GLASSSHARPFILMS.NL",
     title: "Commercial Video Production in Amsterdam & Europe: Full-Cycle Commercials, Reality TV, TVC & Camera Crew Hire",
-    subtitle: "From script treatment to DaVinci Resolve color mastering: cinema-grade film production studio Glass Sharp Films delivering global commercials, reality television, and luxury corporate films across Europe.",
-    metaTitle: "Commercial Video Production Amsterdam | Glass Sharp Films Cinema Studio & Crew Hire",
+    subtitle: "From script treatment to DaVinci Resolve color mastering: cinema-grade film production agency Glass Sharp Films delivering global commercials, reality television, and luxury corporate films across Europe.",
+    metaTitle: "Commercial Video Production Amsterdam | Glass Sharp Films Cinema Agency & Crew Hire",
     metaDescription: "Premier video production company based in Amsterdam, Netherlands. Specializing in commercial brand films, TVC advertising, unscripted reality series ('Tram Dating'), 4K/6K ARRI & RED camera packages, and licensed drone cinematography across Europe.",
     keywords: "video production Amsterdam, commercial video production Netherlands, corporate video production Europe, film production company Amsterdam, Glass Sharp Films, commercial camera crew hire Amsterdam, reality TV series production Netherlands, Tram Dating, 4K video crew Europe, DaVinci Resolve color grading Amsterdam",
     heroImage: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop",
@@ -165,7 +165,7 @@ export const DETAILED_GUIDES: DetailedGuide[] = [
     relatedPracticeName: "02. Video Production (视频制作)",
     canonicalUrl: "https://yeah-amsterdam.nl/guides/video-production-amsterdam",
     highlights: [
-      { label: "Studio Label", value: "Glass Sharp Films (Amsterdam)" },
+      { label: "Agency Label", value: "Glass Sharp Films (Amsterdam)" },
       { label: "Camera Standard", value: "ARRI Alexa Mini LF / RED 8K / Sony FX9" },
       { label: "Turnaround", value: "2 - 4 Weeks Full Cycle Delivery" },
       { label: "Locations Covered", value: "Amsterdam, Rotterdam, Paris & Pan-Europe" }

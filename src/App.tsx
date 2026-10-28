@@ -200,8 +200,8 @@ export const SERVICES: ServiceDefinition[] = [
     subBrand: "Glass Sharp Films (glasssharpfilms.nl)",
     badge: "COMMERCIAL CINEMATOGRAPHY & BROADCAST",
     tagline: "Commercial brand campaigns, broadcast reality series, and luxury destination wedding films.",
-    desc: "A dedicated cinema-grade production studio (Glass Sharp Films) crafting high-impact commercials, original reality television including 'Tram Dating', Olympic athlete profiles, and European destination wedding films.",
-    longOverview: "Glass Sharp Films (glasssharpfilms.nl) operates as the dedicated video production practice of YEAH Agency Amsterdam. Founded in 2021, the studio bridges cinematic visual storytelling with broadcast commercial precision. Equipped with cinema-grade camera packages (ARRI, RED, Sony Cinema Line), licensed aerial drone systems, and full-spectrum post-production, we deliver films commanding international acclaim.",
+    desc: "A dedicated cinema-grade production agency (Glass Sharp Films) crafting high-impact commercials, original reality television including 'Tram Dating', Olympic athlete profiles, and European destination wedding films.",
+    longOverview: "Glass Sharp Films (glasssharpfilms.nl) operates as the dedicated video production practice of YEAH Agency Amsterdam. Founded in 2021, the agency bridges cinematic visual storytelling with broadcast commercial precision. Equipped with cinema-grade camera packages (ARRI, RED, Sony Cinema Line), licensed aerial drone systems, and full-spectrum post-production, we deliver films commanding international acclaim.",
     icon: Film,
     heroImage: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop",
     secondaryImage: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=2070&auto=format&fit=crop",
@@ -212,7 +212,7 @@ export const SERVICES: ServiceDefinition[] = [
     },
     featuredSpotlight: {
       title: "Glass Sharp Films — Dedicated Production House",
-      subtitle: "Amsterdam Commercial & Broadcast Studio",
+      subtitle: "Amsterdam Commercial & Broadcast Agency",
       description: "Official film production label based in Amsterdam. Commercial clients include Fixico x MyWheels, Dutch Olympic Champion Hermijntje Drenth, global brand campaigns for crypto exchange Toobit featuring climber Chris Sharma, and the in-production reality dating series 'Tram Dating'.",
       badge: "OFFICIAL SUB-BRAND · GLASSSHARPFILMS.NL",
       image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2070&auto=format&fit=crop",
@@ -1033,11 +1033,11 @@ const Hero = () => {
         <div className="max-w-4xl">
           <div className="inline-flex items-center gap-3 px-3.5 py-1.5 bg-white/5 border border-white/10 text-gray-300 text-[11px] font-mono uppercase tracking-widest mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Amsterdam Studio · Four Sovereign Practices
+            Amsterdam Agency · Four Sovereign Practices
           </div>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-normal tracking-tight text-white leading-[1.08] mb-8 text-balance">
-            A Multidisciplinary Studio in Amsterdam.
+            A Multidisciplinary Agency in Amsterdam.
           </h1>
 
           <p className="text-lg md:text-2xl text-gray-300 font-light leading-relaxed mb-12 max-w-3xl">
