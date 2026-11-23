@@ -784,7 +784,7 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-black/80 backdrop-blur-md"
+          className="fixed inset-0 bg-[#141413]/45 backdrop-blur-md"
         />
 
         {/* Modal Window */}
@@ -792,19 +792,19 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          className="relative w-full max-w-4xl bg-neutral-950 border border-white/20 rounded-xl shadow-2xl overflow-hidden z-10 my-8 flex flex-col max-h-[90vh]"
+          className="relative w-full max-w-4xl bg-[#F6F4EF] border border-[#141413]/15 rounded-xl shadow-2xl overflow-hidden z-10 my-8 flex flex-col max-h-[90vh] text-[#141413]"
         >
           {/* Header */}
-          <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
+          <div className="px-6 py-4 border-b border-[#141413]/10 flex items-center justify-between bg-white">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded bg-white/10 text-emerald-400">
+              <div className="p-2 rounded bg-[#D94E28]/10 text-[#D94E28]">
                 <Calculator size={18} />
               </div>
               <div>
-                <h3 className="font-serif text-lg tracking-wide text-white">
+                <h3 className="font-serif text-lg tracking-wide text-[#141413]">
                   {t.modalTitle}
                 </h3>
-                <p className="text-xs font-mono text-gray-400">
+                <p className="text-xs font-mono text-[#141413]/55">
                   {t.modalSubtitle}
                 </p>
               </div>
@@ -813,8 +813,8 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
             {/* Language Switcher + Close */}
             <div className="flex items-center gap-3">
               {/* Multilingual Selector */}
-              <div className="flex items-center bg-white/5 border border-white/15 rounded-lg p-0.5 text-xs font-mono">
-                <div className="px-1.5 py-0.5 text-gray-400 flex items-center gap-1">
+              <div className="flex items-center bg-[#ECE8DF] border border-[#141413]/12 rounded-lg p-0.5 text-xs font-mono">
+                <div className="px-1.5 py-0.5 text-[#141413]/55 flex items-center gap-1">
                   <Globe size={11} />
                 </div>
                 {(["en", "nl", "zh"] as EstimatorLanguage[]).map((l) => (
@@ -823,8 +823,8 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                     onClick={() => setLang(l)}
                     className={`px-2 py-0.5 rounded transition-all text-[11px] font-medium cursor-pointer ${
                       lang === l 
-                        ? "bg-emerald-500 text-black font-semibold shadow" 
-                        : "text-gray-400 hover:text-white hover:bg-white/10"
+                        ? "bg-[#141413] text-[#F6F4EF] font-semibold shadow-sm" 
+                        : "text-[#141413]/65 hover:text-[#141413] hover:bg-white/60"
                     }`}
                   >
                     {l === "en" ? "EN" : l === "nl" ? "NL" : "中文"}
@@ -834,7 +834,7 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
 
               <button 
                 onClick={onClose}
-                className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                className="p-1.5 text-[#141413]/50 hover:text-[#141413] rounded-lg hover:bg-[#ECE8DF] transition-colors cursor-pointer"
                 aria-label="Close"
               >
                 <X size={18} />
@@ -843,7 +843,7 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
           </div>
 
           {/* Category Tabs */}
-          <div className="flex border-b border-white/10 bg-black/40 overflow-x-auto text-xs font-mono">
+          <div className="flex border-b border-[#141413]/10 bg-[#ECE8DF]/50 overflow-x-auto text-xs font-mono">
             {[
               { id: "consulting", label: t.tabs.consulting, icon: Building2 },
               { id: "video", label: t.tabs.video, icon: Video },
@@ -856,13 +856,13 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                 <button
                   key={tab.id}
                   onClick={() => setCategory(tab.id as ServiceCategory)}
-                  className={`flex-1 min-w-[170px] py-3 px-4 flex items-center justify-center gap-2 transition-all border-b-2 cursor-pointer ${
+                  className={`flex-1 min-w-[170px] py-3 px-4 flex items-center justify-center gap-2 transition-all border-b-2 cursor-pointer whitespace-nowrap ${
                     isActive 
-                      ? "border-emerald-400 text-white bg-white/[0.04] font-medium" 
-                      : "border-transparent text-gray-400 hover:text-gray-200 hover:bg-white/[0.02]"
+                      ? "border-[#D94E28] text-[#141413] bg-[#F6F4EF] font-semibold" 
+                      : "border-transparent text-[#141413]/60 hover:text-[#141413] hover:bg-white/40"
                   }`}
                 >
-                  <Icon size={14} className={isActive ? "text-emerald-400" : "text-gray-500"} />
+                  <Icon size={14} className={isActive ? "text-[#D94E28]" : "text-[#141413]/45"} />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -870,7 +870,7 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
           </div>
 
           {/* Modal Body: Two Column Layout */}
-          <div className="flex-1 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-white/10">
+          <div className="flex-1 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-[#141413]/10">
             
             {/* Left Controls Column */}
             <div className="lg:col-span-7 p-6 space-y-6">
@@ -879,7 +879,7 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
               {category === "consulting" && (
                 <div className="space-y-5">
                   <div>
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-300 block mb-2">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#141413]/75 block mb-2">
                       {t.consulting.entityTypeTitle}
                     </label>
                     <div className="grid grid-cols-3 gap-2">
@@ -893,64 +893,64 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                           onClick={() => setEntityType(item.id as any)}
                           className={`p-3 rounded text-left border transition-all cursor-pointer ${
                             entityType === item.id 
-                              ? "border-emerald-500 bg-emerald-500/10 text-white" 
-                              : "border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20"
+                              ? "border-[#D94E28] bg-white text-[#141413] shadow-sm" 
+                              : "border-[#141413]/12 bg-white/50 text-[#141413]/70 hover:border-[#141413]/30"
                           }`}
                         >
                           <div className="text-sm font-medium">{item.label}</div>
-                          <div className="text-[10px] text-gray-500 font-mono mt-0.5 leading-snug">{item.sub}</div>
+                          <div className="text-[10px] text-[#141413]/55 font-mono mt-0.5 leading-snug">{item.sub}</div>
                         </button>
                       ))}
                     </div>
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-300 block">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#141413]/75 block">
                       {t.consulting.modulesTitle}
                     </label>
                     
-                    <label className="flex items-center justify-between p-3 rounded border border-white/10 bg-white/[0.02] cursor-pointer hover:border-white/20 transition-colors">
+                    <label className="flex items-center justify-between p-3 rounded border border-[#141413]/12 bg-white cursor-pointer hover:border-[#D94E28]/50 transition-colors">
                       <div>
-                        <div className="text-sm text-white">{t.consulting.addressLabel}</div>
-                        <div className="text-xs text-gray-400">{t.consulting.addressSub}</div>
+                        <div className="text-sm text-[#141413] font-medium">{t.consulting.addressLabel}</div>
+                        <div className="text-xs text-[#141413]/60">{t.consulting.addressSub}</div>
                       </div>
                       <input 
                         type="checkbox" 
                         checked={needAddress} 
                         onChange={e => setNeedAddress(e.target.checked)}
-                        className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                        className="w-4 h-4 accent-[#D94E28] cursor-pointer"
                       />
                     </label>
 
-                    <label className="flex items-center justify-between p-3 rounded border border-white/10 bg-white/[0.02] cursor-pointer hover:border-white/20 transition-colors">
+                    <label className="flex items-center justify-between p-3 rounded border border-[#141413]/12 bg-white cursor-pointer hover:border-[#D94E28]/50 transition-colors">
                       <div>
-                        <div className="text-sm text-white">{t.consulting.visaLabel}</div>
-                        <div className="text-xs text-gray-400">{t.consulting.visaSub}</div>
+                        <div className="text-sm text-[#141413] font-medium">{t.consulting.visaLabel}</div>
+                        <div className="text-xs text-[#141413]/60">{t.consulting.visaSub}</div>
                       </div>
                       <input 
                         type="checkbox" 
                         checked={needVisa} 
                         onChange={e => setNeedVisa(e.target.checked)}
-                        className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                        className="w-4 h-4 accent-[#D94E28] cursor-pointer"
                       />
                     </label>
 
-                    <label className="flex items-center justify-between p-3 rounded border border-white/10 bg-white/[0.02] cursor-pointer hover:border-white/20 transition-colors">
+                    <label className="flex items-center justify-between p-3 rounded border border-[#141413]/12 bg-white cursor-pointer hover:border-[#D94E28]/50 transition-colors">
                       <div>
-                        <div className="text-sm text-white">{t.consulting.eprLabel}</div>
-                        <div className="text-xs text-gray-400">{t.consulting.eprSub}</div>
+                        <div className="text-sm text-[#141413] font-medium">{t.consulting.eprLabel}</div>
+                        <div className="text-xs text-[#141413]/60">{t.consulting.eprSub}</div>
                       </div>
                       <input 
                         type="checkbox" 
                         checked={needEpr} 
                         onChange={e => setNeedEpr(e.target.checked)}
-                        className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                        className="w-4 h-4 accent-[#D94E28] cursor-pointer"
                       />
                     </label>
                   </div>
 
                   <div>
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-300 block mb-2">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#141413]/75 block mb-2">
                       {t.consulting.urgencyTitle}
                     </label>
                     <div className="grid grid-cols-2 gap-2 text-xs font-mono">
@@ -958,8 +958,8 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                         onClick={() => setConsultingUrgency("standard")}
                         className={`p-2.5 rounded border text-left cursor-pointer transition-colors ${
                           consultingUrgency === "standard" 
-                            ? "border-emerald-500 bg-emerald-500/10 text-white" 
-                            : "border-white/10 text-gray-400 hover:border-white/20"
+                            ? "border-[#D94E28] bg-white text-[#141413] font-semibold shadow-sm" 
+                            : "border-[#141413]/12 bg-white/50 text-[#141413]/65 hover:border-[#141413]/30"
                         }`}
                       >
                         {t.consulting.urgencyStandard}
@@ -968,8 +968,8 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                         onClick={() => setConsultingUrgency("urgent")}
                         className={`p-2.5 rounded border text-left cursor-pointer transition-colors ${
                           consultingUrgency === "urgent" 
-                            ? "border-emerald-500 bg-emerald-500/10 text-white" 
-                            : "border-white/10 text-gray-400 hover:border-white/20"
+                            ? "border-[#D94E28] bg-white text-[#141413] font-semibold shadow-sm" 
+                            : "border-[#141413]/12 bg-white/50 text-[#141413]/65 hover:border-[#141413]/30"
                         }`}
                       >
                         {t.consulting.urgencyUrgent}
@@ -983,7 +983,7 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
               {category === "video" && (
                 <div className="space-y-5">
                   <div>
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-300 block mb-2">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#141413]/75 block mb-2">
                       {t.video.typeTitle}
                     </label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -998,12 +998,12 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                           onClick={() => setVideoType(item.id as any)}
                           className={`p-3 rounded text-left border transition-all cursor-pointer ${
                             videoType === item.id 
-                              ? "border-emerald-500 bg-emerald-500/10 text-white" 
-                              : "border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20"
+                              ? "border-[#D94E28] bg-white text-[#141413] shadow-sm" 
+                              : "border-[#141413]/12 bg-white/50 text-[#141413]/70 hover:border-[#141413]/30"
                           }`}
                         >
                           <div className="text-sm font-medium">{item.label}</div>
-                          <div className="text-[10px] text-gray-500 font-mono mt-0.5 leading-snug">{item.sub}</div>
+                          <div className="text-[10px] text-[#141413]/55 font-mono mt-0.5 leading-snug">{item.sub}</div>
                         </button>
                       ))}
                     </div>
@@ -1011,10 +1011,10 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
 
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <label className="text-xs font-mono uppercase tracking-wider text-gray-300">
+                      <label className="text-xs font-mono uppercase tracking-wider text-[#141413]/75">
                         {t.video.daysTitle}
                       </label>
-                      <span className="text-xs font-mono text-emerald-400">
+                      <span className="text-xs font-mono text-[#D94E28] font-medium">
                         {shootingDays} {t.video.dayUnit}
                       </span>
                     </div>
@@ -1025,8 +1025,8 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                           onClick={() => setShootingDays(days)}
                           className={`flex-1 py-2 rounded text-xs font-mono border transition-all cursor-pointer ${
                             shootingDays === days 
-                              ? "border-emerald-500 bg-emerald-500/10 text-white font-medium" 
-                              : "border-white/10 text-gray-400 hover:border-white/20"
+                              ? "border-[#D94E28] bg-white text-[#141413] font-semibold shadow-sm" 
+                              : "border-[#141413]/12 bg-white/50 text-[#141413]/65 hover:border-[#141413]/30"
                           }`}
                         >
                           {days} {lang === "en" ? "Day" : lang === "nl" ? "Dag" : "天"}{days > 1 && lang === "en" ? "s" : ""}
@@ -1036,46 +1036,46 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-300 block">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#141413]/75 block">
                       {t.video.addonsTitle}
                     </label>
 
-                    <label className="flex items-center justify-between p-3 rounded border border-white/10 bg-white/[0.02] cursor-pointer hover:border-white/20 transition-colors">
+                    <label className="flex items-center justify-between p-3 rounded border border-[#141413]/12 bg-white cursor-pointer hover:border-[#D94E28]/50 transition-colors">
                       <div>
-                        <div className="text-sm text-white">{t.video.cinemaGearLabel}</div>
-                        <div className="text-xs text-gray-400">{t.video.cinemaGearSub}</div>
+                        <div className="text-sm text-[#141413] font-medium">{t.video.cinemaGearLabel}</div>
+                        <div className="text-xs text-[#141413]/60">{t.video.cinemaGearSub}</div>
                       </div>
                       <input 
                         type="checkbox" 
                         checked={needCinemaGear} 
                         onChange={e => setNeedCinemaGear(e.target.checked)}
-                        className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                        className="w-4 h-4 accent-[#D94E28] cursor-pointer"
                       />
                     </label>
 
-                    <label className="flex items-center justify-between p-3 rounded border border-white/10 bg-white/[0.02] cursor-pointer hover:border-white/20 transition-colors">
+                    <label className="flex items-center justify-between p-3 rounded border border-[#141413]/12 bg-white cursor-pointer hover:border-[#D94E28]/50 transition-colors">
                       <div>
-                        <div className="text-sm text-white">{t.video.droneLabel}</div>
-                        <div className="text-xs text-gray-400">{t.video.droneSub}</div>
+                        <div className="text-sm text-[#141413] font-medium">{t.video.droneLabel}</div>
+                        <div className="text-xs text-[#141413]/60">{t.video.droneSub}</div>
                       </div>
                       <input 
                         type="checkbox" 
                         checked={needDrone} 
                         onChange={e => setNeedDrone(e.target.checked)}
-                        className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                        className="w-4 h-4 accent-[#D94E28] cursor-pointer"
                       />
                     </label>
 
-                    <label className="flex items-center justify-between p-3 rounded border border-white/10 bg-white/[0.02] cursor-pointer hover:border-white/20 transition-colors">
+                    <label className="flex items-center justify-between p-3 rounded border border-[#141413]/12 bg-white cursor-pointer hover:border-[#D94E28]/50 transition-colors">
                       <div>
-                        <div className="text-sm text-white">{t.video.colorGradingLabel}</div>
-                        <div className="text-xs text-gray-400">{t.video.colorGradingSub}</div>
+                        <div className="text-sm text-[#141413] font-medium">{t.video.colorGradingLabel}</div>
+                        <div className="text-xs text-[#141413]/60">{t.video.colorGradingSub}</div>
                       </div>
                       <input 
                         type="checkbox" 
                         checked={needColorGrading} 
                         onChange={e => setNeedColorGrading(e.target.checked)}
-                        className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                        className="w-4 h-4 accent-[#D94E28] cursor-pointer"
                       />
                     </label>
                   </div>
@@ -1086,7 +1086,7 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
               {category === "wedding" && (
                 <div className="space-y-5">
                   <div>
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-300 block mb-2">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#141413]/75 block mb-2">
                       {t.wedding.packageTitle}
                     </label>
                     <div className="grid grid-cols-3 gap-2">
@@ -1100,19 +1100,19 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                           onClick={() => setWeddingPackage(item.id as any)}
                           className={`p-3 rounded text-left border transition-all cursor-pointer ${
                             weddingPackage === item.id 
-                              ? "border-emerald-500 bg-emerald-500/10 text-white" 
-                              : "border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20"
+                              ? "border-[#D94E28] bg-white text-[#141413] shadow-sm" 
+                              : "border-[#141413]/12 bg-white/50 text-[#141413]/70 hover:border-[#141413]/30"
                           }`}
                         >
                           <div className="text-sm font-medium">{item.label}</div>
-                          <div className="text-[10px] text-gray-500 font-mono mt-0.5 leading-snug">{item.sub}</div>
+                          <div className="text-[10px] text-[#141413]/55 font-mono mt-0.5 leading-snug">{item.sub}</div>
                         </button>
                       ))}
                     </div>
                   </div>
 
                   <div>
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-300 block mb-2">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#141413]/75 block mb-2">
                       {t.wedding.locationTitle}
                     </label>
                     <div className="grid grid-cols-3 gap-2 text-xs font-mono">
@@ -1126,8 +1126,8 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                           onClick={() => setWeddingLocation(loc.id as any)}
                           className={`p-2.5 rounded border text-left cursor-pointer transition-colors ${
                             weddingLocation === loc.id 
-                              ? "border-emerald-500 bg-emerald-500/10 text-white" 
-                              : "border-white/10 text-gray-400 hover:border-white/20"
+                              ? "border-[#D94E28] bg-white text-[#141413] font-semibold shadow-sm" 
+                              : "border-[#141413]/12 bg-white/50 text-[#141413]/65 hover:border-[#141413]/30"
                           }`}
                         >
                           {loc.label}
@@ -1137,33 +1137,33 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-300 block">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#141413]/75 block">
                       {t.wedding.addonsTitle}
                     </label>
 
-                    <label className="flex items-center justify-between p-3 rounded border border-white/10 bg-white/[0.02] cursor-pointer hover:border-white/20 transition-colors">
+                    <label className="flex items-center justify-between p-3 rounded border border-[#141413]/12 bg-white cursor-pointer hover:border-[#D94E28]/50 transition-colors">
                       <div>
-                        <div className="text-sm text-white">{t.wedding.droneWeddingLabel}</div>
-                        <div className="text-xs text-gray-400">{t.wedding.droneWeddingSub}</div>
+                        <div className="text-sm text-[#141413] font-medium">{t.wedding.droneWeddingLabel}</div>
+                        <div className="text-xs text-[#141413]/60">{t.wedding.droneWeddingSub}</div>
                       </div>
                       <input 
                         type="checkbox" 
                         checked={needDroneWedding} 
                         onChange={e => setNeedDroneWedding(e.target.checked)}
-                        className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                        className="w-4 h-4 accent-[#D94E28] cursor-pointer"
                       />
                     </label>
 
-                    <label className="flex items-center justify-between p-3 rounded border border-white/10 bg-white/[0.02] cursor-pointer hover:border-white/20 transition-colors">
+                    <label className="flex items-center justify-between p-3 rounded border border-[#141413]/12 bg-white cursor-pointer hover:border-[#D94E28]/50 transition-colors">
                       <div>
-                        <div className="text-sm text-white">{t.wedding.filmPhotoLabel}</div>
-                        <div className="text-xs text-gray-400">{t.wedding.filmPhotoSub}</div>
+                        <div className="text-sm text-[#141413] font-medium">{t.wedding.filmPhotoLabel}</div>
+                        <div className="text-xs text-[#141413]/60">{t.wedding.filmPhotoSub}</div>
                       </div>
                       <input 
                         type="checkbox" 
                         checked={needFilmPhotography} 
                         onChange={e => setNeedFilmPhotography(e.target.checked)}
-                        className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                        className="w-4 h-4 accent-[#D94E28] cursor-pointer"
                       />
                     </label>
                   </div>
@@ -1174,7 +1174,7 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
               {category === "software" && (
                 <div className="space-y-5">
                   <div>
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-300 block mb-2">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#141413]/75 block mb-2">
                       {t.software.scopeTitle}
                     </label>
                     <div className="grid grid-cols-3 gap-2">
@@ -1188,19 +1188,19 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                           onClick={() => setSoftwareScope(item.id as any)}
                           className={`p-3 rounded text-left border transition-all cursor-pointer ${
                             softwareScope === item.id 
-                              ? "border-emerald-500 bg-emerald-500/10 text-white" 
-                              : "border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20"
+                              ? "border-[#D94E28] bg-white text-[#141413] shadow-sm" 
+                              : "border-[#141413]/12 bg-white/50 text-[#141413]/70 hover:border-[#141413]/30"
                           }`}
                         >
                           <div className="text-sm font-medium">{item.label}</div>
-                          <div className="text-[10px] text-gray-500 font-mono mt-0.5 leading-snug">{item.sub}</div>
+                          <div className="text-[10px] text-[#141413]/55 font-mono mt-0.5 leading-snug">{item.sub}</div>
                         </button>
                       ))}
                     </div>
                   </div>
 
                   <div>
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-300 block mb-2">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#141413]/75 block mb-2">
                       {t.software.scaleTitle}
                     </label>
                     <div className="grid grid-cols-2 gap-2 text-xs font-mono">
@@ -1208,8 +1208,8 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                         onClick={() => setSoftwareScale("smb")}
                         className={`p-3 rounded border text-left cursor-pointer transition-colors ${
                           softwareScale === "smb" 
-                            ? "border-emerald-500 bg-emerald-500/10 text-white" 
-                            : "border-white/10 text-gray-400 hover:border-white/20"
+                            ? "border-[#D94E28] bg-white text-[#141413] font-semibold shadow-sm" 
+                            : "border-[#141413]/12 bg-white/50 text-[#141413]/65 hover:border-[#141413]/30"
                         }`}
                       >
                         {t.software.smbLabel}
@@ -1218,8 +1218,8 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                         onClick={() => setSoftwareScale("enterprise")}
                         className={`p-3 rounded border text-left cursor-pointer transition-colors ${
                           softwareScale === "enterprise" 
-                            ? "border-emerald-500 bg-emerald-500/10 text-white" 
-                            : "border-white/10 text-gray-400 hover:border-white/20"
+                            ? "border-[#D94E28] bg-white text-[#141413] font-semibold shadow-sm" 
+                            : "border-[#141413]/12 bg-white/50 text-[#141413]/65 hover:border-[#141413]/30"
                         }`}
                       >
                         {t.software.enterpriseLabel}
@@ -1232,66 +1232,66 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
             </div>
 
             {/* Right Result Column: Qualitative & Scope Driven (NO explicit prices) */}
-            <div className="lg:col-span-5 p-6 bg-white/[0.01] flex flex-col justify-between space-y-6">
+            <div className="lg:col-span-5 p-6 bg-white flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div>
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 block mb-1">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#D94E28] block mb-1">
                     {t.scopeTierLabel}
                   </span>
-                  <h4 className="font-serif text-lg text-white">
+                  <h4 className="font-serif text-lg text-[#141413]">
                     {calculation.tierTitle}
                   </h4>
                 </div>
 
                 {/* Scope & Engagement Tier Card (NO explicit price figures) */}
-                <div className="p-4 rounded-lg bg-neutral-900 border border-emerald-500/30 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-semibold flex items-center gap-1.5">
+                <div className="p-4 rounded-lg bg-[#F6F4EF] border border-[#D94E28]/30 space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-[#D94E28] font-semibold flex items-center gap-1.5">
                       <Sparkles size={13} />
                       {t.scopeTierLabel}
                     </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                    <span className="text-[10px] font-mono text-[#141413] font-medium">
                       {calculation.complexityBadge}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-300 leading-relaxed">
+                  <p className="text-xs text-[#141413]/75 leading-relaxed">
                     {calculation.tierDescription}
                   </p>
-                  <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs font-mono">
-                    <span className="text-gray-400">{t.pricingModelLabel}:</span>
-                    <span className="text-white font-medium">{t.itemizedQuoteNote}</span>
+                  <div className="pt-2 border-t border-[#141413]/10 flex items-center justify-between text-xs font-mono">
+                    <span className="text-[#141413]/55">{t.pricingModelLabel}:</span>
+                    <span className="text-[#141413] font-medium">{t.itemizedQuoteNote}</span>
                   </div>
                 </div>
 
                 {/* Turnaround Timeline */}
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.02] border border-white/10">
-                  <Clock size={16} className="text-emerald-400 flex-shrink-0" />
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-[#F6F4EF] border border-[#141413]/10">
+                  <Clock size={16} className="text-[#D94E28] flex-shrink-0" />
                   <div className="text-xs font-mono">
-                    <span className="text-gray-400">{t.estimatedTimelineLabel}: </span>
-                    <span className="text-white font-medium">{calculation.timelineText}</span>
+                    <span className="text-[#141413]/60">{t.estimatedTimelineLabel}: </span>
+                    <span className="text-[#141413] font-semibold tabular-nums">{calculation.timelineText}</span>
                   </div>
                 </div>
 
                 {/* Resource Allocation */}
-                <div className="p-3 rounded-lg bg-white/[0.02] border border-white/10 space-y-1">
-                  <div className="text-[11px] font-mono text-gray-400 flex items-center gap-1.5">
-                    <Layers size={13} className="text-emerald-400 flex-shrink-0" />
+                <div className="p-3 rounded-lg bg-[#F6F4EF] border border-[#141413]/10 space-y-1">
+                  <div className="text-[11px] font-mono text-[#141413]/60 flex items-center gap-1.5">
+                    <Layers size={13} className="text-[#D94E28] flex-shrink-0" />
                     <span>{t.crewAllocationLabel}</span>
                   </div>
-                  <div className="text-xs text-gray-200 font-mono">
+                  <div className="text-xs text-[#141413] font-mono">
                     {calculation.crewText}
                   </div>
                 </div>
 
                 {/* Deliverables Checklist */}
                 <div className="space-y-2">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-gray-400 block">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-[#141413]/60 block">
                     {t.deliverablesLabel} ({calculation.checklist.length} {t.itemsUnit})
                   </span>
                   <ul className="space-y-2 max-h-36 overflow-y-auto pr-2 text-xs">
                     {calculation.checklist.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2 text-gray-300">
-                        <CheckCircle2 size={13} className="text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <li key={i} className="flex items-start gap-2 text-[#141413]/85">
+                        <CheckCircle2 size={13} className="text-[#D94E28] mt-0.5 flex-shrink-0" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -1300,14 +1300,14 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-2 pt-4 border-t border-white/10">
+              <div className="space-y-2 pt-4 border-t border-[#141413]/10">
                 <button
                   onClick={handleCopy}
-                  className="w-full py-2.5 px-4 rounded text-xs font-mono uppercase tracking-wider bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 px-4 rounded text-xs font-mono uppercase tracking-wider bg-[#ECE8DF] hover:bg-[#141413] hover:text-white text-[#141413] border border-[#141413]/15 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {copied ? (
                     <>
-                      <Check size={14} className="text-emerald-400" />
+                      <Check size={14} className="text-[#D94E28]" />
                       <span>{t.copiedButton}</span>
                     </>
                   ) : (
@@ -1321,7 +1321,7 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                 <div className="grid grid-cols-2 gap-2">
                   <a
                     href={mailtoHref}
-                    className="py-2.5 px-4 rounded text-xs font-mono uppercase tracking-wider bg-white text-black hover:bg-gray-200 transition-all font-medium flex items-center justify-center gap-1.5 cursor-pointer text-center"
+                    className="py-2.5 px-4 rounded text-xs font-mono uppercase tracking-wider bg-[#141413] text-[#F6F4EF] hover:bg-[#141413]/85 transition-all font-medium flex items-center justify-center gap-1.5 cursor-pointer text-center"
                   >
                     <Mail size={13} />
                     <span>{t.defaultMailButton}</span>
@@ -1331,13 +1331,13 @@ ${calculation.checklist.map((c, i) => `${i + 1}. ${c}`).join("\n")}
                     href={`https://mail.google.com/mail/?view=cm&fs=1&to=info@yeah-amsterdam.nl&su=${encodeURIComponent(subjectText)}&body=${encodeURIComponent(summaryBrief)}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="py-2.5 px-4 rounded text-xs font-mono uppercase tracking-wider bg-red-600/90 hover:bg-red-600 text-white transition-all font-medium flex items-center justify-center gap-1.5 cursor-pointer text-center"
+                    className="py-2.5 px-4 rounded text-xs font-mono uppercase tracking-wider bg-[#D94E28] hover:bg-[#b93e1d] text-white transition-all font-medium flex items-center justify-center gap-1.5 cursor-pointer text-center"
                   >
                     <span>{t.webGmailButton}</span>
                   </a>
                 </div>
                 
-                <div className="text-[10px] text-center font-mono text-gray-400 leading-normal">
+                <div className="text-[10px] text-center font-mono text-[#141413]/50 leading-normal">
                   {t.disclaimer}
                 </div>
               </div>

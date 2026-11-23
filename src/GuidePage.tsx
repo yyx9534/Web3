@@ -96,25 +96,25 @@ export const GuidePage: React.FC<{
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.35 }}
-      className="pt-28 md:pt-36 pb-28 px-6 md:px-12 bg-black min-h-screen text-white"
+      className="pt-28 md:pt-36 pb-28 px-6 md:px-12 bg-[#F6F4EF] min-h-screen text-[#141413]"
     >
       <div className="max-w-5xl mx-auto">
         
         {/* Navigation & Breadcrumb */}
-        <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-6">
+        <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-[#141413]/12 pb-6">
           <Link 
             to="/" 
-            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-gray-400 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#141413]/60 hover:text-[#D94E28] transition-colors"
           >
             <ArrowLeft size={14} /> Back to Agency Home
           </Link>
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-mono text-gray-400 no-print">
-            <span className="hidden sm:inline-flex items-center gap-1.5 text-emerald-400 mr-2">
-              <Sparkles size={12} /> {guide.category}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-mono text-[#141413]/65 no-print">
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-[#D94E28] mr-2">
+              {guide.category}
             </span>
             <button
               onClick={() => onOpenCalculator?.(getCalcCategory())}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-colors rounded-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#D94E28] hover:bg-[#141413] text-white transition-colors rounded-sm cursor-pointer"
               title="测算预算与周期"
             >
               <Calculator size={12} />
@@ -122,7 +122,7 @@ export const GuidePage: React.FC<{
             </button>
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/10 transition-colors rounded-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-white hover:bg-[#ECE8DF] text-[#141413] border border-[#141413]/15 transition-colors rounded-sm cursor-pointer"
               title="保存/打印为 PDF 备忘录"
             >
               <Printer size={12} />
@@ -130,7 +130,7 @@ export const GuidePage: React.FC<{
             </button>
             <button
               onClick={handleCopyLink}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/10 transition-colors rounded-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-white hover:bg-[#ECE8DF] text-[#141413] border border-[#141413]/15 transition-colors rounded-sm cursor-pointer"
               title="复制分享链接"
             >
               <Share2 size={12} />
@@ -139,54 +139,55 @@ export const GuidePage: React.FC<{
           </div>
         </div>
 
-        {/* Header Badge */}
+        {/* Header Kicker (Unboxed editorial typography) */}
         <div className="mb-4">
-          <span className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 border border-white/20 text-white text-[11px] font-mono uppercase tracking-widest">
+          <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-[#D94E28]">
             {guide.badge}
           </span>
         </div>
 
         {/* Article Title */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white mb-6 leading-[1.25] tracking-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#141413] mb-6 leading-[1.2] tracking-tight text-balance">
           {guide.title}
         </h1>
 
         {/* Subtitle / Executive Summary */}
-        <p className="text-base sm:text-lg md:text-xl text-gray-300 font-light leading-relaxed mb-8 max-w-4xl border-l-2 border-white/30 pl-4 py-1">
+        <p className="text-base sm:text-lg md:text-xl text-[#141413]/75 font-light leading-relaxed mb-8 max-w-4xl">
           {guide.subtitle}
         </p>
 
         {/* Meta Stats Row */}
-        <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-gray-400 mb-10 pb-8 border-b border-white/10">
+        <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-[#141413]/60 mb-10 pb-8 border-b border-[#141413]/12">
           <span className="inline-flex items-center gap-1.5">
-            <Clock size={14} className="text-gray-500" /> {guide.readTime}
+            <Clock size={14} className="text-[#D94E28]" /> {guide.readTime}
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <Calendar size={14} className="text-gray-500" /> {guide.updatedDate}
+            <Calendar size={14} className="text-[#D94E28]" /> {guide.updatedDate}
           </span>
           <span>
-            Practice Lead: <Link to={`/services/${guide.relatedPracticeId}`} className="text-white hover:underline ml-1">{guide.relatedPracticeName}</Link>
+            Practice Lead: <Link to={`/services/${guide.relatedPracticeId}`} className="text-[#141413] hover:text-[#D94E28] underline underline-offset-4 ml-1">{guide.relatedPracticeName}</Link>
           </span>
         </div>
 
-        {/* Hero Visual Banner with Key Metrics Overlay */}
-        <div className="relative mb-14 overflow-hidden border border-white/15 bg-[#0a0a0a]">
+        {/* Hero Visual Banner with Key Metrics Overlay (Full Color Editorial Photo) */}
+        <div className="relative mb-14 overflow-hidden border border-[#141413]/12 bg-white shadow-sm">
           <div className="relative aspect-[21/9] sm:aspect-[21/8] overflow-hidden">
             <img 
               src={guide.heroImage} 
               alt={guide.title}
-              className="w-full h-full object-cover opacity-60"
+              className="w-full h-full object-cover"
               loading="lazy"
+              referrerPolicy="no-referrer"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#141413]/45 via-transparent to-transparent" />
           </div>
 
-          <div className="p-6 md:p-8 bg-[#090909] border-t border-white/10">
+          <div className="p-6 md:p-8 bg-white border-t border-[#141413]/10">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {guide.highlights.map((h, i) => (
-                <div key={i} className="p-3 bg-white/5 border border-white/5">
-                  <div className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">{h.label}</div>
-                  <div className="text-xs md:text-sm font-medium text-white">{h.value}</div>
+                <div key={i} className="p-3 bg-[#F6F4EF] border border-[#141413]/8">
+                  <div className="text-[10px] font-mono text-[#141413]/55 uppercase tracking-wider mb-1">{h.label}</div>
+                  <div className="text-xs md:text-sm font-medium text-[#141413]">{h.value}</div>
                 </div>
               ))}
             </div>
@@ -194,8 +195,8 @@ export const GuidePage: React.FC<{
         </div>
 
         {/* Introduction */}
-        <div className="prose prose-invert max-w-none mb-16">
-          <div className="p-6 md:p-8 bg-white/[0.03] border border-white/10 leading-relaxed text-sm md:text-base text-gray-200 font-light">
+        <div className="max-w-none mb-16">
+          <div className="p-6 md:p-8 bg-white border border-[#141413]/12 leading-relaxed text-sm md:text-base text-[#141413]/85 font-light">
             <p className="mb-0">{guide.introduction}</p>
           </div>
         </div>
@@ -203,17 +204,17 @@ export const GuidePage: React.FC<{
         {/* Content Sections */}
         <div className="space-y-16">
           {guide.sections.map((section, sIdx) => (
-            <section key={sIdx} className="scroll-mt-28 border-b border-white/10 pb-12">
-              <h2 className="text-2xl sm:text-3xl font-serif text-white mb-2 leading-snug">
+            <section key={sIdx} className="scroll-mt-28 border-b border-[#141413]/12 pb-12">
+              <h2 className="text-2xl sm:text-3xl font-serif text-[#141413] mb-2 leading-snug">
                 {section.title}
               </h2>
               {section.subtitle && (
-                <p className="text-xs font-mono uppercase tracking-wider text-gray-400 mb-6">
+                <p className="text-xs font-mono uppercase tracking-wider text-[#D94E28] mb-6">
                   {section.subtitle}
                 </p>
               )}
 
-              <p className="text-sm md:text-base text-gray-300 font-light leading-relaxed mb-6">
+              <p className="text-sm md:text-base text-[#141413]/80 font-light leading-relaxed mb-6">
                 {section.content}
               </p>
 
@@ -221,8 +222,8 @@ export const GuidePage: React.FC<{
               {section.bulletPoints && section.bulletPoints.length > 0 && (
                 <ul className="space-y-3 mb-6 pl-2">
                   {section.bulletPoints.map((bp, bpIdx) => (
-                    <li key={bpIdx} className="flex items-start gap-3 text-sm text-gray-300 font-light">
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 shrink-0" />
+                    <li key={bpIdx} className="flex items-start gap-3 text-sm text-[#141413]/85 font-light">
+                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#D94E28] mt-2 shrink-0" />
                       <span className="leading-relaxed">{bp}</span>
                     </li>
                   ))}
@@ -231,20 +232,20 @@ export const GuidePage: React.FC<{
 
               {/* Table Data */}
               {section.tableData && (
-                <div className="my-8 overflow-x-auto border border-white/15 bg-[#080808]">
+                <div className="my-8 overflow-x-auto border border-[#141413]/15 bg-white">
                   <table className="w-full text-left border-collapse text-xs md:text-sm">
                     <thead>
-                      <tr className="border-b border-white/20 bg-white/5 text-gray-200 font-mono uppercase tracking-wider">
+                      <tr className="border-b border-[#141413]/15 bg-[#ECE8DF] text-[#141413] font-mono uppercase tracking-wider">
                         {section.tableData.headers.map((h, hIdx) => (
                           <th key={hIdx} className="p-4 font-semibold">{h}</th>
                         ))}
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5 font-light text-gray-300">
+                    <tbody className="divide-y divide-[#141413]/8 font-light text-[#141413]/80">
                       {section.tableData.rows.map((row, rIdx) => (
-                        <tr key={rIdx} className="hover:bg-white/[0.02] transition-colors">
+                        <tr key={rIdx} className="hover:bg-[#F6F4EF] transition-colors">
                           {row.map((cell, cIdx) => (
-                            <td key={cIdx} className={cIdx === 0 ? "p-4 font-medium text-white font-mono text-xs" : "p-4"}>
+                            <td key={cIdx} className={cIdx === 0 ? "p-4 font-medium text-[#141413] font-mono text-xs" : "p-4"}>
                               {cell}
                             </td>
                           ))}
@@ -257,8 +258,8 @@ export const GuidePage: React.FC<{
 
               {/* Callout Box */}
               {section.calloutBox && (
-                <div className="my-6 p-5 border border-emerald-500/30 bg-emerald-950/20 text-emerald-200 text-xs md:text-sm leading-relaxed rounded-sm flex items-start gap-3">
-                  <CheckCircle2 size={16} className="text-emerald-400 mt-0.5 shrink-0" />
+                <div className="my-6 p-5 border border-[#D94E28]/30 bg-[#D94E28]/5 text-[#141413] text-xs md:text-sm leading-relaxed rounded-sm flex items-start gap-3">
+                  <CheckCircle2 size={16} className="text-[#D94E28] mt-0.5 shrink-0" />
                   <div>{section.calloutBox.text}</div>
                 </div>
               )}
@@ -268,12 +269,12 @@ export const GuidePage: React.FC<{
 
         {/* FAQ Accordion Section */}
         {guide.faqs && guide.faqs.length > 0 && (
-          <div className="py-14 border-b border-white/10">
+          <div className="py-14 border-b border-[#141413]/12">
             <div className="mb-8">
-              <span className="text-[11px] font-mono text-emerald-400 uppercase tracking-widest block mb-2">
+              <span className="text-[11px] font-mono text-[#D94E28] uppercase tracking-widest block mb-2">
                 Frequently Addressed Inquiries
               </span>
-              <h3 className="text-2xl sm:text-3xl font-serif text-white">
+              <h3 className="text-2xl sm:text-3xl font-serif text-[#141413]">
                 Detailed Practice FAQ
               </h3>
             </div>
@@ -282,17 +283,17 @@ export const GuidePage: React.FC<{
               {guide.faqs.map((faq, fIdx) => {
                 const isOpen = openFaqIdx === fIdx;
                 return (
-                  <div key={fIdx} className="border border-white/10 bg-[#090909] overflow-hidden">
+                  <div key={fIdx} className="border border-[#141413]/12 bg-white overflow-hidden">
                     <button
                       onClick={() => setOpenFaqIdx(isOpen ? null : fIdx)}
-                      className="w-full p-5 text-left flex items-center justify-between gap-4 group"
+                      className="w-full p-5 text-left flex items-center justify-between gap-4 group cursor-pointer"
                     >
-                      <span className="text-sm md:text-base font-serif text-white group-hover:text-gray-200">
+                      <span className="text-sm md:text-base font-serif text-[#141413] group-hover:text-[#D94E28] transition-colors">
                         {faq.q}
                       </span>
                       <ChevronDown 
                         size={16} 
-                        className={`text-gray-400 transition-transform shrink-0 ${isOpen ? "rotate-180 text-white" : ""}`}
+                        className={`text-[#141413]/50 transition-transform shrink-0 ${isOpen ? "rotate-180 text-[#D94E28]" : ""}`}
                       />
                     </button>
                     <AnimatePresence>
@@ -303,7 +304,7 @@ export const GuidePage: React.FC<{
                           exit={{ height: 0, opacity: 0 }}
                           className="overflow-hidden"
                         >
-                          <div className="px-5 pb-5 pt-2 text-xs md:text-sm text-gray-300 font-light leading-relaxed border-t border-white/5">
+                          <div className="px-5 pb-5 pt-3 text-xs md:text-sm text-[#141413]/75 font-light leading-relaxed border-t border-[#141413]/8">
                             {faq.a}
                           </div>
                         </motion.div>
@@ -316,37 +317,37 @@ export const GuidePage: React.FC<{
           </div>
         )}
 
-        {/* Engagement CTA Banner */}
-        <div className="mt-14 p-8 md:p-12 bg-white/5 border border-white/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        {/* Engagement CTA Banner (Warm Obsidian Editorial Contrast Block) */}
+        <div className="mt-14 p-8 md:p-12 bg-[#161514] text-[#F6F4EF] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="max-w-xl">
-            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-emerald-400 block mb-2">
+            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#D94E28] block mb-2">
               Operational Liaison in Amsterdam
             </span>
             <h4 className="text-2xl md:text-3xl font-serif text-white mb-2">
               Ready to Initiate Your Engagement?
             </h4>
-            <p className="text-xs text-gray-400 font-light leading-relaxed">
+            <p className="text-xs text-[#F6F4EF]/70 font-light leading-relaxed">
               Contact our senior practice partners in Amsterdam for bespoke legal assessment, production quotation, or wedding booking availability.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0 no-print">
             <button 
               onClick={() => onOpenCalculator?.(getCalcCategory())}
-              className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs uppercase tracking-widest transition-colors font-medium"
+              className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-[#D94E28] hover:bg-[#e55b35] text-white font-mono text-xs uppercase tracking-widest transition-colors font-medium cursor-pointer whitespace-nowrap"
             >
               <Calculator size={14} />
               <span>智能预算测算</span>
             </button>
             <a 
               href={`mailto:info@yeah-amsterdam.nl?subject=${encodeURIComponent(`Engagement Inquiry regarding ${guide.title}`)}`}
-              className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors font-medium"
+              className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-[#F6F4EF] text-[#141413] font-mono text-xs uppercase tracking-widest hover:bg-white transition-colors font-medium whitespace-nowrap"
             >
               <Mail size={14} />
               <span>Email Practice</span>
             </a>
             <Link
               to={`/services/${guide.relatedPracticeId}`}
-              className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-mono text-xs uppercase tracking-widest border border-white/10 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-mono text-xs uppercase tracking-widest border border-white/15 transition-colors whitespace-nowrap"
             >
               <span>Explore Practice</span>
               <ArrowRight size={14} />
@@ -356,28 +357,28 @@ export const GuidePage: React.FC<{
 
         {/* Explore Other Guides */}
         <div className="pt-20">
-          <span className="text-xs font-mono uppercase tracking-[0.4em] text-gray-400 block mb-6">
-            Explore Other High-Authority Long-Tail Dossiers (SEO Topic Hub)
+          <span className="text-xs font-mono uppercase tracking-[0.3em] text-[#141413]/55 block mb-6">
+            Explore Other Practice Dossiers
           </span>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {DETAILED_GUIDES.filter((g) => g.slug !== guide.slug).map((other) => (
               <Link 
                 key={other.slug}
                 to={`/guides/${other.slug}`}
-                className="p-6 bg-[#080808] border border-white/10 hover:border-white/30 transition-all group flex flex-col justify-between"
+                className="p-6 bg-white border border-[#141413]/12 hover:border-[#D94E28] transition-all group flex flex-col justify-between"
               >
                 <div>
-                  <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider mb-2">
+                  <div className="text-[10px] font-mono text-[#D94E28] uppercase tracking-wider mb-2">
                     {other.category}
                   </div>
-                  <h5 className="font-serif text-lg text-white group-hover:italic transition-all mb-2 leading-snug">
+                  <h5 className="font-serif text-lg text-[#141413] group-hover:italic transition-all mb-2 leading-snug">
                     {other.title}
                   </h5>
-                  <p className="text-xs text-gray-400 font-light line-clamp-2">
+                  <p className="text-xs text-[#141413]/65 font-light line-clamp-2">
                     {other.subtitle}
                   </p>
                 </div>
-                <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-mono text-gray-400 group-hover:text-white">
+                <div className="mt-4 pt-4 border-t border-[#141413]/8 flex items-center justify-between text-xs font-mono text-[#141413]/60 group-hover:text-[#D94E28]">
                   <span>{other.readTime}</span>
                   <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </div>

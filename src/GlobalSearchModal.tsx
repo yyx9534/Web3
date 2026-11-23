@@ -175,7 +175,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-black/80 backdrop-blur-md"
+          className="fixed inset-0 bg-[#141413]/45 backdrop-blur-md"
         />
 
         {/* Search Modal */}
@@ -183,11 +183,11 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           initial={{ opacity: 0, scale: 0.96, y: -10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: -10 }}
-          className="relative w-full max-w-2xl bg-neutral-950 border border-white/20 rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[85vh]"
+          className="relative w-full max-w-2xl bg-[#F6F4EF] border border-[#141413]/15 rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[85vh]"
         >
           {/* Search Input Bar */}
-          <div className="px-5 py-4 border-b border-white/10 flex items-center gap-3 bg-white/[0.02]">
-            <Search size={18} className="text-gray-400 flex-shrink-0" />
+          <div className="px-5 py-4 border-b border-[#141413]/10 flex items-center gap-3 bg-white">
+            <Search size={18} className="text-[#D94E28] flex-shrink-0" />
             <input
               ref={inputRef}
               type="text"
@@ -197,24 +197,24 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                 setSelectedIndex(0);
               }}
               placeholder="快速搜索业务、出海开分公司、影视拍摄、婚礼跟拍、FAQ问答..."
-              className="w-full bg-transparent text-white placeholder-gray-500 focus:outline-none text-sm font-sans"
+              className="w-full bg-transparent text-[#141413] placeholder-[#141413]/40 focus:outline-none text-sm font-sans"
             />
             {query && (
               <button 
                 onClick={() => setQuery("")}
-                className="text-gray-500 hover:text-white p-1"
+                className="text-[#141413]/40 hover:text-[#141413] p-1 cursor-pointer"
               >
                 <X size={14} />
               </button>
             )}
-            <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono text-gray-400 bg-white/10 border border-white/10 rounded">
+            <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono text-[#141413]/55 bg-[#ECE8DF] border border-[#141413]/12 rounded">
               ESC
             </kbd>
           </div>
 
           {/* Quick Filter Tags */}
-          <div className="px-5 py-2.5 border-b border-white/5 bg-white/[0.01] flex items-center gap-2 overflow-x-auto text-[11px] font-mono text-gray-400">
-            <span className="text-gray-500">热门搜索:</span>
+          <div className="px-5 py-2.5 border-b border-[#141413]/10 bg-[#ECE8DF]/55 flex items-center gap-2 overflow-x-auto text-[11px] font-mono text-[#141413]/65">
+            <span className="text-[#141413]/45">热门搜索:</span>
             {[
               "分公司设立",
               "KvK",
@@ -230,7 +230,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                   setQuery(tag);
                   setSelectedIndex(0);
                 }}
-                className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 hover:text-white transition-colors"
+                className="px-2 py-0.5 rounded bg-white hover:bg-[#141413] hover:text-white border border-[#141413]/10 transition-colors cursor-pointer whitespace-nowrap"
               >
                 {tag}
               </button>
@@ -238,9 +238,9 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           </div>
 
           {/* Results List */}
-          <div className="flex-1 overflow-y-auto p-2 divide-y divide-white/5 max-h-[460px]">
+          <div className="flex-1 overflow-y-auto p-2 divide-y divide-[#141413]/6 max-h-[460px]">
             {filteredItems.length === 0 ? (
-              <div className="p-8 text-center text-gray-500 text-xs font-mono">
+              <div className="p-8 text-center text-[#141413]/55 text-xs font-mono">
                 未找到与 "{query}" 相关的业务或指南，您可以直接发邮件至 info@yeah-amsterdam.nl 获得定制解答。
               </div>
             ) : (
@@ -253,33 +253,33 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                     key={item.id}
                     onClick={() => handleSelect(item)}
                     onMouseEnter={() => setSelectedIndex(index)}
-                    className={`w-full p-3 rounded-lg text-left transition-all flex items-start justify-between gap-3 ${
+                    className={`w-full p-3 rounded-lg text-left transition-all flex items-start justify-between gap-3 cursor-pointer ${
                       isSelected 
-                        ? "bg-white/10 text-white" 
-                        : "text-gray-300 hover:bg-white/5"
+                        ? "bg-white text-[#141413] shadow-sm" 
+                        : "text-[#141413]/80 hover:bg-white/60"
                     }`}
                   >
                     <div className="flex items-start gap-3 min-w-0">
                       <div className={`p-2 rounded mt-0.5 flex-shrink-0 ${
-                        isSelected ? "bg-white/20 text-white" : "bg-white/5 text-gray-400"
+                        isSelected ? "bg-[#D94E28] text-white" : "bg-[#ECE8DF] text-[#141413]/65"
                       }`}>
                         <Icon size={16} />
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">
-                          <span className="text-sm font-medium text-white truncate">
+                          <span className="text-sm font-medium text-[#141413] truncate">
                             {item.title}
                           </span>
-                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-emerald-400 flex-shrink-0">
-                            {item.badge}
+                          <span className="text-[10px] font-mono text-[#D94E28] flex-shrink-0">
+                            · {item.badge}
                           </span>
                         </div>
-                        <p className="text-xs text-gray-400 line-clamp-1 font-sans">
+                        <p className="text-xs text-[#141413]/60 line-clamp-1 font-sans">
                           {item.subtitle}
                         </p>
                       </div>
                     </div>
-                    <ArrowRight size={14} className={`flex-shrink-0 mt-2 transition-transform ${isSelected ? "text-white translate-x-0.5" : "text-gray-600"}`} />
+                    <ArrowRight size={14} className={`flex-shrink-0 mt-2 transition-transform ${isSelected ? "text-[#D94E28] translate-x-0.5" : "text-[#141413]/30"}`} />
                   </button>
                 );
               })
@@ -287,12 +287,12 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           </div>
 
           {/* Footer Guide */}
-          <div className="px-5 py-3 border-t border-white/10 bg-white/[0.02] flex items-center justify-between text-[11px] font-mono text-gray-500">
+          <div className="px-5 py-3 border-t border-[#141413]/10 bg-white flex items-center justify-between text-[11px] font-mono text-[#141413]/55">
             <div className="flex items-center gap-3">
               <span>↑↓ 切换</span>
               <span>↵ 确认跳转</span>
             </div>
-            <div className="text-gray-400">
+            <div className="text-[#141413]/70">
               YEAH Agency Amsterdam · Global Index
             </div>
           </div>
