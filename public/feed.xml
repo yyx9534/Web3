@@ -61,5 +61,32 @@
       <description>Full-stack software engineering from Amsterdam: DriveViewer iOS app on the Apple App Store for Dutch driving schools (46-point CBR grading), EU GDPR multi-region cloud systems, and Douane EDI automated customs ERP handling €45M+ annual volume.</description>
       <category>Software Development</category>
     </item>
+
+    <item>
+      <title>Netherlands EPR Registration Guide 2026: Afvalfonds Verpakkingen (Verpact), WEEE &amp; Batteries</title>
+      <link>https://yeah-amsterdam.nl/guides/dutch-epr-packaging-weee-compliance</link>
+      <guid>https://yeah-amsterdam.nl/guides/dutch-epr-packaging-weee-compliance</guid>
+      <pubDate>Tue, 24 Nov 2026 10:00:00 +0100</pubDate>
+      <description>Complete Netherlands EPR compliance guide covering Verpact (Afvalfonds Verpakkingen), Stichting OPEN WEEE electronics, and Stibat EU Batteries registration thresholds for e-commerce brands and importers.</description>
+      <category>Corporate Consulting</category>
+    </item>
+
+    <item>
+      <title>Netherlands Personnel Dispatch (EOR) &amp; Kennismigrant Work Visa Guide: 21-Day Deployment</title>
+      <link>https://yeah-amsterdam.nl/guides/netherlands-personnel-dispatch-kennismigrant</link>
+      <guid>https://yeah-amsterdam.nl/guides/netherlands-personnel-dispatch-kennismigrant</guid>
+      <pubDate>Tue, 24 Nov 2026 10:30:00 +0100</pubDate>
+      <description>How international enterprises relocate leadership and technical specialists to Amsterdam within ~21 business days via compliant Third-Party Personnel Dispatch (EOR) and IND Kennismigrant visas.</description>
+      <category>Corporate Consulting</category>
+    </item>
+
+    <item>
+      <title>DriveViewer iOS &amp; Enterprise GDPR Cloud Engineering in Amsterdam</title>
+      <link>https://yeah-amsterdam.nl/guides/driveviewer-ios-enterprise-software-amsterdam</link>
+      <guid>https://yeah-amsterdam.nl/guides/driveviewer-ios-enterprise-software-amsterdam</guid>
+      <pubDate>Tue, 24 Nov 2026 11:00:00 +0100</pubDate>
+      <description>Engineering DriveViewer iOS (Apple App Store ID 6765847978) for Dutch driving schools alongside multi-region GDPR cloud systems and Rotterdam Douane EDI customs ERPs.</description>
+      <category>Software Development</category>
+    </item>
   </channel>
 </rss>

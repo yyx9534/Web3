@@ -654,17 +654,22 @@ export const CASE_STUDIES: CaseStudy[] = [
 
 // --- Client-Side Dynamic SEO Hook ---
 
+const DEFAULT_OG_IMAGE =
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop";
+
 const usePageSEO = ({
   title,
   description,
   keywords,
   canonicalUrl,
+  ogImage,
   structuredData,
 }: {
   title: string;
   description: string;
   keywords?: string;
   canonicalUrl?: string;
+  ogImage?: string;
   structuredData?: Record<string, unknown> | null;
 }) => {
   useEffect(() => {
@@ -680,11 +685,16 @@ const usePageSEO = ({
       tag.setAttribute("content", content);
     };
 
+    const resolvedImage = ogImage || DEFAULT_OG_IMAGE;
+
     setMetaTag("name", "description", description);
+    setMetaTag("property", "og:type", "website");
     setMetaTag("property", "og:title", title);
     setMetaTag("property", "og:description", description);
+    setMetaTag("property", "og:image", resolvedImage);
     setMetaTag("name", "twitter:title", title);
     setMetaTag("name", "twitter:description", description);
+    setMetaTag("name", "twitter:image", resolvedImage);
 
     if (keywords) {
       setMetaTag("name", "keywords", keywords);
@@ -713,7 +723,7 @@ const usePageSEO = ({
     } else if (existingScript) {
       existingScript.remove();
     }
-  }, [title, description, keywords, canonicalUrl, structuredData]);
+  }, [title, description, keywords, canonicalUrl, ogImage, structuredData]);
 };
 
 // --- Scroll To Top On Navigation ---
@@ -1083,6 +1093,8 @@ const Hero = ({ onOpenContact }: { onOpenContact?: () => void }) => {
                     <img
                       src={activeService.heroImage}
                       alt={`${activeService.title} — YEAH Agency Amsterdam`}
+                      fetchPriority={activeIndex === 0 ? "high" : "auto"}
+                      decoding="async"
                       className="w-full h-full object-cover saturate-[1.08]"
                       referrerPolicy="no-referrer"
                     />
@@ -1368,6 +1380,23 @@ const DivisionPortals = () => {
                               </Fragment>
                             ))}
                           </div>
+
+                          {/* Topic-Cluster Dossier Links */}
+                          {(() => {
+                            const primaryGuide = DETAILED_GUIDES.find(
+                              (g) => g.relatedPracticeId === service.id
+                            );
+                            if (!primaryGuide) return null;
+                            return (
+                              <Link
+                                to={`/guides/${primaryGuide.slug}`}
+                                className="mt-4 pt-3 border-t border-[#141413]/8 flex items-center justify-between gap-2 text-[11px] font-mono text-[#141413]/75 hover:text-[#D94E28] transition-colors"
+                              >
+                                <span className="truncate">Dossier: {primaryGuide.title}</span>
+                                <ArrowUpRight size={13} className="shrink-0 text-[#D94E28]" />
+                              </Link>
+                            );
+                          })()}
                         </div>
                       </div>
 
@@ -2050,64 +2079,36 @@ const Footer = ({ onOpenContact }: { onOpenContact?: () => void }) => {
               Practice Dossiers &amp; Guides
             </span>
             <span className="text-[#141413]/50 font-mono text-[10px] uppercase tracking-wider hidden sm:inline">
-              Verified Practice Knowledge
+              Verified Practice Knowledge (01–06)
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link 
-              to="/guides/dutch-branch-office-formation"
-              className="p-4 bg-[#F6F4EF] border border-[#141413]/12 hover:border-[#D94E28] transition-all group rounded-sm"
-            >
-              <div className="text-[10px] font-mono text-[#D94E28] uppercase tracking-wider mb-1">Corporate Landing</div>
-              <h5 className="font-serif text-sm text-[#141413] group-hover:text-[#D94E28] transition-colors mb-1">
-                Netherlands Branch &amp; BV Formation Guide
-              </h5>
-              <p className="text-[11px] text-[#141413]/65 font-light line-clamp-2">
-                Branch Office vs. Dutch BV subsidiary comparison, KvK commercial chamber registration, notarization, and expatriate visa execution.
-              </p>
-            </Link>
-
-            <Link 
-              to="/guides/video-production-amsterdam"
-              className="p-4 bg-[#F6F4EF] border border-[#141413]/12 hover:border-[#D94E28] transition-all group rounded-sm"
-            >
-              <div className="text-[10px] font-mono text-[#D94E28] uppercase tracking-wider mb-1">Film &amp; Commercials</div>
-              <h5 className="font-serif text-sm text-[#141413] group-hover:text-[#D94E28] transition-colors mb-1">
-                Commercial Video Production in Amsterdam
-              </h5>
-              <p className="text-[11px] text-[#141413]/65 font-light line-clamp-2">
-                Cinema commercials, reality series (&lsquo;Tram Dating&rsquo;), 4K/6K ARRI &amp; RED packages, and Dutch drone filming permits.
-              </p>
-            </Link>
-
-            <Link 
-              to="/guides/wedding-photography-amsterdam"
-              className="p-4 bg-[#F6F4EF] border border-[#141413]/12 hover:border-[#D94E28] transition-all group rounded-sm"
-            >
-              <div className="text-[10px] font-mono text-[#D94E28] uppercase tracking-wider mb-1">Weddings &amp; Cinema</div>
-              <h5 className="font-serif text-sm text-[#141413] group-hover:text-[#D94E28] transition-colors mb-1">
-                Destination Wedding Photography &amp; Cinema
-              </h5>
-              <p className="text-[11px] text-[#141413]/65 font-light line-clamp-2">
-                Amsterdam canal elopements, Kasteel De Haar castles, tulip fields &amp; bilingual Chinese-European film crew.
-              </p>
-            </Link>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {DETAILED_GUIDES.map((g) => (
+              <Link
+                key={g.slug}
+                to={`/guides/${g.slug}`}
+                className="p-4 bg-[#F6F4EF] border border-[#141413]/12 hover:border-[#D94E28] transition-all group rounded-sm flex flex-col justify-between"
+              >
+                <div>
+                  <div className="text-[10px] font-mono text-[#D94E28] uppercase tracking-wider mb-1">
+                    {g.category}
+                  </div>
+                  <h5 className="font-serif text-sm text-[#141413] group-hover:text-[#D94E28] transition-colors mb-1 leading-snug">
+                    {g.title}
+                  </h5>
+                </div>
+                <p className="text-[11px] text-[#141413]/65 font-light line-clamp-2 mt-1">
+                  {g.subtitle}
+                </p>
+              </Link>
+            ))}
           </div>
         </div>
 
-        {/* Semantic Crawler Multilingual Screen-Reader Index */}
-        <div className="sr-only" aria-label="International Search Engine Keyword Index">
+        {/* Concise Screen-Reader Multilingual Summary */}
+        <div className="sr-only" aria-label="Multilingual Agency Overview">
           <p>
-            YEAH Agency Amsterdam provides multilingual services across English, Dutch (Nederlands), Spanish (Español), and Chinese (中文):
-          </p>
-          <p>
-            Nederlands: Bedrijfsadvies Amsterdam, BV oprichten Nederland, KvK inschrijving Amsterdam, EPR registratie Nederland (verpakkingen, AEEA/WEEE, batterijen), personeelsdetachering en kennismigrant visumbegeleiding, videoproductie Amsterdam, Glass Sharp Films, bruiloft videograaf Amsterdam, trouwfilm Nederland, Tram Dating reality serie, softwareontwikkeling Amsterdam, rijschool software DriveViewer iOS app.
-          </p>
-          <p>
-            Español: Asesoría corporativa en Ámsterdam, constitución de empresas BV en Países Bajos, registro mercantil KvK, registro EPR / REP de envases y residuos de aparatos eléctricos, gestión de visados por desplazamiento y cesión de personal técnico altamente cualificado, producción audiovisual en Ámsterdam, Glass Sharp Films, videos de boda en Europa, serie de telerrealidad Tram Dating, desarrollo de software a medida, app para escuelas de conducción DriveViewer.
-          </p>
-          <p>
-            中文: 荷兰阿姆斯特丹企业咨询、荷兰公司设立、荷兰企业注册、荷兰BV注册、荷兰商会KvK合规咨询、EPR注册合规（包装法申报Afvalfonds Verpakkingen、WEEE电子电气设备、电池法）、第三方人员派遣签证办理（荷兰高技术移民Kennismigrant派遣、跨国派遣工作签证）；视频制作工作室 Glass Sharp Films、欧洲商业广告片拍摄、品牌TVC制作、欧洲目的地婚礼拍摄微电影、荷兰亚裔真人秀节目 Tram Dating 摄制；定制软件开发、企业级云架构与出海软件、荷兰驾校管理软件 DriveViewer iOS版。
+            YEAH Agency Amsterdam operates in English, Dutch (Nederlands), Spanish (Español), and Chinese (中文), offering Dutch BV &amp; branch office setup, EPR packaging &amp; WEEE compliance, Kennismigrant personnel dispatch, commercial video production (Glass Sharp Films), luxury destination wedding cinema, and DriveViewer iOS software development.
           </p>
         </div>
 
@@ -2261,12 +2262,13 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
   usePageSEO({
     title: service ? `${service.title} | YEAH Agency Amsterdam` : "YEAH Agency Amsterdam",
     description: service
-      ? `${service.desc} Explore documented case studies, technical deliverables, and methodology at YEAH Agency Amsterdam.`
+      ? `${service.desc.slice(0, 154)}`
       : "YEAH Agency Amsterdam",
     keywords: service
       ? `${service.title}, YEAH Agency Amsterdam, ${service.badge}, ${service.scopeList.map((s) => s.title).join(", ")}`
       : undefined,
     canonicalUrl: serviceUrl,
+    ogImage: service?.heroImage,
     structuredData: serviceSchema,
   });
 
@@ -2661,6 +2663,43 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
           <SubpageFAQSection service={service} />
         </EditorialBlock>
 
+        {/* Related Authoritative Practice Dossiers (Topic-Cluster Internal Links) */}
+        {DETAILED_GUIDES.some((g) => g.relatedPracticeId === service.id) && (
+          <EditorialBlock className="pt-16 pb-4">
+            <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#D94E28] block mb-3">
+              Practice Dossiers &amp; Field Manuals
+            </span>
+            <h2 className="text-2xl md:text-3xl font-serif text-[#141413] mb-6">
+              Deep-Dive Guides for {service.title}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {DETAILED_GUIDES.filter((g) => g.relatedPracticeId === service.id).map((guideItem) => (
+                <Link
+                  key={guideItem.slug}
+                  to={`/guides/${guideItem.slug}`}
+                  className="p-6 bg-white border border-[#141413]/12 hover:border-[#D94E28] transition-all group flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="text-[10px] font-mono text-[#D94E28] uppercase tracking-wider mb-2">
+                      {guideItem.readTime}
+                    </div>
+                    <h3 className="font-serif text-lg text-[#141413] group-hover:text-[#D94E28] transition-colors mb-2 leading-snug">
+                      {guideItem.title}
+                    </h3>
+                    <p className="text-xs text-[#141413]/65 font-light line-clamp-2">
+                      {guideItem.subtitle}
+                    </p>
+                  </div>
+                  <div className="mt-4 pt-3 border-t border-[#141413]/8 flex items-center justify-between text-xs font-mono text-[#141413]/60 group-hover:text-[#D94E28]">
+                    <span>Read Full Dossier</span>
+                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </EditorialBlock>
+        )}
+
         {/* Practice Direct Inquire Banner */}
         <EditorialBlock className="mt-16 p-8 md:p-12 bg-[#161514] text-[#F6F4EF] flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
@@ -2713,9 +2752,9 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
 
 const HomePage = ({ onOpenContact }: { onOpenContact?: (practiceId?: string) => void }) => {
   usePageSEO({
-    title: "YEAH Agency Amsterdam | Multidisciplinary Agency · Corporate Consulting, Video Production & Software",
-    description: "YEAH Agency Amsterdam is an international multidisciplinary agency collective in Amsterdam. Specializing in Corporate Consulting, Video Production under Glass Sharp Films, and Software Development including DriveViewer.",
-    keywords: "Corporate Consulting Amsterdam, Dutch BV Formation, Video Production Amsterdam, Glass Sharp Films, Tram Dating, Wedding Videography Amsterdam, Software Development Amsterdam, DriveViewer iOS, Enterprise Cloud Architecture",
+    title: "YEAH Agency Amsterdam | BV, Video Production & Software",
+    description: "Amsterdam agency for Dutch BV & EPR consulting, Glass Sharp Films video production, and DriveViewer iOS software. Direct execution since 2020.",
+    keywords: "Corporate Consulting Amsterdam, Dutch BV Formation, EPR Registration Netherlands, Personnel Dispatch Kennismigrant, Video Production Amsterdam, Glass Sharp Films, Tram Dating, Wedding Videography Amsterdam, Software Development Amsterdam, DriveViewer iOS",
     canonicalUrl: "https://yeah-amsterdam.nl/"
   });
 

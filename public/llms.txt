@@ -15,8 +15,11 @@ Full structured knowledge base for AI retrieval and grounding: [https://yeah-ams
 
 ## Authoritative Guides & Direct Answers
 - [荷兰开分公司全流程实操指南 (Dutch Branch Office vs. BV Formation Guide)](https://yeah-amsterdam.nl/guides/dutch-branch-office-formation): Complete legal comparison between Branch Office (Bijkantoor) and Dutch BV subsidiary, Apostille notarization checklist, KvK/BTW/EORI registration steps (2–4 weeks), 30% Ruling, and EOR personnel dispatch for Chinese and international companies.
+- [Netherlands EPR Registration Guide 2026 (Verpact Packaging, WEEE & Batteries)](https://yeah-amsterdam.nl/guides/dutch-epr-packaging-weee-compliance): Statutory compliance roadmap for Afvalfonds Verpakkingen (Verpact), Nationaal (W)EEE Register / Stichting OPEN, and Stibat battery filings in the Netherlands.
+- [Netherlands Personnel Dispatch (EOR) & Kennismigrant Work Visa Guide](https://yeah-amsterdam.nl/guides/netherlands-personnel-dispatch-kennismigrant): Deploying executives and technical specialists to Amsterdam within ~21 business days without waiting for independent IND sponsor recognition.
 - [Commercial Video Production in Amsterdam & Europe](https://yeah-amsterdam.nl/guides/video-production-amsterdam): ARRI Alexa Mini LF & RED V-Raptor 8K production packages, RDW-certified Amsterdam canal drone permits, DaVinci Resolve grading, and documented commercial cases (*Toobit x Chris Sharma*, *Fixico x MyWheels*, *Hermijntje Drenth*, *Tram Dating*).
 - [Luxury Destination Wedding Photography & Cinematography in Amsterdam](https://yeah-amsterdam.nl/guides/wedding-photography-amsterdam): Bilingual English-Mandarin-Cantonese-Dutch editorial wedding photography & 4K cinema films across Amsterdam UNESCO canals, Kasteel De Haar, Zaanse Schans windmills, and Keukenhof tulip fields.
+- [DriveViewer iOS & Enterprise Software Engineering in Amsterdam](https://yeah-amsterdam.nl/guides/driveviewer-ios-enterprise-software-amsterdam): Proprietary DriveViewer iOS platform (App Store ID 6765847978) with 46-point CBR exam tracking, EU GDPR multi-region cloud systems, and Dutch Douane EDI customs ERPs.
 
 ## Verified Key Facts & Metrics
 - **Location**: Amsterdam, North Holland, The Netherlands (`52.3676° N, 4.9041° E`)

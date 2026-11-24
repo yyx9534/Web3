@@ -74,11 +74,14 @@ export const GuidePage: React.FC<{
 
       setMetaTag("name", "description", guide.metaDescription);
       setMetaTag("name", "keywords", guide.keywords);
+      setMetaTag("property", "og:type", "article");
       setMetaTag("property", "og:title", guide.metaTitle);
       setMetaTag("property", "og:description", guide.metaDescription);
       setMetaTag("property", "og:url", guide.canonicalUrl);
+      setMetaTag("property", "og:image", guide.heroImage);
       setMetaTag("name", "twitter:title", guide.metaTitle);
       setMetaTag("name", "twitter:description", guide.metaDescription);
+      setMetaTag("name", "twitter:image", guide.heroImage);
 
       let linkCanonical = document.querySelector('link[rel="canonical"]');
       if (!linkCanonical) {
@@ -419,7 +422,7 @@ export const GuidePage: React.FC<{
           <span className="text-xs font-mono uppercase tracking-[0.3em] text-[#141413]/55 block mb-6">
             Explore Other Practice Dossiers
           </span>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {DETAILED_GUIDES.filter((g) => g.slug !== guide.slug).map((other) => (
               <Link 
                 key={other.slug}

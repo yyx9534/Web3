@@ -324,5 +324,195 @@ export const DETAILED_GUIDES: DetailedGuide[] = [
         a: "Due to high demand during the European wedding season (May through October), we recommend reserving your date 4 to 8 months in advance. For spring tulip season photoshoots (mid-April to early May), booking by January or February is strongly advised."
       }
     ]
+  },
+
+  // 4. Netherlands EPR Registration & Environmental Compliance (Packaging / Verpact, WEEE, Batteries)
+  {
+    slug: "dutch-epr-packaging-weee-compliance",
+    category: "Corporate Consulting · 环保合规与跨境电商",
+    badge: "2026 EU COMPLIANCE · 荷兰EPR包装法与WEEE注册",
+    title: "Netherlands EPR Registration Guide 2026: Afvalfonds Verpakkingen (Verpact), WEEE & Batteries Compliance",
+    subtitle: "Complete compliance roadmap for cross-border e-commerce brands, manufacturers, and European importers covering Dutch Packaging Waste (荷兰包装法), Electronics (Stichting OPEN / WEEE), and EU Batteries EPR.",
+    metaTitle: "Dutch EPR Registration Guide 2026 | Verpact Packaging & WEEE · YEAH Agency",
+    metaDescription: "Turnkey Netherlands EPR registration guide: Afvalfonds Verpakkingen (Verpact) packaging thresholds, Stichting OPEN WEEE electronics, EU Batteries compliance, and annual filings from Amsterdam.",
+    keywords: "EPR registration Netherlands, Afvalfonds Verpakkingen, Verpact registration, WEEE Netherlands Stichting OPEN, EU EPR compliance, 荷兰EPR注册, 荷兰包装法申报, 荷兰WEEE电子废弃物注册, 跨境电商荷兰EPR, EU Batteries Regulation Netherlands",
+    heroImage: "https://images.unsplash.com/photo-1554469384-e58fac16e23a?q=80&w=1974&auto=format&fit=crop",
+    readTime: "8 min read",
+    updatedDate: "November 2026 Edition",
+    relatedPracticeId: "business-consulting",
+    relatedPracticeName: "01. Corporate Consulting (企业咨询)",
+    canonicalUrl: "https://yeah-amsterdam.nl/guides/dutch-epr-packaging-weee-compliance",
+    highlights: [
+      { label: "Packaging Authority", value: "Verpact / Afvalfonds Verpakkingen" },
+      { label: "WEEE Authority", value: "Nationaal (W)EEE Register / Stichting OPEN" },
+      { label: "Registration Window", value: "2 - 3 Weeks Full Compliance Filing" },
+      { label: "Marketplace Scope", value: "Amazon EU, Bol.com, Zalando & Direct D2C" }
+    ],
+    introduction: "Under European Union Extended Producer Responsibility (EPR / 生产者责任延伸) directives and Dutch environmental legislation (Besluit beheer verpakkingen), any business placing packaged goods, electrical equipment, or batteries onto the Dutch market for the first time is legally classified as a Producer/Importer. Non-compliance leads directly to Amazon EU / Bol.com listing suspensions, Rotterdam customs holds, and retroactive municipal penalties. YEAH Agency Amsterdam manages full-cycle Dutch EPR registration, weight auditing, and annual Afvalfonds Verpakkingen & WEEE declarations.",
+    sections: [
+      {
+        title: "1. The Three Core Dutch EPR Streams (荷兰三大核心 EPR 环保类别)",
+        subtitle: "Identifying which producer registers apply to your physical products and packaging.",
+        content: "Unlike Germany (LUCID) or France (ADEME UIN), the Netherlands administers EPR across dedicated statutory producer responsibility organizations (PROs). Foreign sellers without a Dutch establishment must appoint compliant local representation or register under verified European frameworks:",
+        tableData: {
+          headers: ["EPR Stream", "Dutch Statutory Body", "Covered Products & Annual Reporting"],
+          rows: [
+            ["Packaging (荷兰包装法)", "Verpact (formerly Afvalfonds Verpakkingen)", "Primary shipping cartons, plastics, glass, wood, SUP single-use plastics; annual declaration required above 50,000 kg (mandatory SUP reporting regardless of weight for covered single-use items)"],
+            ["Electronics / WEEE (电子电器)", "Nationaal (W)EEE Register & Stichting OPEN", "All consumer/B2B electronics, LED lighting, chargers, smart home devices, cables (mandatory from unit #1 sold)"],
+            ["Batteries (电池法)", "Stichting Stibat Services / EU Battery Regulation", "Loose batteries, lithium-ion packs, EV/e-bike cells, and batteries embedded inside electronics (mandatory EU Battery Passport readiness)"]
+          ]
+        },
+        calloutBox: {
+          type: "warning",
+          text: "Important Rule Update: Even when your total Dutch packaging volume sits below 50,000 kg/year (tariff threshold exemption), Single-Use Plastics (SUP) reporting and WEEE / Battery unit reporting remain strictly mandatory from the very first shipment."
+        }
+      },
+      {
+        title: "2. Step-by-Step Dutch EPR Onboarding & Audit Workflow",
+        subtitle: "From SKU packaging weight audit to active compliance certificates.",
+        content: "Our Amsterdam compliance specialists deliver verified registrations on behalf of European importers, Chinese brand owners, and cross-border marketplaces:",
+        bulletPoints: [
+          "SKU Material & Weight Audit: Classify cardboard, HDPE/LDPE plastic, aluminum, glass, and electronics weights across every shipment batch.",
+          "Statutory Portal Enrollment: Execute formal registration with Verpact (Afvalfonds Verpakkingen), Nationaal (W)EEE Register, and Stibat using Dutch KvK or cross-border producer credentials.",
+          "Marketplace Certificate Verification: Generate verifiable EPR registration numbers and compliance attestations formatted for Amazon Seller Central, Bol.com Partner Portal, and Temu/TikTok Shop EU compliance.",
+          "Annual & Quarterly Weight Declarations: Calculate statutory eco-contributions, reconcile supplier packaging exemptions, and file on-time annual reports with Belastingdienst/ILT audit protection."
+        ]
+      }
+    ],
+    faqs: [
+      {
+        q: "Does my Chinese or US company need a Dutch BV to register for EPR in the Netherlands?",
+        a: "For WEEE and Batteries, foreign companies without a Dutch entity are required under EU law to appoint an Authorized Representative (AR) established in the Netherlands. For packaging, foreign direct-to-consumer sellers and importers must register directly or operate via a compliant Dutch entity/importer. YEAH Agency advises on the optimal structure and handles complete filings."
+      },
+      {
+        q: "What is the 50,000 kg threshold at Verpact (Afvalfonds Verpakkingen)?",
+        a: "Companies placing 50,000 kg or less of regular packaging per calendar year onto the Dutch market are generally exempt from paying the standard per-kg waste management tariff, though record-keeping and Single-Use Plastic (SUP) declarations remain legally required if applicable."
+      }
+    ]
+  },
+
+  // 5. Netherlands Personnel Dispatch (EOR) & Kennismigrant Work Visa Guide
+  {
+    slug: "netherlands-personnel-dispatch-kennismigrant",
+    category: "Corporate Consulting · 人员派遣与高技术移民",
+    badge: "IND COMPLIANCE · 第三方人员派遣与21天工签落地",
+    title: "Netherlands Personnel Dispatch (EOR) & Kennismigrant Work Visa Guide: Deploying Staff Within 21 Business Days",
+    subtitle: "How international companies relocate executives, engineers, and Chinese specialists to Amsterdam legally without waiting months for their own IND Recognized Sponsor status.",
+    metaTitle: "Netherlands Personnel Dispatch & Kennismigrant Visa 2026 | YEAH Agency",
+    metaDescription: "Deploy staff to the Netherlands in 21 business days via compliant Third-Party Personnel Dispatch (EOR) and IND Kennismigrant visas, including 2026 salary thresholds and 30% Tax Ruling.",
+    keywords: "Netherlands personnel dispatch, EOR Netherlands, Kennismigrant visa 2026, Highly Skilled Migrant Netherlands, 30% ruling Netherlands, IND Recognized Sponsor alternative, 荷兰第三方人员派遣, 荷兰高技术移民签证, 荷兰名义雇主EOR, 中企外派荷兰员工签证",
+    heroImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop",
+    readTime: "7 min read",
+    updatedDate: "November 2026 Edition",
+    relatedPracticeId: "business-consulting",
+    relatedPracticeName: "01. Corporate Consulting (企业咨询)",
+    canonicalUrl: "https://yeah-amsterdam.nl/guides/netherlands-personnel-dispatch-kennismigrant",
+    highlights: [
+      { label: "IND Turnaround", value: "~21 Business Days Visa Approval" },
+      { label: "Sponsor Mechanism", value: "Accredited IND Recognized Sponsor (EOR)" },
+      { label: "Tax Optimization", value: "30% Ruling Eligibility Assessment" },
+      { label: "Family Mobility", value: "Full Spouse Work Rights & Child Residency" }
+    ],
+    introduction: "When opening a European headquarters or branch office in Amsterdam, securing local entity KvK registration is only half the battle—getting core leadership, technical architects, and Mandarin/English operations staff legally on the ground is often delayed by 4–6 months if a brand-new Dutch BV must independently qualify for IND Recognized Sponsor (Erkend Referent) status. YEAH Agency solves this bottleneck through compliant Third-Party Personnel Dispatch (Employer of Record / Payrolling) under accredited Dutch IND sponsors.",
+    sections: [
+      {
+        title: "1. Direct IND Sponsorship vs. Third-Party Personnel Dispatch (EOR)",
+        subtitle: "Launching European operations in 3 weeks rather than 6 months.",
+        content: "Comparing the two legal pathways for stationing non-EU specialists in the Netherlands:",
+        tableData: {
+          headers: ["Dimension", "Direct IND Sponsor Application (New BV)", "Third-Party Personnel Dispatch / EOR (YEAH Solution)"],
+          rows: [
+            ["Lead Time to Visa Filing", "3–6 months (requires corporate track record & tax vetting)", "Immediate (via accredited IND Recognized Sponsor partner)"],
+            ["IND Decision SLA", "2–4 weeks after sponsor approval", "~21 business days end-to-end"],
+            ["Local Dutch Payroll & HR", "Must build internal payroll & Dutch labor contracts", "100% managed Dutch Loonheffing payroll, UWV & CAO compliance"],
+            ["30% Ruling Eligibility", "Eligible if recruited from abroad", "Eligible when executed prior to Dutch relocation"],
+            ["Spouse & Family Rights", "Spouse receives unrestricted Dutch work rights", "Spouse receives unrestricted Dutch work rights"]
+          ]
+        }
+      },
+      {
+        title: "2. 2026 Kennismigrant Salary Criteria & Compliance Checklist",
+        subtitle: "Ensuring transparent salary thresholds and uninterrupted IND residency status.",
+        content: "To qualify for fast-track Dutch Highly Skilled Migrant (Kennismigrant) permits, monthly gross salary (excluding 8% holiday allowance) must meet statutory IND minimums:",
+        bulletPoints: [
+          "Age 30 and above: €5,331 gross/month (indexed annually per IND schedule).",
+          "Under Age 30: €3,909 gross/month.",
+          "Dutch University Graduates (Zoekjaar / Reduced Criterion): Reduced statutory threshold for international talent graduating from qualifying Dutch or top global universities within 3 years.",
+          "Complete Municipal Onboarding: Appointment scheduling at Gemeente Amsterdam / Expatcenter for BSN registration, DigiD activation, and EU residence card (Verblijfsvergunning) collection."
+        ]
+      }
+    ],
+    faqs: [
+      {
+        q: "Can we transition employees from third-party EOR dispatch back to our own Dutch BV later?",
+        a: "Yes. Once your own Dutch BV has operated for 6–12 months and obtains its own IND Recognized Sponsor status, we execute a seamless sponsorship transfer (verandering referent) to your own entity with zero gap in residency continuity or 30% Ruling validity."
+      },
+      {
+        q: "Can partners and children accompany dispatched employees immediately?",
+        a: "Yes. Spouses and minor children are filed simultaneously alongside the principal Kennismigrant application and receive full Dutch residence permits—with spouses granted unrestricted access to the Dutch labor market without requiring a separate work permit."
+      }
+    ]
+  },
+
+  // 6. DriveViewer iOS & Enterprise GDPR Cloud Engineering in Amsterdam
+  {
+    slug: "driveviewer-ios-enterprise-software-amsterdam",
+    category: "Software Development · 企业系统研发与 DriveViewer",
+    badge: "PROPRIETARY SOFTWARE · DRIVEVIEWER IOS & ENTERPRISE CLOUD",
+    title: "DriveViewer iOS & Enterprise Software Engineering in Amsterdam: GDPR Cloud Systems & Douane EDI ERP",
+    subtitle: "How YEAH Agency Amsterdam engineers proprietary iOS SaaS platforms—including DriveViewer on the Apple App Store—alongside GDPR-compliant multi-region cloud systems and Dutch Customs EDI ERPs.",
+    metaTitle: "DriveViewer iOS & Enterprise Software Amsterdam | YEAH Agency",
+    metaDescription: "Explore DriveViewer iOS for Dutch driving schools (46-point CBR exam tracking), GDPR EU cloud architectures, and automated Dutch Customs (Douane EDI) ERPs built in Amsterdam.",
+    keywords: "DriveViewer iOS, driving school software Netherlands, rijschool app DriveViewer, software development Amsterdam, GDPR cloud architecture Europe, Douane EDI ERP Rotterdam, 荷兰定制软件开发, DriveViewer 驾校软件",
+    heroImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+    readTime: "7 min read",
+    updatedDate: "November 2026 Edition",
+    relatedPracticeId: "custom-it-services",
+    relatedPracticeName: "03. Software Development (软件开发)",
+    canonicalUrl: "https://yeah-amsterdam.nl/guides/driveviewer-ios-enterprise-software-amsterdam",
+    highlights: [
+      { label: "Flagship iOS App", value: "DriveViewer (App Store ID 6765847978)" },
+      { label: "CBR Curriculum", value: "46-Point Dutch Driving Exam Telemetry" },
+      { label: "Trade ERP Volume", value: "€45M+ Annual Freight Processed" },
+      { label: "Security Standard", value: "EU GDPR Multi-Region Data Residency" }
+    ],
+    introduction: "Software built for European operations cannot rely on generic offshore templates. European enterprises must satisfy strict GDPR data residency mandates, Dutch Customs (Douane EDI) telemetry protocols, and localized UX expectations. YEAH Agency Amsterdam's Software Development practice combines enterprise infrastructure engineering with in-house product incubation—most visibly demonstrated by DriveViewer iOS, live on the Apple App Store for Dutch driving schools (Rijscholen).",
+    sections: [
+      {
+        title: "1. DriveViewer iOS: Modernizing Dutch Driving Schools (Rijscholen)",
+        subtitle: "Built in Amsterdam and live on the Apple App Store with a 4.9-star instructor rating.",
+        content: "Traditional paper lesson cards fail both instructors and CBR exam candidates. DriveViewer digitizes the entire driving school workflow into a high-speed native iOS experience:",
+        bulletPoints: [
+          "46-Point CBR Competency Grading: Real-time scoring of intersection scanning, mirror routines, highway merging, and special maneuvers synced immediately with student dashboards.",
+          "Interactive Schedule & Package Billing: Automated lesson balance tracking, CBR practical exam reminders, and multi-instructor fleet calendars.",
+          "Transparent Parent & Student Progress Portal: Crystal-clear visual readiness indices eliminating ambiguity before the final CBR practical examination.",
+          "Live App Store Availability: Downloadable directly via Apple App Store (ID 6765847978)."
+        ]
+      },
+      {
+        title: "2. Enterprise GDPR Cloud & Rotterdam Douane EDI Integration",
+        subtitle: "Zero-downtime systems engineering for cross-border logistics and Asian-European headquarters.",
+        content: "Beyond venture SaaS products, YEAH architects mission-critical enterprise software connecting European operations with Asia-Pacific hubs:",
+        tableData: {
+          headers: ["System Domain", "Core Architecture", "Measured Operational Outcome"],
+          rows: [
+            ["Rotterdam Customs & Trade ERP", "Cloud-native web ERP + direct Dutch Douane EDI gateway + EU OSS VAT engine", "Processes €45M+ annual import-export freight; cuts customs clearance time by 65%"],
+            ["EU-Asia GDPR Data Sync Backbone", "Apache Kafka event streaming + Kubernetes (Frankfurt & Singapore nodes)", "Sub-200ms intercontinental replication with 99.995% SLA and automated PII pseudonymization"],
+            ["Native Mobile Venture Platforms", "Swift / iOS & cross-platform TypeScript clients + edge API telemetry", "Production consumer & B2B apps shipped end-to-end to European App Store"]
+          ]
+        }
+      }
+    ],
+    faqs: [
+      {
+        q: "Where can Dutch driving schools download and test DriveViewer?",
+        a: "DriveViewer is published officially on the Apple App Store under ID 6765847978 (https://apps.apple.com/nl/app/driveviewer/id6765847978?l=en-GB). Enterprise driving school chains with multiple instructors can also contact info@yeah-amsterdam.nl for white-label onboarding and fleet licensing."
+      },
+      {
+        q: "How does YEAH ensure GDPR compliance when integrating Chinese or US systems with European branches?",
+        a: "We enforce strict European data residency partitioning (e.g., AWS eu-central-1 Frankfurt / EU sovereign regions), automated field-level pseudonymization prior to cross-border replication, and role-based audit trails satisfying AVG / GDPR regulatory inspections."
+      }
+    ]
   }
 ];
+

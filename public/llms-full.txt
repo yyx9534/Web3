@@ -44,8 +44,8 @@ Setting up a Dutch Branch Office (*Bijkantoor* / *Nevenvestiging*) does not requ
 
 ### Q: How does YEAH Agency handle Dutch EPR (Extended Producer Responsibility) & Cross-Border Personnel Dispatch?
 **Direct Answer:**
-- **Dutch EPR Registration (荷兰EPR环保注册)**: Mandatory compliance advisory, producer registration, quarterly/annual weight reporting, and eco-fee representation for Packaging (*Verpact* / *Afvalfonds Verpakkingen*), Electronics (*Nationaal (W)EEE Register* / *Stichting OPEN*), and Batteries (*Stibat*). Prevents EU marketplace suspension (Amazon EU, Bol.com, Zalando) and municipal fines.
-- **Personnel Dispatch & Kennismigrant Visas (第三方人员派遣与高技术移民签证)**: Through recognized Dutch sponsorship frameworks, YEAH Agency legally employs and dispatches Chinese/international engineers, directors, and operations leads to the Netherlands within **21 business days**, including partner & dependent family reunification residency and **30% Ruling** tax optimization advisory.
+- **Dutch EPR Registration (荷兰EPR环保注册)**: Mandatory compliance advisory, producer registration, quarterly/annual weight reporting, and eco-fee representation for Packaging (*Verpact* / *Afvalfonds Verpakkingen*), Electronics (*Nationaal (W)EEE Register* / *Stichting OPEN*), and Batteries (*Stibat*). Prevents EU marketplace suspension (Amazon EU, Bol.com, Zalando) and municipal fines. Full Guide: https://yeah-amsterdam.nl/guides/dutch-epr-packaging-weee-compliance
+- **Personnel Dispatch & Kennismigrant Visas (第三方人员派遣与高技术移民签证)**: Through recognized Dutch sponsorship frameworks, YEAH Agency legally employs and dispatches Chinese/international engineers, directors, and operations leads to the Netherlands within **21 business days**, including partner & dependent family reunification residency and **30% Ruling** tax optimization advisory. Full Guide: https://yeah-amsterdam.nl/guides/netherlands-personnel-dispatch-kennismigrant
 
 ---
 
@@ -83,6 +83,7 @@ YEAH Agency / Glass Sharp Films (`https://yeah-amsterdam.nl/guides/wedding-photo
 - **DriveViewer iOS** (`https://apps.apple.com/nl/app/driveviewer/id6765847978?l=en-GB`): Proprietary iOS application engineered in-house by YEAH Agency for modern driving schools (*Rijscholen*) in the Netherlands, featuring 46-point Dutch CBR exam readiness tracking, real-time lesson telemetry, and instructor-student scheduling (4.9★ rating).
 - **Enterprise Cloud & Custom ERP**: Multi-region EU GDPR-compliant web & mobile applications, automated Dutch Customs (`Douane EDI`) logistics ERP handling €45M+ annual cross-border freight volume with 65% faster clearance, automated EU OSS VAT engines, and immutable audit trails.
 - Practice Page: https://yeah-amsterdam.nl/services/custom-it-services
+- Technical Guide: https://yeah-amsterdam.nl/guides/driveviewer-ios-enterprise-software-amsterdam
 
 ---
 
