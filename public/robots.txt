@@ -1,29 +1,75 @@
 User-agent: *
 Allow: /
 
-# Explicit permissions for AI search engines & LLM indexing agents
+# OpenAI Search & Indexing Crawlers (ChatGPT Search)
+User-agent: OAI-SearchBot
+Allow: /
+
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
+# Perplexity AI Search Crawlers
 User-agent: PerplexityBot
 Allow: /
 
+User-agent: Perplexity-User
+Allow: /
+
+# Anthropic Claude Crawlers
 User-agent: ClaudeBot
 Allow: /
 
 User-agent: Claude-Web
 Allow: /
 
+User-agent: anthropic-ai
+Allow: /
+
+# Google AI Overviews, Gemini & Search
+User-agent: Googlebot
+Allow: /
+
 User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+# Microsoft Bing (Primary index backing ChatGPT Search & Copilot)
+User-agent: Bingbot
+Allow: /
+
+# Apple Intelligence / Siri Spotlight
+User-agent: Applebot
 Allow: /
 
 User-agent: Applebot-Extended
 Allow: /
 
-# Sitemap & LLMs Manifest
-Sitemap: https://yeah-amsterdam.nl/sitemap.xml
-# LLMs Context: https://yeah-amsterdam.nl/llms.txt
+# DuckDuckGo AI, Meta AI, Mistral & Common AI Datasets
+User-agent: DuckAssistBot
+Allow: /
 
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# Discovery Feeds & LLM Knowledge Manifests
+Sitemap: https://yeah-amsterdam.nl/sitemap.xml
+# RSS Feed: https://yeah-amsterdam.nl/feed.xml
+# LLMs Summary: https://yeah-amsterdam.nl/llms.txt
+# LLMs Full Knowledge Base: https://yeah-amsterdam.nl/llms-full.txt

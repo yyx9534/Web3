@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
+import { motion, AnimatePresence, MotionConfig, useMotionValue, useSpring, useScroll, useTransform } from "motion/react";
 import { 
   ArrowRight, 
   Menu, 
@@ -10,7 +10,6 @@ import {
   ExternalLink, 
   Building2, 
   Film, 
-  Camera, 
   Cpu, 
   CheckCircle2, 
   Mail, 
@@ -28,7 +27,7 @@ import {
   LayoutGrid,
   List
 } from "lucide-react";
-import { useState, useEffect, Fragment, type MouseEvent as ReactMouseEvent, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useState, useEffect, useRef, Fragment, type MouseEvent as ReactMouseEvent, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/src/lib/utils";
 import { GuidePage } from "./GuidePage";
@@ -44,6 +43,15 @@ import {
   AmsterdamLiveClock,
   MagneticWrapper,
   TiltGalleryFrame,
+  SpotlightSurface,
+  ArchitecturalCornerMarks,
+  CountUpMetric,
+  EDITORIAL_EASE,
+  editorialPageVariants,
+  editorialSectionVariants,
+  editorialStaggerContainer,
+  editorialCardVariants,
+  EditorialBlock,
 } from "./CreativeEffects";
 
 // --- Types & Data Models ---
@@ -110,11 +118,10 @@ export interface ServiceDefinition {
   };
 }
 
-// --- The Four Practices Data ---
+// --- The Three Practices Data ---
 // 1. Corporate Consulting (企业咨询)
 // 2. Video Production (视频制作)
-// 3. Fine Art Representation (艺术品代理)
-// 4. Software Development (软件开发)
+// 3. Software Development (软件开发)
 
 export const SERVICES: ServiceDefinition[] = [
   { 
@@ -301,103 +308,8 @@ export const SERVICES: ServiceDefinition[] = [
     ]
   },
   { 
-    id: "fine-art",
-    number: "03",
-    title: "Fine Art Representation", 
-    subBrand: "Exclusive Representation: Ming Ye (叶明)",
-    badge: "LARGE-FORMAT PHOTOGRAPHY & ANALOG PRACTICE",
-    tagline: "Exclusive global representation of Large-Format Photography Artist Ming Ye (叶明).",
-    desc: "Sole representative of acclaimed Large-Format Photography Artist Ming Ye (叶明). Specializing in 8x10 analog view cameras, darkroom silver gelatin craftsmanship, and European museum curation. Access the complete artist monograph and catalog via shorturl.at/TYn8P.",
-    longOverview: "YEAH Agency exclusively represents Large-Format Photography Artist Ming Ye (叶明). Graduated from Shenzhen University Media in the 1980s, Ming Ye operates with 8x10 and 4x5 large-format view cameras and handcrafted silver gelatin darkroom chemistry, creating profound symbolic and philosophical visual works. Ming Ye's work has been prominently exhibited across European institutions, including 'Konstruierte Natur: Landschaft im Wandel in der zeitgenössischen Kunst' (Schloss Plüschow, Germany) and '洞见 – Einblick II' (Rostock, Germany). All curated photographic plates, exhibition portfolios, and catalog entries are documented within the official Artist Monograph (https://shorturl.at/TYn8P). We handle all museum acquisitions, limited-edition collector folios, European solo exhibitions, and scholarly monographs.",
-    icon: Camera,
-    heroImage: "/images/artwork-heaven-0102.jpg",
-    secondaryImage: "/images/artwork-lies-0305.jpg",
-    pdfUrl: {
-      label: "Official Artist Monograph & Portfolio (PDF)",
-      filename: "Artist Ming Monograph",
-      url: "https://shorturl.at/TYn8P"
-    },
-    featuredSpotlight: {
-      title: "Ming Ye (叶明) — Featured Master Series: 《Heaven 渡》, 《Lies 谎言》, 《Prophecy 预言》",
-      subtitle: "Exclusive Representation · Conceptual & Symbolic Large-Format Photography",
-      description: "Dedicated exclusively to Large-Format Photography Artist Ming Ye (叶明). Operating with 8x10 view cameras and handcrafted silver gelatin darkroom craftsmanship, Ming Ye's practice explores existential and philosophical themes across master series including 《Heaven 渡》, 《Lies 谎言》, and 《Prophecy 预言》. Exhibited in premier German art institutions ('Konstruierte Natur', Schloss Plüschow, 2024; '洞见 – Einblick II', Rostock, 2022). All curated works and acquisition protocols are presented within the official Artist Monograph.",
-      badge: "EXCLUSIVE ARTIST REPRESENTATION · MING YE (叶明)",
-      image: "/images/artwork-heaven-0102.jpg",
-      pdfUrl: "https://shorturl.at/TYn8P",
-      stats: [
-        { label: "Represented Artist", value: "Ming Ye (叶明)" },
-        { label: "Master Series", value: "Heaven · Lies · Prophecy" },
-        { label: "Official Monograph", value: "Verified PDF" }
-      ],
-      link: { label: "Open Official Monograph PDF (shorturl.at/TYn8P)", url: "https://shorturl.at/TYn8P" }
-    },
-    metrics: [
-      { value: "8x10", label: "Large-Format View Camera Standard" },
-      { value: "100%", label: "Exclusive Global Representation (Ming Ye)" },
-      { value: "Museum-Tier", label: "Archival Silver Gelatin Conservation" }
-    ],
-    scopeList: [
-      {
-        title: "Exclusive Global Artist Representation (Ming Ye 叶明)",
-        desc: "Sole representation for Large-Format Photography Artist Ming Ye globally, managing museum acquisitions, gallery rights, private collector sales, and institutional commissions."
-      },
-      {
-        title: "Official Monograph & Portfolio Curation",
-        desc: "Publishing and distributing the official Artist Monograph (https://shorturl.at/TYn8P), presenting verified plates, curatorial essays, and catalog raisonné records."
-      },
-      {
-        title: "Archival Silver Gelatin Darkroom Printing",
-        desc: "Museum-grade fiber paper darkroom processing, selenium/gold toning for multi-century permanence, and authenticated limited collector editions."
-      },
-      {
-        title: "European Museum Exhibitions & Foundation Placements",
-        desc: "Accessioning Ming Ye's master photographic portfolios into permanent European photography archives, art museums, and distinguished private foundations (e.g. Plüschow, Rostock)."
-      },
-      {
-        title: "Scholarly Monograph Publishing & Curatorial Scenography",
-        desc: "Designing contemplative gallery scenography, anti-reflective museum framing, and distributing the official Artist Monograph (available at shorturl.at/TYn8P)."
-      }
-    ],
-    methodologySteps: [
-      {
-        step: "01",
-        title: "Philosophical Conception & Metaphor",
-        desc: "Drawing upon classical philosophy and symbolic visual language, composing meditative large-format photographic studies."
-      },
-      {
-        step: "02",
-        title: "8x10 View Camera Field Capture",
-        desc: "Rigorous analog view camera exposure, bellows tilt/shift perspective control, and individual sheet film development capturing nuanced tonality."
-      },
-      {
-        step: "03",
-        title: "Darkroom Silver Gelatin Crafting",
-        desc: "Handcrafted darkroom enlargement onto fiber-base silver gelatin paper, archival chemical washing, and selenium toning."
-      },
-      {
-        step: "04",
-        title: "Archival Certification & Institutional Placement",
-        desc: "Stamping with artist authenticity seals, catalog raisonné registration, museum conservation framing, and institutional accession."
-      }
-    ],
-    faqs: [
-      {
-        q: "Who is Ming Ye (叶明) and what defines his large-format photography?",
-        a: "Ming Ye (叶明) is an acclaimed Large-Format Photography Artist who graduated from Shenzhen University Media in the 1980s. He works with 8x10 and 4x5 large-format view cameras and darkroom silver gelatin craftsmanship, specializing in symbolic and metaphorical photography. His work has been widely exhibited in European institutions, including 'Konstruierte Natur' (Plüschow, 2024) and '洞见 – Einblick II' (Rostock, 2022)."
-      },
-      {
-        q: "Does YEAH Agency represent other artists?",
-        a: "No. Our fine art division is dedicated exclusively to Large-Format Photography Artist Ming Ye (叶明). We concentrate our curatorial, exhibition, and archival resources entirely on his practice and photographic legacy."
-      },
-      {
-        q: "How can museums and private collectors access the artist monograph and acquisition details?",
-        a: "The official Artist Monograph and exhibition catalog can be accessed directly at https://shorturl.at/TYn8P. All original prints are strictly limited editions, hand-printed in the darkroom, signed, and accompanied by provenance certificates."
-      }
-    ]
-  },
-  { 
     id: "custom-it-services",
-    number: "04",
+    number: "03",
     title: "Software Development", 
     subBrand: "Digital Ventures & DriveViewer iOS",
     badge: "ENTERPRISE SYSTEMS & MOBILE PLATFORMS",
@@ -670,39 +582,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop"
   },
 
-  // 03. Fine Art Representation (艺术品代理 - Ming Ye 叶明)
-  {
-    id: "case-ming-ye",
-    title: "Ming Ye (叶明) — Large-Format Analog Photography: 《Heaven 渡》, 《Lies 谎言》, 《Prophecy 预言》",
-    clientCategory: "Sole Represented Artist · Large-Format Photography Artist Ming Ye (叶明)",
-    serviceId: "fine-art",
-    serviceName: "Fine Art Representation",
-    tag: "EXCLUSIVE ARTIST CASE · MING YE (叶明)",
-    summary: "Exclusive agency representation, European museum acquisitions, darkroom silver gelatin editions, and curatorial solo exhibition management for Large-Format Photography Artist Ming Ye (叶明). Access the complete Artist Monograph via https://shorturl.at/TYn8P.",
-    challenge: "Preserving and presenting the profound philosophical depth, symbolic subtlety, and optical fidelity of the artist's large-format analog practice across the master series 《Heaven 渡》, 《Lies 谎言》, and 《Prophecy 预言》, while connecting limited editions with premier European cultural institutions and discerning collectors.",
-    solution: "YEAH Agency serves as the exclusive global representative for Ming Ye, orchestrating institutional exhibitions across Europe (including Germany's 'Konstruierte Natur' and '洞见 – Einblick II'), museum conservation framing, scholarly monograph distribution, and institutional permanent collection accessions.",
-    deliverables: [
-      "Exclusive global representation and curatorial archive management",
-      "Signature large-format works: 《Heaven No.0102》, 《Lies No.0305》, 《Prophecy No.0009》",
-      "Official Artist Monograph & Exhibition Portfolio (https://shorturl.at/TYn8P)",
-      "Curatorial solo exhibition scenography and scholarly publication distribution",
-      "European museum permanent collection accessions and verified provenance certificates",
-      "Limited edition 8x10 darkroom silver gelatin prints and institutional acquisition liaison"
-    ],
-    outcome: "Exhibited in prominent German cultural institutions (Schloss Plüschow, Rostock); signature large-format works accessioned into prestigious private foundations and European photography collections.",
-    image: "/images/artwork-heaven-0102.jpg",
-    pdfLink: {
-      label: "Open Artist Monograph PDF (shorturl.at/TYn8P)",
-      url: "https://shorturl.at/TYn8P"
-    },
-    metrics: [
-      { label: "Artist", value: "Ming Ye (叶明)" },
-      { label: "Practice", value: "8x10 Large-Format" },
-      { label: "Official Monograph", value: "shorturl.at/TYn8P" }
-    ]
-  },
-
-  // 04. Software Development (软件开发 - DriveViewer & Cloud)
+  // 03. Software Development (软件开发 - DriveViewer & Cloud)
   {
     id: "case-driveviewer-ios",
     title: "DriveViewer — Modern Driving School & Instructor Management Platform",
@@ -778,35 +658,40 @@ const usePageSEO = ({
   title,
   description,
   keywords,
-  canonicalUrl
+  canonicalUrl,
+  structuredData,
 }: {
   title: string;
   description: string;
   keywords?: string;
   canonicalUrl?: string;
+  structuredData?: Record<string, unknown> | null;
 }) => {
   useEffect(() => {
     document.title = title;
 
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement("meta");
-      metaDesc.setAttribute("name", "description");
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.setAttribute("content", description);
+    const setMetaTag = (attrName: "name" | "property", attrValue: string, content: string) => {
+      let tag = document.querySelector(`meta[${attrName}="${attrValue}"]`);
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute(attrName, attrValue);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", content);
+    };
+
+    setMetaTag("name", "description", description);
+    setMetaTag("property", "og:title", title);
+    setMetaTag("property", "og:description", description);
+    setMetaTag("name", "twitter:title", title);
+    setMetaTag("name", "twitter:description", description);
 
     if (keywords) {
-      let metaKeywords = document.querySelector('meta[name="keywords"]');
-      if (!metaKeywords) {
-        metaKeywords = document.createElement("meta");
-        metaKeywords.setAttribute("name", "keywords");
-        document.head.appendChild(metaKeywords);
-      }
-      metaKeywords.setAttribute("content", keywords);
+      setMetaTag("name", "keywords", keywords);
     }
 
     if (canonicalUrl) {
+      setMetaTag("property", "og:url", canonicalUrl);
       let linkCanonical = document.querySelector('link[rel="canonical"]');
       if (!linkCanonical) {
         linkCanonical = document.createElement("link");
@@ -815,7 +700,20 @@ const usePageSEO = ({
       }
       linkCanonical.setAttribute("href", canonicalUrl);
     }
-  }, [title, description, keywords, canonicalUrl]);
+
+    const existingScript = document.getElementById("dynamic-route-jsonld");
+    if (structuredData) {
+      const script = existingScript || document.createElement("script");
+      script.id = "dynamic-route-jsonld";
+      script.setAttribute("type", "application/ld+json");
+      script.textContent = JSON.stringify(structuredData);
+      if (!existingScript) {
+        document.head.appendChild(script);
+      }
+    } else if (existingScript) {
+      existingScript.remove();
+    }
+  }, [title, description, keywords, canonicalUrl, structuredData]);
 };
 
 // --- Scroll To Top On Navigation ---
@@ -867,63 +765,61 @@ const Navbar = ({
         </span>
       </Link>
 
-      {/* Desktop Links */}
+      {/* Desktop Links with Gliding Shared-Layout Underline */}
       <div className="hidden lg:flex items-center gap-5 xl:gap-6 text-[11px] font-mono tracking-widest uppercase">
-        <Link 
-          to="/services/business-consulting" 
-          className={cn(
-            "transition-colors py-1 border-b whitespace-nowrap shrink-0",
-            isCurrent("/services/business-consulting") || isCurrent("/business-consulting")
-              ? "text-[#D94E28] border-[#D94E28] font-medium"
-              : "text-[#141413]/65 border-transparent hover:text-[#141413]"
-          )}
-        >
-          01. Corporate
-        </Link>
-        <Link 
-          to="/services/creative-agency" 
-          className={cn(
-            "transition-colors py-1 border-b whitespace-nowrap shrink-0",
-            isCurrent("/services/creative-agency") || isCurrent("/video-production")
-              ? "text-[#D94E28] border-[#D94E28] font-medium"
-              : "text-[#141413]/65 border-transparent hover:text-[#141413]"
-          )}
-        >
-          02. Video Production
-        </Link>
-        <Link 
-          to="/services/fine-art" 
-          className={cn(
-            "transition-colors py-1 border-b whitespace-nowrap shrink-0",
-            isCurrent("/services/fine-art")
-              ? "text-[#D94E28] border-[#D94E28] font-medium"
-              : "text-[#141413]/65 border-transparent hover:text-[#141413]"
-          )}
-        >
-          03. Fine Art
-        </Link>
-        <Link 
-          to="/services/custom-it-services" 
-          className={cn(
-            "transition-colors py-1 border-b whitespace-nowrap shrink-0",
-            isCurrent("/services/custom-it-services") || isCurrent("/enterprise-it")
-              ? "text-[#D94E28] border-[#D94E28] font-medium"
-              : "text-[#141413]/65 border-transparent hover:text-[#141413]"
-          )}
-        >
-          04. Software
-        </Link>
+        {[
+          {
+            to: "/services/business-consulting",
+            label: "01. Corporate",
+            active: isCurrent("/services/business-consulting") || isCurrent("/business-consulting"),
+          },
+          {
+            to: "/services/creative-agency",
+            label: "02. Video Production",
+            active: isCurrent("/services/creative-agency") || isCurrent("/video-production") || isCurrent("/creative-agency"),
+          },
+          {
+            to: "/services/custom-it-services",
+            label: "03. Software",
+            active: isCurrent("/services/custom-it-services") || isCurrent("/enterprise-it"),
+          },
+        ].map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            className={cn(
+              "relative transition-colors py-1.5 whitespace-nowrap shrink-0",
+              item.active ? "text-[#D94E28] font-medium" : "text-[#141413]/65 hover:text-[#141413]"
+            )}
+          >
+            {item.label}
+            {item.active && (
+              <motion.span
+                layoutId="nav-active-bar"
+                transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                className="absolute left-0 right-0 -bottom-0.5 h-[2px] bg-[#D94E28]"
+              />
+            )}
+          </Link>
+        ))}
         <span className="text-[#141413]/20" aria-hidden="true">|</span>
         <Link 
           to="/guides/dutch-branch-office-formation"
           className={cn(
-            "transition-colors py-1 border-b whitespace-nowrap shrink-0",
+            "relative transition-colors py-1.5 whitespace-nowrap shrink-0",
             location.pathname.startsWith("/guides") || location.pathname.includes("wedding-photography") || location.pathname.includes("branch-office")
-              ? "text-[#D94E28] border-[#D94E28] font-medium"
-              : "text-[#141413]/65 border-transparent hover:text-[#141413]"
+              ? "text-[#D94E28] font-medium"
+              : "text-[#141413]/65 hover:text-[#141413]"
           )}
         >
           Dossiers
+          {(location.pathname.startsWith("/guides") || location.pathname.includes("wedding-photography") || location.pathname.includes("branch-office")) && (
+            <motion.span
+              layoutId="nav-active-bar"
+              transition={{ type: "spring", stiffness: 380, damping: 32 }}
+              className="absolute left-0 right-0 -bottom-0.5 h-[2px] bg-[#D94E28]"
+            />
+          )}
         </Link>
         <a href="/#about" className="text-[#141413]/65 hover:text-[#141413] transition-colors whitespace-nowrap shrink-0">
           About
@@ -996,7 +892,7 @@ const Navbar = ({
             </div>
 
             <div className="space-y-6">
-              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#141413]/50 block">The Four Practice Subpages</span>
+              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#141413]/50 block">The Three Practice Subpages</span>
               <div className="space-y-4">
                 {SERVICES.map((s) => (
                   <Link
@@ -1020,7 +916,7 @@ const Navbar = ({
               <div className="pt-6 border-t border-[#141413]/10 space-y-4 text-xs font-mono uppercase tracking-widest text-[#141413]/70">
                 <Link to="/" onClick={() => setIsOpen(false)} className="block hover:text-[#141413]">Home Portal</Link>
                 <Link to="/guides/dutch-branch-office-formation" onClick={() => setIsOpen(false)} className="block text-[#D94E28] hover:text-[#141413]">Dossiers &amp; Guides</Link>
-                <a href="/#divisions" onClick={() => setIsOpen(false)} className="block hover:text-[#141413]">The Four Practices</a>
+                <a href="/#divisions" onClick={() => setIsOpen(false)} className="block hover:text-[#141413]">The Three Practices</a>
                 <a href="/#about" onClick={() => setIsOpen(false)} className="block hover:text-[#141413]">About YEAH Collective</a>
                 <button 
                   onClick={() => { setIsOpen(false); onOpenContact?.(); }} 
@@ -1050,11 +946,28 @@ const Navbar = ({
 
 const Hero = ({ onOpenContact }: { onOpenContact?: () => void }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const stageParallaxY = useTransform(scrollYProgress, [0, 1], [0, -32]);
+
+  useEffect(() => {
+    if (isPaused) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % SERVICES.length);
+    }, 6500);
+    return () => window.clearInterval(timer);
+  }, [isPaused]);
+
   const activeService = SERVICES[activeIndex];
 
   return (
     <>
-      <section className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-20 px-6 md:px-12 bg-[#F6F4EF]">
+      <section ref={heroRef} className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-20 px-6 md:px-12 bg-[#F6F4EF]">
         <AmbientGalleryMesh />
 
         <div className="relative z-10 max-w-7xl mx-auto">
@@ -1062,14 +975,21 @@ const Hero = ({ onOpenContact }: { onOpenContact?: () => void }) => {
             {/* Left Typographic Anchor */}
             <div className="lg:col-span-7 flex flex-col justify-between">
               <div>
-                {/* Editorial Kicker with real live Amsterdam clock */}
+                {/* Editorial Kicker with pulsing status dot & live Amsterdam clock */}
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.55, ease: EDITORIAL_EASE }}
                   className="flex flex-wrap items-center gap-3 text-[11px] font-mono uppercase tracking-[0.26em] text-[#141413]/65 mb-6"
                 >
-                  <span className="text-[#D94E28] font-medium">Amsterdam Agency</span>
+                  <span className="inline-flex items-center gap-2 text-[#D94E28] font-medium">
+                    <span className="relative flex h-2 w-2" aria-hidden="true">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D94E28] opacity-65" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D94E28]" />
+                    </span>
+                    Amsterdam Agency
+                  </span>
                   <span aria-hidden="true">·</span>
                   <AmsterdamLiveClock />
                   <span aria-hidden="true">·</span>
@@ -1081,11 +1001,21 @@ const Hero = ({ onOpenContact }: { onOpenContact?: () => void }) => {
                   <motion.h1
                     initial={{ opacity: 0, y: 36 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.75, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                    exit={{ opacity: 0, y: -24 }}
+                    transition={{ duration: 0.75, delay: 0.08, ease: EDITORIAL_EASE }}
                     className="text-4xl sm:text-6xl md:text-7xl lg:text-[4.85rem] xl:text-[5.25rem] font-serif font-normal tracking-tight text-[#141413] leading-[1.04] text-balance"
                   >
                     A Multidisciplinary{" "}
-                    <span className="italic text-[#D94E28] font-normal">Agency</span>{" "}
+                    <span className="relative inline-block italic text-[#D94E28] font-normal">
+                      Agency
+                      <motion.span
+                        aria-hidden="true"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ duration: 0.7, delay: 0.45, ease: EDITORIAL_EASE }}
+                        className="absolute left-0 right-0 bottom-1 h-[2px] bg-[#D94E28]/35 origin-left"
+                      />
+                    </span>{" "}
                     in Amsterdam.
                   </motion.h1>
                 </div>
@@ -1093,32 +1023,34 @@ const Hero = ({ onOpenContact }: { onOpenContact?: () => void }) => {
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.65, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0, y: -14 }}
+                  transition={{ duration: 0.65, delay: 0.18, ease: EDITORIAL_EASE }}
                   className="text-base md:text-xl text-[#141413]/75 font-light leading-relaxed mb-9 max-w-2xl"
                 >
-                  Operating across sovereign practices united by cross-border vision — bridging strategic corporate counsel, cinematic moving image, rare visual art, and precision digital engineering.
+                  Operating across three sovereign practices united by cross-border vision — bridging strategic corporate counsel, cinematic moving image, and precision digital engineering.
                 </motion.p>
               </div>
 
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.6, delay: 0.26, ease: EDITORIAL_EASE }}
                 className="flex flex-wrap items-center gap-4"
               >
                 <MagneticWrapper>
                   <a 
                     href="#divisions"
-                    className="inline-flex items-center gap-3 px-7 py-4 bg-[#141413] text-[#F6F4EF] font-mono text-xs uppercase tracking-widest hover:bg-[#D94E28] hover:text-white transition-colors font-medium whitespace-nowrap"
+                    className="inline-flex items-center gap-3 px-7 py-4 bg-[#141413] text-[#F6F4EF] font-mono text-xs uppercase tracking-widest hover:bg-[#D94E28] hover:text-white transition-colors font-medium whitespace-nowrap shadow-[0_8px_24px_rgba(20,20,19,0.12)]"
                   >
-                    Explore 4 Dedicated Subpages <ArrowRight size={14} />
+                    Explore 3 Dedicated Subpages <ArrowRight size={14} />
                   </a>
                 </MagneticWrapper>
                 <MagneticWrapper strength={0.16}>
                   <button 
                     type="button"
                     onClick={onOpenContact}
-                    className="inline-flex items-center gap-3 px-7 py-4 bg-white/85 hover:bg-white text-[#141413] font-mono text-xs uppercase tracking-widest transition-colors border border-[#141413]/15 hover:border-[#D94E28] cursor-pointer whitespace-nowrap"
+                    className="inline-flex items-center gap-3 px-7 py-4 bg-white/90 hover:bg-white text-[#141413] font-mono text-xs uppercase tracking-widest transition-colors border border-[#141413]/15 hover:border-[#D94E28] cursor-pointer whitespace-nowrap shadow-xs"
                   >
                     <Mail size={13} className="text-[#D94E28]" /> Direct Inquiry
                   </button>
@@ -1126,21 +1058,26 @@ const Hero = ({ onOpenContact }: { onOpenContact?: () => void }) => {
               </motion.div>
             </div>
 
-            {/* Right Interactive 3D Tilt Gallery Preview Stage */}
+            {/* Right Interactive 3D Tilt Gallery Preview Stage with Scroll Depth & Auto-Advance Hairline */}
             <motion.div
+              style={{ y: stageParallaxY }}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: EDITORIAL_EASE }}
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
               className="lg:col-span-5 flex flex-col"
             >
-              <TiltGalleryFrame maxTilt={5.5} className="h-full min-h-[340px] lg:min-h-[420px] bg-[#161514] border border-[#141413]/15 shadow-[0_24px_60px_rgba(20,20,19,0.12)] overflow-hidden flex flex-col justify-between">
+              <TiltGalleryFrame maxTilt={5.5} className="group h-full min-h-[340px] lg:min-h-[430px] bg-[#161514] border border-[#141413]/15 shadow-[0_24px_60px_rgba(20,20,19,0.14)] overflow-hidden flex flex-col justify-between">
+                <ArchitecturalCornerMarks dark />
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeService.id}
-                    initial={{ opacity: 0, scale: 1.04 }}
+                    initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.4, ease: EDITORIAL_EASE }}
                     className="absolute inset-0"
                   >
                     <img
@@ -1149,29 +1086,34 @@ const Hero = ({ onOpenContact }: { onOpenContact?: () => void }) => {
                       className="w-full h-full object-cover saturate-[1.08]"
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#141413]/90 via-[#141413]/30 to-[#141413]/35" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#141413]/92 via-[#141413]/35 to-[#141413]/35" />
                   </motion.div>
                 </AnimatePresence>
 
-                {/* Top Selector Strip (01..04 Interactive Switchers) */}
+                {/* Top Selector Strip (01..03 Interactive Switchers with Gliding Active Pill) */}
                 <div className="relative z-10 p-5 flex items-center justify-between gap-2">
                   <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-[#F6F4EF]/85 whitespace-nowrap">
                     Live Practice Preview
                   </span>
-                  <div className="flex items-center gap-1 bg-[#141413]/70 backdrop-blur-md p-1 border border-white/15">
+                  <div className="flex items-center gap-1 bg-[#141413]/75 backdrop-blur-md p-1 border border-white/15">
                     {SERVICES.map((s, idx) => (
                       <button
                         key={s.id}
                         type="button"
                         onClick={() => setActiveIndex(idx)}
                         className={cn(
-                          "px-2.5 py-1 text-[10px] font-mono transition-colors cursor-pointer whitespace-nowrap",
-                          activeIndex === idx
-                            ? "bg-[#D94E28] text-white font-medium"
-                            : "text-[#F6F4EF]/70 hover:text-white"
+                          "relative px-2.5 py-1 text-[10px] font-mono transition-colors cursor-pointer whitespace-nowrap z-10",
+                          activeIndex === idx ? "text-white font-medium" : "text-[#F6F4EF]/70 hover:text-white"
                         )}
                         aria-label={`Preview Practice ${s.number}: ${s.title}`}
                       >
+                        {activeIndex === idx && (
+                          <motion.span
+                            layoutId="hero-preview-pill"
+                            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                            className="absolute inset-0 bg-[#D94E28] -z-10"
+                          />
+                        )}
                         {s.number}
                       </button>
                     ))}
@@ -1204,6 +1146,17 @@ const Hero = ({ onOpenContact }: { onOpenContact?: () => void }) => {
                     <ArrowUpRight size={13} />
                   </Link>
                 </div>
+
+                {/* Animated Cycle Progress Hairline at bottom edge of stage */}
+                <div className="relative z-20 h-[2px] w-full bg-white/10 overflow-hidden">
+                  <motion.div
+                    key={`${activeService.id}-${isPaused}`}
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: isPaused ? 0 : 1 }}
+                    transition={{ duration: isPaused ? 0.2 : 6.5, ease: "linear" }}
+                    className="h-full w-full bg-[#D94E28] origin-left"
+                  />
+                </div>
               </TiltGalleryFrame>
             </motion.div>
           </div>
@@ -1212,8 +1165,9 @@ const Hero = ({ onOpenContact }: { onOpenContact?: () => void }) => {
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-14 md:mt-16 pt-8 border-t border-[#141413]/12"
+            exit={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.7, delay: 0.34, ease: EDITORIAL_EASE }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-14 md:mt-16 pt-8 border-t border-[#141413]/12"
           >
             {SERVICES.map((s, idx) => (
               <Link 
@@ -1241,12 +1195,14 @@ const Hero = ({ onOpenContact }: { onOpenContact?: () => void }) => {
         </div>
       </section>
 
-      <EditorialMarquee />
+      <EditorialBlock>
+        <EditorialMarquee />
+      </EditorialBlock>
     </>
   );
 };
 
-// --- Four Practices Portal (Gallery Cards + Kinetic Cursor-Preview Index) ---
+// --- Three Practices Portal (Gallery Cards + Kinetic Cursor-Preview Index) ---
 
 const DivisionPortals = () => {
   const [viewMode, setViewMode] = useState<"cards" | "index">("cards");
@@ -1264,30 +1220,37 @@ const DivisionPortals = () => {
   return (
     <section id="divisions" className="py-24 md:py-32 px-6 md:px-12 bg-[#EFECE4]/60 border-b border-[#141413]/10">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 pb-8 border-b border-[#141413]/12 gap-6">
+        <EditorialBlock className="flex flex-col md:flex-row md:items-end justify-between mb-14 pb-8 border-b border-[#141413]/12 gap-6">
           <div>
             <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#D94E28] block mb-3">Core Structure</span>
             <h2 className="text-3xl md:text-5xl font-serif text-[#141413] leading-tight">
-              The Four Independent <span className="italic font-normal">Practices</span>
+              The Three Independent <span className="italic font-normal">Practices</span>
             </h2>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <p className="text-sm text-[#141413]/70 max-w-md font-light leading-relaxed">
-              Rather than a conventional single-discipline firm, YEAH operates four sovereign practices with dedicated partners and independent subpages.
+              Rather than a conventional single-discipline firm, YEAH operates three sovereign practices with dedicated partners and independent subpages.
             </p>
-            {/* Interactive Gallery / Kinetic Index Mode Switcher */}
+            {/* Interactive Gallery / Kinetic Index Mode Switcher with Gliding Tab Indicator */}
             <div className="inline-flex items-center gap-1 p-1 bg-white border border-[#141413]/12 self-start shrink-0">
               <button
                 type="button"
                 onClick={() => setViewMode("cards")}
                 className={cn(
-                  "inline-flex items-center gap-1.5 px-3 py-2 text-[11px] font-mono uppercase tracking-wider transition-colors cursor-pointer whitespace-nowrap",
+                  "relative inline-flex items-center gap-1.5 px-3 py-2 text-[11px] font-mono uppercase tracking-wider transition-colors cursor-pointer whitespace-nowrap z-10",
                   viewMode === "cards"
-                    ? "bg-[#141413] text-[#F6F4EF] font-medium"
+                    ? "text-[#F6F4EF] font-medium"
                     : "text-[#141413]/65 hover:text-[#141413]"
                 )}
               >
+                {viewMode === "cards" && (
+                  <motion.span
+                    layoutId="portal-mode-pill"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    className="absolute inset-0 bg-[#141413] -z-10"
+                  />
+                )}
                 <LayoutGrid size={13} />
                 <span>Gallery</span>
               </button>
@@ -1295,18 +1258,25 @@ const DivisionPortals = () => {
                 type="button"
                 onClick={() => setViewMode("index")}
                 className={cn(
-                  "inline-flex items-center gap-1.5 px-3 py-2 text-[11px] font-mono uppercase tracking-wider transition-colors cursor-pointer whitespace-nowrap",
+                  "relative inline-flex items-center gap-1.5 px-3 py-2 text-[11px] font-mono uppercase tracking-wider transition-colors cursor-pointer whitespace-nowrap z-10",
                   viewMode === "index"
-                    ? "bg-[#D94E28] text-white font-medium"
+                    ? "text-white font-medium"
                     : "text-[#141413]/65 hover:text-[#141413]"
                 )}
               >
+                {viewMode === "index" && (
+                  <motion.span
+                    layoutId="portal-mode-pill"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    className="absolute inset-0 bg-[#D94E28] -z-10"
+                  />
+                )}
                 <List size={13} />
                 <span>Kinetic Index</span>
               </button>
             </div>
           </div>
-        </div>
+        </EditorialBlock>
 
         <AnimatePresence mode="wait">
           {viewMode === "cards" ? (
@@ -1316,7 +1286,7 @@ const DivisionPortals = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.25 }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              className="grid grid-cols-1 lg:grid-cols-3 gap-7"
             >
               {SERVICES.map((service, index) => {
                 const relatedCases = CASE_STUDIES.filter(c => c.serviceId === service.id);
@@ -1326,13 +1296,16 @@ const DivisionPortals = () => {
                     key={service.id}
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    transition={{ duration: 0.55, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                    exit={{ opacity: 0, y: -14 }}
+                    viewport={{ once: false, amount: "some" }}
+                    transition={{ duration: 0.55, delay: index * 0.08, ease: EDITORIAL_EASE }}
                   >
                     <TiltGalleryFrame
                       maxTilt={3.2}
-                      className="h-full bg-white border border-[#141413]/12 hover:border-[#D94E28]/60 hover:shadow-[0_20px_45px_rgba(20,20,19,0.08)] transition-all duration-500 flex flex-col justify-between group overflow-hidden"
+                      className="h-full bg-white border border-[#141413]/12 hover:border-[#D94E28]/60 hover:shadow-[0_24px_50px_rgba(20,20,19,0.10)] transition-all duration-500 flex flex-col justify-between group overflow-hidden"
                     >
+                      <SpotlightSurface className="h-full flex flex-col justify-between">
+                      <ArchitecturalCornerMarks />
                       <div>
                         {/* Full-Color Editorial Visual Header */}
                         <Link
@@ -1366,14 +1339,6 @@ const DivisionPortals = () => {
                                 {service.subBrand}
                               </span>
                             </div>
-                          )}
-                          {service.id === "fine-art" && (
-                            <span 
-                              className="absolute bottom-4 right-4 text-[10px] font-mono uppercase tracking-widest bg-[#D94E28] px-2.5 py-1 text-white flex items-center gap-1.5 z-10 shadow-sm"
-                            >
-                              <FileText size={11} />
-                              <span>Monograph PDF Available</span>
-                            </span>
                           )}
                         </Link>
 
@@ -1443,6 +1408,7 @@ const DivisionPortals = () => {
                           </a>
                         )}
                       </div>
+                      </SpotlightSurface>
                     </TiltGalleryFrame>
                   </motion.div>
                 );
@@ -1539,10 +1505,10 @@ const DivisionPortals = () => {
 
 const FEATURED_CASE_IDS = [
   "case-tram-dating",
-  "case-ming-ye",
-  "case-toobit-sharma",
   "case-corporate-epr-dispatch",
-  "case-driveviewer",
+  "case-driveviewer-ios",
+  "case-toobit-sharma",
+  "case-destination-wedding",
 ];
 
 const InteractiveShowcaseReel = () => {
@@ -1577,7 +1543,7 @@ const InteractiveShowcaseReel = () => {
     >
       <div className="max-w-7xl mx-auto">
         {/* Header Bar + Chapter Tabs */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+        <EditorialBlock className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
           <div>
             <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#D94E28] block mb-2">
               Selected Deliverables
@@ -1594,12 +1560,19 @@ const InteractiveShowcaseReel = () => {
                 type="button"
                 onClick={() => setCurrentIdx(idx)}
                 className={cn(
-                  "px-3 py-2 text-[11px] font-mono uppercase tracking-wider border transition-colors cursor-pointer whitespace-nowrap",
+                  "relative px-3 py-2 text-[11px] font-mono uppercase tracking-wider border transition-colors cursor-pointer whitespace-nowrap z-10",
                   currentIdx === idx
-                    ? "bg-[#141413] text-[#F6F4EF] border-[#141413] font-medium"
+                    ? "text-[#F6F4EF] border-[#141413] font-medium"
                     : "bg-white text-[#141413]/70 border-[#141413]/12 hover:border-[#D94E28] hover:text-[#141413]"
                 )}
               >
+                {currentIdx === idx && (
+                  <motion.span
+                    layoutId="reel-tab-pill"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    className="absolute inset-0 bg-[#141413] -z-10"
+                  />
+                )}
                 0{idx + 1} · {item.serviceName.split(" ")[0]}
               </button>
             ))}
@@ -1623,10 +1596,16 @@ const InteractiveShowcaseReel = () => {
               </button>
             </div>
           </div>
-        </div>
+        </EditorialBlock>
 
         {/* Draggable & Scrubbable Featured Showcase Stage */}
         <motion.div
+          variants={editorialSectionVariants}
+          custom={0.08}
+          initial="hidden"
+          whileInView="visible"
+          exit="exit"
+          viewport={{ once: false, amount: "some" }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.14}
@@ -1634,28 +1613,38 @@ const InteractiveShowcaseReel = () => {
             if (info.offset.x < -60) handleNext();
             if (info.offset.x > 60) handlePrev();
           }}
-          className="bg-white border border-[#141413]/12 shadow-[0_18px_45px_rgba(20,20,19,0.06)] overflow-hidden cursor-grab active:cursor-grabbing"
+          className="relative bg-white border border-[#141413]/12 shadow-[0_22px_55px_rgba(20,20,19,0.08)] overflow-hidden cursor-grab active:cursor-grabbing"
         >
+          {/* Animated Chapter Progress Hairline */}
+          <div className="h-[2.5px] w-full bg-[#ECE8DF]">
+            <motion.div
+              animate={{ width: `${((currentIdx + 1) / featuredCases.length) * 100}%` }}
+              transition={{ duration: 0.45, ease: EDITORIAL_EASE }}
+              className="h-full bg-[#D94E28]"
+            />
+          </div>
+
           <AnimatePresence mode="wait">
             <motion.div
               key={currentCase.id}
               initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -24 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.32, ease: EDITORIAL_EASE }}
               className="grid grid-cols-1 lg:grid-cols-12 items-stretch"
             >
               {/* Left Visual Plate */}
-              <div className="lg:col-span-6 relative aspect-[16/10] lg:aspect-auto lg:min-h-[400px] overflow-hidden bg-[#ECE8DF] group">
+              <div className="lg:col-span-6 relative aspect-[16/10] lg:aspect-auto lg:min-h-[410px] overflow-hidden bg-[#ECE8DF] group">
+                <ArchitecturalCornerMarks dark />
                 <img
                   src={currentCase.image}
                   alt={currentCase.title}
                   className="w-full h-full object-cover saturate-[1.06] group-hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#141413]/65 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#141413]/70 via-transparent to-transparent" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-[#F6F4EF] text-[11px] font-mono">
-                  <span className="bg-[#141413]/80 backdrop-blur-md px-3 py-1 uppercase tracking-widest">
+                  <span className="bg-[#141413]/85 backdrop-blur-md px-3 py-1 uppercase tracking-widest">
                     {currentCase.serviceName}
                   </span>
                   <span className="bg-[#D94E28] px-2.5 py-1 tabular-nums">
@@ -1743,69 +1732,110 @@ const InteractiveShowcaseReel = () => {
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-24 md:py-36 px-6 md:px-12 bg-[#161514] text-[#F6F4EF] border-b border-white/10">
-      <div className="max-w-7xl mx-auto">
+    <section id="about" className="relative overflow-hidden py-24 md:py-36 px-6 md:px-12 bg-[#161514] text-[#F6F4EF] border-b border-white/10">
+      {/* Subtle Exhibition Wall Atmospheric Lighting & Architectural Grid */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden select-none">
+        <div
+          className="absolute -top-40 right-[-10%] w-[540px] h-[540px] rounded-full opacity-25 blur-[130px]"
+          style={{
+            background: "radial-gradient(circle, rgba(217,78,40,0.42) 0%, rgba(22,21,20,0) 70%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-[0.12]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(246,244,239,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(246,244,239,0.06) 1px, transparent 1px)",
+            backgroundSize: "96px 96px",
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5">
+          <EditorialBlock className="lg:col-span-5">
             <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#D94E28] block mb-3">Agency Foundations</span>
             <h2 className="text-3xl md:text-5xl font-serif text-[#F6F4EF] mb-8 leading-tight">
               Rooted in Amsterdam, <span className="italic text-[#D94E28] font-normal">Operating</span> Across Continents.
             </h2>
             <div className="space-y-6 text-[#F6F4EF]/75 font-light leading-relaxed text-base">
               <p>
-                The Netherlands represents the optimal European gateway for commerce, culture, and digital infrastructure. However, international founders, media productions, and visual artists frequently encounter bureaucratic friction, cultural distance, and fragmented execution.
+                The Netherlands represents the optimal European gateway for commerce, creative production, and digital infrastructure. However, international founders, film crews, and technology ventures frequently encounter bureaucratic friction, cultural distance, and fragmented execution.
               </p>
               <p>
-                YEAH Agency Amsterdam eliminates that friction through focused, sovereign practices. Whether navigating Dutch corporate incorporation, producing broadcast commercials via Glass Sharp Films, curating large-format photographic works representing Ming Ye, or engineering proprietary iOS software like DriveViewer — we deliver direct execution with European institutional rigor.
+                YEAH Agency Amsterdam eliminates that friction through three focused, sovereign practices. Whether navigating Dutch corporate incorporation, producing broadcast commercials via Glass Sharp Films, or engineering proprietary iOS software like DriveViewer — we deliver direct execution with European institutional rigor.
               </p>
             </div>
 
             <div className="mt-8 pt-8 border-t border-white/15 grid grid-cols-3 gap-6 text-left">
               <div>
-                <span className="text-2xl font-serif text-white block tabular-nums">2020</span>
-                <span className="text-[10px] font-mono text-[#F6F4EF]/50 uppercase tracking-wider">Established</span>
+                <span className="text-2xl md:text-3xl font-serif text-white block">
+                  <CountUpMetric target={2020} startFrom={2010} durationMs={900} />
+                </span>
+                <span className="text-[10px] font-mono text-[#F6F4EF]/55 uppercase tracking-wider">Established</span>
               </div>
               <div>
-                <span className="text-2xl font-serif text-white block">AMS</span>
-                <span className="text-[10px] font-mono text-[#F6F4EF]/50 uppercase tracking-wider">Headquarters</span>
+                <span className="text-2xl md:text-3xl font-serif text-white block">AMS</span>
+                <span className="text-[10px] font-mono text-[#F6F4EF]/55 uppercase tracking-wider">Headquarters</span>
               </div>
               <div>
-                <span className="text-2xl font-serif text-[#D94E28] block tabular-nums">100%</span>
-                <span className="text-[10px] font-mono text-[#F6F4EF]/50 uppercase tracking-wider">Confidential</span>
+                <span className="text-2xl md:text-3xl font-serif text-[#D94E28] block">
+                  <CountUpMetric target={100} startFrom={60} suffix="%" durationMs={1000} />
+                </span>
+                <span className="text-[10px] font-mono text-[#F6F4EF]/55 uppercase tracking-wider">Confidential</span>
               </div>
             </div>
-          </div>
+          </EditorialBlock>
 
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-8 bg-white/[0.04] hover:bg-white/[0.07] border border-white/10 transition-colors">
-              <span className="text-xs font-mono text-[#D94E28] block mb-2">01 / Corporate Consulting</span>
-              <h4 className="text-lg font-serif text-white mb-3">European Governance &amp; Mobility</h4>
-              <p className="text-xs text-[#F6F4EF]/65 leading-relaxed font-light">
-                Turnkey Dutch KvK incorporation, EPR environmental registration (packaging &amp; WEEE), third-party personnel dispatch visas (Kennismigrant), and tier-1 banking setup.
-              </p>
-            </div>
-            <div className="p-8 bg-white/[0.04] hover:bg-white/[0.07] border border-white/10 transition-colors">
-              <span className="text-xs font-mono text-[#D94E28] block mb-2">02 / Video Production</span>
-              <h4 className="text-lg font-serif text-white mb-3">Glass Sharp Films</h4>
-              <p className="text-xs text-[#F6F4EF]/65 leading-relaxed font-light">
-                Cinema-grade production for brand campaigns (Fixico, Toobit), the reality dating series &lsquo;Tram Dating&rsquo;, and luxury destination weddings.
-              </p>
-            </div>
-            <div className="p-8 bg-white/[0.04] hover:bg-white/[0.07] border border-white/10 transition-colors">
-              <span className="text-xs font-mono text-[#D94E28] block mb-2">03 / Fine Art Representation</span>
-              <h4 className="text-lg font-serif text-white mb-3">Artist Ming Ye (叶明)</h4>
-              <p className="text-xs text-[#F6F4EF]/65 leading-relaxed font-light">
-                Sole representation of Large-Format Photography Artist Ming Ye, curatorially representing the landmark series 《Heaven 渡》, silver gelatin fiber prints, and European museum exhibitions.
-              </p>
-            </div>
-            <div className="p-8 bg-white/[0.04] hover:bg-white/[0.07] border border-white/10 transition-colors">
-              <span className="text-xs font-mono text-[#D94E28] block mb-2">04 / Software Development</span>
-              <h4 className="text-lg font-serif text-white mb-3">DriveViewer &amp; Enterprise IT</h4>
-              <p className="text-xs text-[#F6F4EF]/65 leading-relaxed font-light">
-                Proprietary iOS platform for modern driving schools live on the App Store, coupled with multi-region GDPR enterprise backbones.
-              </p>
-            </div>
-          </div>
+          <motion.div
+            variants={editorialStaggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            exit="exit"
+            viewport={{ once: false, amount: "some" }}
+            className="lg:col-span-7 grid grid-cols-1 gap-4"
+          >
+            {[
+              {
+                num: "01 / Corporate Consulting",
+                title: "European Governance & Mobility",
+                desc: "Turnkey Dutch KvK incorporation, EPR environmental registration (packaging & WEEE), third-party personnel dispatch visas (Kennismigrant), and tier-1 banking setup.",
+                link: "/services/business-consulting",
+              },
+              {
+                num: "02 / Video Production",
+                title: "Glass Sharp Films",
+                desc: "Cinema-grade production for brand campaigns (Fixico, Toobit), the reality dating series ‘Tram Dating’, and luxury destination weddings.",
+                link: "/services/creative-agency",
+              },
+              {
+                num: "03 / Software Development",
+                title: "DriveViewer & Enterprise IT",
+                desc: "Proprietary iOS platform for modern driving schools live on the App Store, coupled with multi-region GDPR enterprise backbones.",
+                link: "/services/custom-it-services",
+              },
+            ].map((item) => (
+              <motion.div key={item.num} variants={editorialCardVariants}>
+                <Link to={item.link} data-cursor="VIEW ↗" className="block group">
+                  <SpotlightSurface
+                    spotlightColor="rgba(217, 78, 40, 0.16)"
+                    radius={320}
+                    className="p-8 bg-white/[0.04] group-hover:bg-white/[0.07] border border-white/10 group-hover:border-[#D94E28]/50 transition-all duration-300 overflow-hidden"
+                  >
+                    <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#D94E28] scale-y-0 group-hover:scale-y-100 origin-top transition-transform duration-300" />
+                    <div className="relative z-10 flex items-start justify-between gap-4">
+                      <div>
+                        <span className="text-xs font-mono text-[#D94E28] block mb-2">{item.num}</span>
+                        <h4 className="text-lg font-serif text-white mb-2 group-hover:text-[#F6F4EF] transition-colors">{item.title}</h4>
+                        <p className="text-xs text-[#F6F4EF]/70 leading-relaxed font-light">{item.desc}</p>
+                      </div>
+                      <ArrowUpRight size={16} className="text-white/30 group-hover:text-[#D94E28] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0 mt-1" />
+                    </div>
+                  </SpotlightSurface>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
@@ -1827,32 +1857,41 @@ const Contact = ({ onOpenContact }: { onOpenContact?: (practiceId?: string) => v
   return (
     <section id="contact" className="py-24 md:py-36 px-6 md:px-12 bg-[#F6F4EF] border-b border-[#141413]/10">
       <div className="max-w-4xl mx-auto text-center">
-        <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#D94E28] block mb-4">Direct Engagement</span>
-        <h2 className="text-4xl md:text-7xl font-serif text-[#141413] mb-6">
-          Initiate an <span className="italic font-normal">Inquiry</span>
-        </h2>
-        <p className="text-base md:text-xl text-[#141413]/70 font-light max-w-2xl mx-auto mb-12">
-          Contact our Amsterdam office directly for confidential consultations, corporate landing roadmaps, or production proposals.
-        </p>
+        <EditorialBlock>
+          <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#D94E28] block mb-4">Direct Engagement</span>
+          <h2 className="text-4xl md:text-7xl font-serif text-[#141413] mb-6">
+            Initiate an <span className="italic font-normal">Inquiry</span>
+          </h2>
+          <p className="text-base md:text-xl text-[#141413]/70 font-light max-w-2xl mx-auto mb-12">
+            Contact our Amsterdam office directly for confidential consultations, corporate landing roadmaps, or production proposals.
+          </p>
+        </EditorialBlock>
 
         {/* Practice Selector */}
-        <div className="bg-white border border-[#141413]/12 p-6 md:p-8 rounded-sm text-left max-w-2xl mx-auto mb-10 shadow-sm">
+        <EditorialBlock delay={0.1} className="bg-white border border-[#141413]/12 p-6 md:p-8 rounded-sm text-left max-w-2xl mx-auto mb-10 shadow-[0_16px_40px_rgba(20,20,19,0.05)]">
           <label className="text-xs font-mono uppercase tracking-widest text-[#141413]/60 block mb-3">
             Select Your Primary Area of Interest:
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
             {SERVICES.map((s) => (
               <button
                 key={s.id}
                 type="button"
                 onClick={() => setSelectedPractice(s.id)}
                 className={cn(
-                  "p-3.5 text-left text-xs font-mono uppercase tracking-wider border transition-all flex items-center justify-between cursor-pointer",
+                  "relative p-3.5 text-left text-xs font-mono uppercase tracking-wider border transition-colors flex items-center justify-between cursor-pointer z-10",
                   selectedPractice === s.id
-                    ? "bg-[#141413] text-[#F6F4EF] border-[#141413] font-medium"
+                    ? "text-[#F6F4EF] border-[#141413] font-medium"
                     : "bg-[#F6F4EF] text-[#141413]/75 border-[#141413]/12 hover:border-[#D94E28] hover:text-[#141413]"
                 )}
               >
+                {selectedPractice === s.id && (
+                  <motion.span
+                    layoutId="contact-practice-bg"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    className="absolute inset-0 bg-[#141413] -z-10"
+                  />
+                )}
                 <span>{s.number}. {s.title}</span>
                 {selectedPractice === s.id && <CheckCircle2 size={14} className="text-[#D94E28]" />}
               </button>
@@ -1877,19 +1916,23 @@ const Contact = ({ onOpenContact }: { onOpenContact?: (practiceId?: string) => v
               </button>
             </div>
 
-            <button 
-              type="button"
-              onClick={() => onOpenContact?.(selectedPractice)}
-              className="inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-[#D94E28] text-white font-mono text-xs uppercase tracking-widest hover:bg-[#141413] transition-colors font-medium cursor-pointer"
-            >
-              Compose Email to Amsterdam <ArrowRight size={14} />
-            </button>
+            <MagneticWrapper>
+              <button 
+                type="button"
+                onClick={() => onOpenContact?.(selectedPractice)}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-[#D94E28] text-white font-mono text-xs uppercase tracking-widest hover:bg-[#141413] transition-colors font-medium cursor-pointer"
+              >
+                Compose Email to Amsterdam <ArrowRight size={14} />
+              </button>
+            </MagneticWrapper>
           </div>
-        </div>
+        </EditorialBlock>
 
-        <p className="text-xs font-mono text-[#141413]/50 tracking-wider">
-          Typical response turnaround within 24 business hours. Amsterdam time (CET).
-        </p>
+        <EditorialBlock delay={0.16}>
+          <p className="text-xs font-mono text-[#141413]/50 tracking-wider">
+            Typical response turnaround within 24 business hours. Amsterdam time (CET).
+          </p>
+        </EditorialBlock>
       </div>
     </section>
   );
@@ -1900,19 +1943,19 @@ const Contact = ({ onOpenContact }: { onOpenContact?: (practiceId?: string) => v
 const Footer = ({ onOpenContact }: { onOpenContact?: () => void }) => {
   return (
     <footer className="py-16 px-6 md:px-12 bg-[#ECE8DF] text-[#141413]/75 border-t border-[#141413]/12">
-      <div className="max-w-7xl mx-auto">
+      <EditorialBlock className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-[#141413]/12">
           
           <div className="md:col-span-5">
             <span className="text-2xl font-serif text-[#141413] tracking-widest uppercase block mb-3">YEAH</span>
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-[#D94E28] mb-6">Agency Amsterdam · The Netherlands</p>
             <p className="text-xs text-[#141413]/70 leading-relaxed max-w-sm font-light">
-              Multidisciplinary agency collective bridging Corporate Consulting (Dutch BV formation, EPR compliance &amp; third-party personnel dispatch visas), Video Production under Glass Sharp Films, Fine Art Representation exclusively representing Large-Format Photography Artist Ming Ye, and Software Development including DriveViewer.
+              Multidisciplinary agency collective bridging Corporate Consulting (Dutch BV formation, EPR compliance &amp; third-party personnel dispatch visas), Video Production under Glass Sharp Films, and Software Development including DriveViewer.
             </p>
           </div>
 
           <div className="md:col-span-4">
-            <span className="text-xs font-mono uppercase tracking-widest text-[#141413] block mb-4 font-medium">The Four Practices</span>
+            <span className="text-xs font-mono uppercase tracking-widest text-[#141413] block mb-4 font-medium">The Three Practices</span>
             <ul className="space-y-2 text-xs font-mono text-[#141413]/70">
               {SERVICES.map((s) => (
                 <li key={s.id}>
@@ -1991,12 +2034,6 @@ const Footer = ({ onOpenContact }: { onOpenContact?: () => void }) => {
             <Link to="/services/creative-agency" className="hover:text-[#D94E28] transition-colors">
               • Video Production — Destination Wedding Cinematography
             </Link>
-            <Link to="/services/fine-art" className="hover:text-[#D94E28] transition-colors">
-              • Fine Art Representation — Artist Ming Ye (叶明)
-            </Link>
-            <Link to="/services/fine-art" className="hover:text-[#D94E28] transition-colors">
-              • Fine Art Representation — 8x10 Large-Format Photography
-            </Link>
             <Link to="/services/custom-it-services" className="hover:text-[#D94E28] transition-colors">
               • Software Development — DriveViewer Driving School App (iOS)
             </Link>
@@ -2064,13 +2101,13 @@ const Footer = ({ onOpenContact }: { onOpenContact?: () => void }) => {
             YEAH Agency Amsterdam provides multilingual services across English, Dutch (Nederlands), Spanish (Español), and Chinese (中文):
           </p>
           <p>
-            Nederlands: Bedrijfsadvies Amsterdam, BV oprichten Nederland, KvK inschrijving Amsterdam, EPR registratie Nederland (verpakkingen, AEEA/WEEE, batterijen), personeelsdetachering en kennismigrant visumbegeleiding, videoproductie Amsterdam, Glass Sharp Films, bruiloft videograaf Amsterdam, trouwfilm Nederland, Tram Dating reality serie, kunstgalerie Amsterdam, grootformaat fotografie Ming Ye kunstenaar, softwareontwikkeling Amsterdam, rijschool software DriveViewer iOS app.
+            Nederlands: Bedrijfsadvies Amsterdam, BV oprichten Nederland, KvK inschrijving Amsterdam, EPR registratie Nederland (verpakkingen, AEEA/WEEE, batterijen), personeelsdetachering en kennismigrant visumbegeleiding, videoproductie Amsterdam, Glass Sharp Films, bruiloft videograaf Amsterdam, trouwfilm Nederland, Tram Dating reality serie, softwareontwikkeling Amsterdam, rijschool software DriveViewer iOS app.
           </p>
           <p>
-            Español: Asesoría corporativa en Ámsterdam, constitución de empresas BV en Países Bajos, registro mercantil KvK, registro EPR / REP de envases y residuos de aparatos eléctricos, gestión de visados por desplazamiento y cesión de personal técnico altamente cualificado, producción audiovisual en Ámsterdam, Glass Sharp Films, videos de boda en Europa, serie de telerrealidad Tram Dating, representación artística, artista fotógrafo de gran formato Ming Ye, desarrollo de software a medida, app para escuelas de conducción DriveViewer.
+            Español: Asesoría corporativa en Ámsterdam, constitución de empresas BV en Países Bajos, registro mercantil KvK, registro EPR / REP de envases y residuos de aparatos eléctricos, gestión de visados por desplazamiento y cesión de personal técnico altamente cualificado, producción audiovisual en Ámsterdam, Glass Sharp Films, videos de boda en Europa, serie de telerrealidad Tram Dating, desarrollo de software a medida, app para escuelas de conducción DriveViewer.
           </p>
           <p>
-            中文: 荷兰阿姆斯特丹企业咨询、荷兰公司设立、荷兰企业注册、荷兰BV注册、荷兰商会KvK合规咨询、EPR注册合规（包装法申报Afvalfonds Verpakkingen、WEEE电子电气设备、电池法）、第三方人员派遣签证办理（荷兰高技术移民Kennismigrant派遣、跨国派遣工作签证）；视频制作工作室 Glass Sharp Films、欧洲商业广告片拍摄、品牌TVC制作、欧洲目的地婚礼拍摄微电影、荷兰亚裔真人秀节目 Tram Dating 摄制；艺术品代理、大画幅摄影艺术家叶明 (Ming Ye) 独家代理、《Heaven 渡》代表作系列、8x10银盐暗房手工冲印、欧洲美术馆典藏；定制软件开发、企业级云架构与出海软件、荷兰驾校管理软件 DriveViewer iOS版。
+            中文: 荷兰阿姆斯特丹企业咨询、荷兰公司设立、荷兰企业注册、荷兰BV注册、荷兰商会KvK合规咨询、EPR注册合规（包装法申报Afvalfonds Verpakkingen、WEEE电子电气设备、电池法）、第三方人员派遣签证办理（荷兰高技术移民Kennismigrant派遣、跨国派遣工作签证）；视频制作工作室 Glass Sharp Films、欧洲商业广告片拍摄、品牌TVC制作、欧洲目的地婚礼拍摄微电影、荷兰亚裔真人秀节目 Tram Dating 摄制；定制软件开发、企业级云架构与出海软件、荷兰驾校管理软件 DriveViewer iOS版。
           </p>
         </div>
 
@@ -2082,7 +2119,7 @@ const Footer = ({ onOpenContact }: { onOpenContact?: () => void }) => {
             <span>GDPR Compliant</span>
           </div>
         </div>
-      </div>
+      </EditorialBlock>
     </footer>
   );
 };
@@ -2169,30 +2206,80 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
     }
   }, [service, id, navigate]);
 
+  const serviceUrl = service ? `https://yeah-amsterdam.nl/services/${service.id}` : "https://yeah-amsterdam.nl/";
+  const serviceSchema = service
+    ? {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "YEAH Agency Amsterdam", item: "https://yeah-amsterdam.nl/" },
+              { "@type": "ListItem", position: 2, name: service.title, item: serviceUrl },
+            ],
+          },
+          {
+            "@type": "Service",
+            name: service.title,
+            serviceType: service.badge,
+            description: `${service.desc} ${service.longOverview}`,
+            url: serviceUrl,
+            provider: { "@id": "https://yeah-amsterdam.nl/#organization" },
+            areaServed: ["Netherlands", "European Union", "China", "United States"],
+            hasOfferCatalog: {
+              "@type": "OfferCatalog",
+              name: `${service.title} Deliverables`,
+              itemListElement: service.scopeList.map((item) => ({
+                "@type": "Offer",
+                itemOffered: {
+                  "@type": "Service",
+                  name: item.title,
+                  description: item.desc,
+                },
+              })),
+            },
+          },
+          ...(service.faqs && service.faqs.length > 0
+            ? [
+                {
+                  "@type": "FAQPage",
+                  mainEntity: service.faqs.map((faq) => ({
+                    "@type": "Question",
+                    name: faq.q,
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: faq.a,
+                    },
+                  })),
+                },
+              ]
+            : []),
+        ],
+      }
+    : null;
+
+  usePageSEO({
+    title: service ? `${service.title} | YEAH Agency Amsterdam` : "YEAH Agency Amsterdam",
+    description: service
+      ? `${service.desc} Explore documented case studies, technical deliverables, and methodology at YEAH Agency Amsterdam.`
+      : "YEAH Agency Amsterdam",
+    keywords: service
+      ? `${service.title}, YEAH Agency Amsterdam, ${service.badge}, ${service.scopeList.map((s) => s.title).join(", ")}`
+      : undefined,
+    canonicalUrl: serviceUrl,
+    structuredData: serviceSchema,
+  });
+
   if (!service) return null;
 
   const relatedCases = CASE_STUDIES.filter((c) => c.serviceId === service.id);
 
-  // Dynamic SEO metadata per subpage
-  usePageSEO({
-    title: `${service.title} | YEAH Agency Amsterdam`,
-    description: `${service.desc} Explore documented case studies, technical deliverables, and methodology at YEAH Agency Amsterdam.`,
-    keywords: `${service.title}, YEAH Agency Amsterdam, ${service.badge}, ${service.scopeList.map(s => s.title).join(", ")}`,
-    canonicalUrl: `https://yeah-amsterdam.nl/services/${service.id}`
-  });
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.35 }}
-      className="pt-32 pb-28 px-6 md:px-12 bg-[#F6F4EF] min-h-screen text-[#141413]"
-    >
+    <div className="pt-32 pb-28 px-6 md:px-12 bg-[#F6F4EF] min-h-screen text-[#141413]">
       <div className="max-w-7xl mx-auto">
         
         {/* Navigation Breadcrumb */}
-        <div className="mb-10 flex items-center justify-between">
+        <EditorialBlock className="mb-10 flex items-center justify-between">
           <Link 
             to="/" 
             className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#141413]/60 hover:text-[#D94E28] transition-colors"
@@ -2200,12 +2287,12 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
             <ArrowLeft size={14} /> Back to Agency Home
           </Link>
           <div className="text-xs font-mono text-[#141413]/50 uppercase tracking-widest tabular-nums">
-            Practice Division {service.number} / 04
+            Practice Division {service.number} / 03
           </div>
-        </div>
+        </EditorialBlock>
 
         {/* Subpage Hero */}
-        <div className="pb-16 border-b border-[#141413]/12">
+        <EditorialBlock delay={0.05} className="pb-16 border-b border-[#141413]/12">
           <div className="text-[11px] font-mono uppercase tracking-[0.28em] text-[#D94E28] mb-5">
             {service.badge}
           </div>
@@ -2262,21 +2349,28 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
               )}
             </div>
           </div>
-        </div>
+        </EditorialBlock>
 
         {/* Metric Badges */}
-        <div className="py-12 border-b border-[#141413]/12 grid grid-cols-1 sm:grid-cols-3 gap-8">
+        <motion.div
+          variants={editorialStaggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          exit="exit"
+          viewport={{ once: false, amount: "some" }}
+          className="py-12 border-b border-[#141413]/12 grid grid-cols-1 sm:grid-cols-3 gap-8"
+        >
           {service.metrics.map((m, idx) => (
-            <div key={idx} className="bg-white border border-[#141413]/10 p-6">
+            <motion.div key={idx} variants={editorialCardVariants} className="bg-white border border-[#141413]/10 p-6">
               <span className="text-3xl md:text-4xl font-serif text-[#141413] block mb-1 tabular-nums">{m.value}</span>
               <span className="text-xs font-mono text-[#141413]/55 uppercase tracking-wider block">{m.label}</span>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Featured Spotlight (Warm Obsidian Contrast Showcase Frame) */}
         {service.featuredSpotlight && (
-          <div className="py-20 border-b border-[#141413]/12">
+          <EditorialBlock className="py-20 border-b border-[#141413]/12">
             <div className="bg-[#161514] text-[#F6F4EF] p-8 md:p-12 overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div className="lg:col-span-7">
@@ -2333,11 +2427,11 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
                       rel="noopener noreferrer"
                       data-cursor="OPEN PDF ↗"
                       className="block relative aspect-[4/3] overflow-hidden border border-white/15 group cursor-pointer"
-                      title="Open Official Artist Monograph PDF (https://shorturl.at/TYn8P)"
+                      title={service.featuredSpotlight.title}
                     >
                       <img 
                         src={service.featuredSpotlight.image} 
-                        alt={`${service.featuredSpotlight.title} — 《Heaven 渡》 Series by Ming Ye`}
+                        alt={service.featuredSpotlight.title}
                         loading="lazy"
                         decoding="async"
                         className="w-full h-full object-cover contrast-110 group-hover:scale-105 transition-all duration-700"
@@ -2368,388 +2462,64 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
                 </div>
               </div>
             </div>
-          </div>
-        )}
-
-        {/* Curated Authentic Artworks Showcase by Ming Ye */}
-        {service.id === "fine-art" && (
-          <div className="py-20 border-b border-[#141413]/12">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#D94E28] block mb-3">
-                  Curated Oeuvre · Master Analog Photography
-                </span>
-                <h2 className="text-3xl md:text-5xl font-serif text-[#141413]">
-                  Signature Works by Ming Ye (叶明)
-                </h2>
-              </div>
-              <p className="text-xs md:text-sm text-[#141413]/65 max-w-md font-light leading-relaxed">
-                Authentic plates from the master series 《Heaven 渡》, 《Lies 谎言》, and 《Prophecy 预言》. Handcrafted 8x10 analog view camera darkroom silver gelatin fiber prints.
-              </p>
-            </div>
-
-            {/* 3 Authentic Artworks Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-              {/* Work 01: Heaven No.0102 */}
-              <div className="bg-white border border-[#141413]/12 hover:border-[#D94E28] transition-colors flex flex-col justify-between group overflow-hidden">
-                <div>
-                  <a 
-                    href="https://shorturl.at/TYn8P"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-cursor="INSPECT PLATE ↗"
-                    className="block relative aspect-[16/10] overflow-hidden bg-[#141413] cursor-pointer"
-                    title="View 《Heaven No.0102》 in Official Monograph PDF"
-                  >
-                    <img 
-                      src="/images/artwork-heaven-0102.jpg"
-                      alt="Ming Ye (叶明) — Heaven No.0102 Large-Format Analog Photograph"
-                      loading="lazy"
-                      decoding="async"
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover contrast-105 group-hover:scale-105 transition-all duration-700"
-                    />
-                    <div className="absolute top-3 left-3 bg-[#F6F4EF]/95 backdrop-blur-md px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-[#141413]">
-                      Series 《Heaven 渡》
-                    </div>
-                  </a>
-                  <div className="p-6">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#D94E28] block mb-1">
-                      Series 《Heaven 渡》 · Plate No.0102
-                    </span>
-                    <h4 className="text-xl font-serif text-[#141413] mb-2">《Heaven No.0102》</h4>
-                    <p className="text-xs text-[#141413]/75 font-light leading-relaxed mb-4">
-                      Contemplative figures upon monumental coastal boulders and animal skeletons, investigating spiritual transcendence, mortality, and the Buddhist philosophy of crossing over (&ldquo;渡&rdquo;).
-                    </p>
-                    <div className="text-[11px] font-mono text-[#141413]/60 space-y-1 pt-3 border-t border-[#141413]/10">
-                      <div>Medium: 8x10 View Camera · Silver Gelatin Print</div>
-                      <div>Curated Status: Permanent European Archive</div>
-                      <div>Authenticity: Artist Red Seal &amp; Provenance Certificate</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6 pt-0">
-                  <a 
-                    href="https://shorturl.at/TYn8P"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-between w-full py-2.5 px-3 bg-[#F6F4EF] hover:bg-[#141413] hover:text-white text-[#141413] font-mono text-[11px] uppercase tracking-wider border border-[#141413]/12 transition-all"
-                  >
-                    <span>Inspect Monograph Sheet</span>
-                    <ExternalLink size={12} />
-                  </a>
-                </div>
-              </div>
-
-              {/* Work 02: Lies No.0305 */}
-              <div className="bg-white border border-[#141413]/12 hover:border-[#D94E28] transition-colors flex flex-col justify-between group overflow-hidden">
-                <div>
-                  <a 
-                    href="https://shorturl.at/TYn8P"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-cursor="INSPECT PLATE ↗"
-                    className="block relative aspect-[16/10] overflow-hidden bg-[#141413] cursor-pointer"
-                    title="View 《Lies No.0305》 in Official Monograph PDF"
-                  >
-                    <img 
-                      src="/images/artwork-lies-0305.jpg"
-                      alt="Ming Ye (叶明) — Lies No.0305 Large-Format Darkroom Photograph"
-                      loading="lazy"
-                      decoding="async"
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover contrast-105 group-hover:scale-105 transition-all duration-700"
-                    />
-                    <div className="absolute top-3 left-3 bg-[#F6F4EF]/95 backdrop-blur-md px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-[#141413]">
-                      Series 《Lies 谎言》
-                    </div>
-                  </a>
-                  <div className="p-6">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#D94E28] block mb-1">
-                      Series 《Lies 谎言》 · Plate No.0305
-                    </span>
-                    <h4 className="text-xl font-serif text-[#141413] mb-2">《Lies No.0305》</h4>
-                    <p className="text-xs text-[#141413]/75 font-light leading-relaxed mb-4">
-                      An avian bird skeleton perched delicately on dark scholar stone amidst blooming white plum blossoms, contrasting the vanity of truth, ephemeral beauty, and silence.
-                    </p>
-                    <div className="text-[11px] font-mono text-[#141413]/60 space-y-1 pt-3 border-t border-[#141413]/10">
-                      <div>Medium: Large-Format Darkroom Fiber Print</div>
-                      <div>Theme: Vanitas &amp; Philosophical Stillness</div>
-                      <div>Curated Status: Museum Exhibition Catalogued</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6 pt-0">
-                  <a 
-                    href="https://shorturl.at/TYn8P"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-between w-full py-2.5 px-3 bg-[#F6F4EF] hover:bg-[#141413] hover:text-white text-[#141413] font-mono text-[11px] uppercase tracking-wider border border-[#141413]/12 transition-all"
-                  >
-                    <span>Inspect Monograph Sheet</span>
-                    <ExternalLink size={12} />
-                  </a>
-                </div>
-              </div>
-
-              {/* Work 03: Prophecy No.0009 */}
-              <div className="bg-white border border-[#141413]/12 hover:border-[#D94E28] transition-colors flex flex-col justify-between group overflow-hidden">
-                <div>
-                  <a 
-                    href="https://shorturl.at/TYn8P"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-cursor="INSPECT PLATE ↗"
-                    className="block relative aspect-[16/10] overflow-hidden bg-[#141413] cursor-pointer"
-                    title="View 《Prophecy No.0009》 in Official Monograph PDF"
-                  >
-                    <img 
-                      src="/images/artwork-prophecy-0009.jpg"
-                      alt="Ming Ye (叶明) — Prophecy No.0009 Large-Format Analog Photograph"
-                      loading="lazy"
-                      decoding="async"
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover contrast-105 group-hover:scale-105 transition-all duration-700"
-                    />
-                    <div className="absolute top-3 left-3 bg-[#F6F4EF]/95 backdrop-blur-md px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-[#141413]">
-                      Series 《Prophecy 预言》
-                    </div>
-                  </a>
-                  <div className="p-6">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#D94E28] block mb-1">
-                      Series 《Prophecy 预言》 · Plate No.0009
-                    </span>
-                    <h4 className="text-xl font-serif text-[#141413] mb-2">《Prophecy No.0009》</h4>
-                    <p className="text-xs text-[#141413]/75 font-light leading-relaxed mb-4">
-                      A hooded contemplative figure seated upon a desolate rocky shore with an animal skull resting on the sand, exploring prophetic visions, cosmic stillness, and existential time.
-                    </p>
-                    <div className="text-[11px] font-mono text-[#141413]/60 space-y-1 pt-3 border-t border-[#141413]/10">
-                      <div>Medium: 8x10 View Camera · Archival Silver Gelatin</div>
-                      <div>Theme: Metaphysical Prophecy &amp; Solitude</div>
-                      <div>Representation: Sole Global Agent (YEAH Agency)</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6 pt-0">
-                  <a 
-                    href="https://shorturl.at/TYn8P"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-between w-full py-2.5 px-3 bg-[#F6F4EF] hover:bg-[#141413] hover:text-white text-[#141413] font-mono text-[11px] uppercase tracking-wider border border-[#141413]/12 transition-all"
-                  >
-                    <span>Inspect Monograph Sheet</span>
-                    <ExternalLink size={12} />
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Institutional Provenance & Monograph Publication Layout */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#D94E28] block mb-3">
-                  Institutional Archives · European Museum Provenance
-                </span>
-                <h3 className="text-2xl md:text-4xl font-serif text-[#141413]">
-                  Official Monograph &amp; European Retrospective Record
-                </h3>
-              </div>
-            </div>
-
-            {/* Curatorial Dual Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
-              <div className="lg:col-span-7 space-y-6">
-                <div className="p-8 bg-white border border-[#141413]/12">
-                  <div className="text-[10px] font-mono uppercase tracking-widest text-[#D94E28] mb-2">
-                    Authentic Provenance &amp; Conservation Standard
-                  </div>
-                  <h3 className="text-xl font-serif text-[#141413] mb-3">
-                    Institutional Catalog Raisonné &amp; Archival Integrity
-                  </h3>
-                  <p className="text-xs text-[#141413]/75 font-light leading-relaxed mb-6">
-                    To preserve the optical fidelity of the analog silver gelatin darkroom prints, artist copyright, and museum conservation standards, all authorized plates, series documentation, and curatorial essays are curated exclusively within the official Artist Monograph. Access the verified publication below.
-                  </p>
-
-                  <div className="space-y-4 pt-4 border-t border-[#141413]/10">
-                    <div className="text-xs font-mono uppercase tracking-wider text-[#141413]/55 mb-2">
-                      Documented European Institutional Exhibitions:
-                    </div>
-                    <div className="p-4 bg-[#F6F4EF] border border-[#141413]/10 space-y-1">
-                      <div className="text-sm font-serif text-[#141413] italic">
-                        &ldquo;Konstruierte Natur: Landschaft im Wandel in der zeitgenössischen Kunst&rdquo;
-                      </div>
-                      <div className="text-[11px] font-mono text-[#D94E28]">
-                        Schloss Plüschow, Mecklenburgisches Künstlerhaus, Germany · 2024
-                      </div>
-                      <div className="text-[11px] text-[#141413]/65 font-light">
-                        Curated institutional presentation of large-format landscape and conceptual analog photography.
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-[#F6F4EF] border border-[#141413]/10 space-y-1">
-                      <div className="text-sm font-serif text-[#141413] italic">
-                        &ldquo;洞见 – Einblick II: Zeitgenössische Fotografie&rdquo;
-                      </div>
-                      <div className="text-[11px] font-mono text-[#D94E28]">
-                        Rostock, Germany · 2022
-                      </div>
-                      <div className="text-[11px] text-[#141413]/65 font-light">
-                        Institutional survey of contemporary photographic vision and darkroom silver gelatin printing.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-6 bg-white border border-[#141413]/12 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="space-y-1">
-                    <div className="text-xs font-mono text-[#141413] uppercase tracking-wider font-medium">
-                      Museum Acquisitions &amp; Collector Liaison
-                    </div>
-                    <div className="text-xs text-[#141413]/65 font-light">
-                      Strictly limited editions, signed and authenticated with the artist&apos;s personal seal.
-                    </div>
-                  </div>
-                  <a
-                    href="mailto:info@yeah-amsterdam.nl?subject=Acquisition%20Inquiry%20for%20Artist%20Ming%20Ye"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#141413] hover:bg-[#D94E28] text-white font-mono text-xs uppercase tracking-wider transition-all shrink-0"
-                  >
-                    <span>Curatorial Inquiry</span>
-                    <ArrowRight size={13} />
-                  </a>
-                </div>
-              </div>
-
-              {/* Right Column: Interactive Monograph Publication Card */}
-              <div className="lg:col-span-5 flex flex-col">
-                <div className="bg-white border border-[#141413]/12 flex-1 flex flex-col justify-between group overflow-hidden">
-                  <div className="p-6 pb-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-[#D94E28]">
-                        Official Publication
-                      </span>
-                      <span className="text-[10px] font-mono text-[#141413]/50">
-                        PDF Format · Verified Document
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-serif text-[#141413] mb-2">
-                      Artist Ming Ye Monograph
-                    </h3>
-                    <p className="text-xs text-[#141413]/65 font-light mb-4">
-                      Complete exhibition portfolio, photographic essays, high-resolution archival plates, and artist biography.
-                    </p>
-                  </div>
-
-                  <a 
-                    href="https://shorturl.at/TYn8P"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-cursor="OPEN PDF ↗"
-                    className="block relative aspect-[4/5] mx-6 mb-6 overflow-hidden border border-[#141413]/15 group/card cursor-pointer bg-[#141413]"
-                    title="Open Official Artist Monograph PDF (https://shorturl.at/TYn8P)"
-                  >
-                    <img 
-                      src="/images/artist-mingye.svg"
-                      alt="Ming Ye (叶明) — Official Artist Monograph & Catalogue Raisonné"
-                      loading="lazy"
-                      decoding="async"
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-contain p-2 group-hover/card:scale-102 transition-transform duration-500"
-                    />
-                    <div className="absolute bottom-3 left-3 right-3 bg-[#F6F4EF]/95 backdrop-blur-md px-3 py-1.5 text-[11px] font-mono text-[#141413] flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-[#D94E28]">
-                        <FileText size={12} />
-                        <span className="text-[#141413]">shorturl.at/TYn8P</span>
-                      </span>
-                      <ExternalLink size={12} className="text-[#141413]/60" />
-                    </div>
-                  </a>
-
-                  <div className="p-6 pt-0">
-                    <a 
-                      href="https://shorturl.at/TYn8P"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 w-full py-3.5 px-4 bg-[#141413] text-[#F6F4EF] font-mono text-xs uppercase tracking-widest hover:bg-[#D94E28] hover:text-white transition-colors font-medium"
-                    >
-                      <FileText size={14} />
-                      <span>Open Monograph PDF (shorturl.at/TYn8P)</span>
-                      <ExternalLink size={13} />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Direct Monograph Callout Banner */}
-            <div className="p-8 md:p-10 bg-[#161514] text-[#F6F4EF] flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-widest">
-                  <span className="text-[#D94E28]">Verified Institutional Provenance</span>
-                  <span aria-hidden="true">·</span>
-                  <span className="text-[#F6F4EF]/60">Exhibitions in Germany &amp; Europe</span>
-                </div>
-                <h3 className="text-2xl font-serif text-white">
-                  Official Monograph, Catalog Raisonné &amp; Acquisition Folio
-                </h3>
-                <p className="text-xs text-[#F6F4EF]/75 font-light max-w-2xl leading-relaxed">
-                  Including documented exhibitions: <span className="text-white italic">&ldquo;Konstruierte Natur: Landschaft im Wandel in der zeitgenössischen Kunst&rdquo;</span> (Schloss Plüschow, 2024) and <span className="text-white italic">&ldquo;洞见 – Einblick II&rdquo;</span> (Rostock, 2022). All catalog essays, plates, and acquisition protocols are collected in the official PDF document.
-                </p>
-              </div>
-              <a 
-                href="https://shorturl.at/TYn8P"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-[#D94E28] text-white font-mono text-xs uppercase tracking-widest hover:bg-[#F6F4EF] hover:text-[#141413] transition-colors font-medium shrink-0"
-              >
-                <FileText size={16} />
-                <span>Open Monograph PDF (shorturl.at/TYn8P)</span>
-                <ExternalLink size={14} />
-              </a>
-            </div>
-          </div>
+          </EditorialBlock>
         )}
 
         {/* Scope of Practice & Capabilities */}
         <div className="py-20 border-b border-[#141413]/12">
-          <div className="max-w-2xl mb-12">
+          <EditorialBlock className="max-w-2xl mb-12">
             <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#D94E28] block mb-3">Service Architecture</span>
             <h2 className="text-3xl md:text-4xl font-serif text-[#141413]">Full Scope of Deliverables</h2>
-          </div>
+          </EditorialBlock>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            variants={editorialStaggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            exit="exit"
+            viewport={{ once: false, amount: "some" }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {service.scopeList.map((item, idx) => (
-              <div key={idx} className="p-8 bg-white border border-[#141413]/12 flex flex-col justify-between">
+              <motion.div key={idx} variants={editorialCardVariants} className="p-8 bg-white border border-[#141413]/12 flex flex-col justify-between">
                 <div>
                   <span className="text-xs font-mono text-[#D94E28] block mb-4">0{idx + 1}</span>
                   <h3 className="text-lg font-serif text-[#141413] mb-3">{item.title}</h3>
                   <p className="text-xs text-[#141413]/70 leading-relaxed font-light">{item.desc}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* Methodology Roadmap */}
         <div className="py-20 border-b border-[#141413]/12">
-          <div className="max-w-2xl mb-12">
+          <EditorialBlock className="max-w-2xl mb-12">
             <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#D94E28] block mb-3">Working Process</span>
             <h2 className="text-3xl md:text-4xl font-serif text-[#141413]">Methodology &amp; Execution Pipeline</h2>
-          </div>
+          </EditorialBlock>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div
+            variants={editorialStaggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            exit="exit"
+            viewport={{ once: false, amount: "some" }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
             {service.methodologySteps.map((step, idx) => (
-              <div key={idx} className="p-6 bg-white border border-[#141413]/12">
+              <motion.div key={idx} variants={editorialCardVariants} className="p-6 bg-white border border-[#141413]/12">
                 <span className="text-2xl font-serif text-[#D94E28] block mb-2 tabular-nums">{step.step}</span>
                 <h4 className="text-sm font-mono uppercase tracking-wider text-[#141413] font-medium mb-3">{step.title}</h4>
                 <p className="text-xs text-[#141413]/70 font-light leading-relaxed">{step.desc}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* Dedicated Case Studies for this Practice */}
         <div className="py-20 border-b border-[#141413]/12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <EditorialBlock className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
               <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#D94E28] block mb-3">Case History</span>
               <h2 className="text-3xl md:text-4xl font-serif text-[#141413]">Documented Case Studies</h2>
@@ -2757,14 +2527,21 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
             <p className="text-xs font-mono text-[#141413]/55 uppercase tracking-wider">
               {relatedCases.length} {relatedCases.length === 1 ? "Verified Case Study" : "Verified Engagements"}
             </p>
-          </div>
+          </EditorialBlock>
 
-          <div className={cn(
-            "grid gap-8",
-            relatedCases.length === 1 ? "grid-cols-1 max-w-4xl" : "grid-cols-1 md:grid-cols-2"
-          )}>
+          <motion.div
+            variants={editorialStaggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            exit="exit"
+            viewport={{ once: false, amount: "some" }}
+            className={cn(
+              "grid gap-8",
+              relatedCases.length === 1 ? "grid-cols-1 max-w-4xl" : "grid-cols-1 md:grid-cols-2"
+            )}
+          >
             {relatedCases.map((cs) => (
-              <div key={cs.id} className="bg-white border border-[#141413]/12 overflow-hidden flex flex-col justify-between group">
+              <motion.div key={cs.id} variants={editorialCardVariants} className="bg-white border border-[#141413]/12 overflow-hidden flex flex-col justify-between group">
                 <div>
                   <div className="relative aspect-[16/10] overflow-hidden bg-[#ECE8DF]">
                     {cs.pdfLink ? (
@@ -2778,7 +2555,7 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
                       >
                         <img 
                           src={cs.image} 
-                          alt={`${cs.title} — Ming Ye 《Heaven 渡》 Series Large-Format Photography`}
+                          alt={cs.title}
                           loading="lazy"
                           decoding="async"
                           className="w-full h-full object-cover saturate-[1.06] group-hover/img:scale-105 transition-all duration-700"
@@ -2874,16 +2651,18 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
                     </a>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* Practice FAQ Guide */}
-        <SubpageFAQSection service={service} />
+        <EditorialBlock>
+          <SubpageFAQSection service={service} />
+        </EditorialBlock>
 
         {/* Practice Direct Inquire Banner */}
-        <div className="mt-16 p-8 md:p-12 bg-[#161514] text-[#F6F4EF] flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <EditorialBlock className="mt-16 p-8 md:p-12 bg-[#161514] text-[#F6F4EF] flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#D94E28] block mb-2">Dedicated Practice Inquiry</span>
             <h3 className="text-2xl md:text-3xl font-serif text-white mb-2">Initiate an Engagement with Practice {service.number}</h3>
@@ -2897,12 +2676,12 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
           >
             Email info@yeah-amsterdam.nl <ArrowRight size={14} />
           </a>
-        </div>
+        </EditorialBlock>
 
         {/* Cross-Practice Navigation */}
-        <div className="pt-20">
+        <EditorialBlock className="pt-20">
           <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#141413]/55 block mb-6">Explore Other Practice Subpages</span>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {SERVICES.filter(s => s.id !== id).map((s) => (
               <Link 
                 key={s.id} 
@@ -2923,10 +2702,10 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
               </Link>
             ))}
           </div>
-        </div>
+        </EditorialBlock>
 
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -2934,24 +2713,84 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
 
 const HomePage = ({ onOpenContact }: { onOpenContact?: (practiceId?: string) => void }) => {
   usePageSEO({
-    title: "YEAH Agency Amsterdam | Multidisciplinary Agency · Video Production, Corporate Consulting, Fine Art & Software",
-    description: "YEAH Agency Amsterdam is an international multidisciplinary agency collective in Amsterdam. Specializing in Corporate Consulting, Video Production under Glass Sharp Films, Fine Art Representation of Large-Format Photography Artist Ming Ye, and Software Development including DriveViewer.",
-    keywords: "Corporate Consulting Amsterdam, Dutch BV Formation, Video Production Amsterdam, Glass Sharp Films, Tram Dating, Wedding Videography Amsterdam, Fine Art Representation, Artist Ming Ye, Ming Ye Photography, Large Format Photography Artist, Software Development Amsterdam, DriveViewer iOS, Enterprise Cloud Architecture",
+    title: "YEAH Agency Amsterdam | Multidisciplinary Agency · Corporate Consulting, Video Production & Software",
+    description: "YEAH Agency Amsterdam is an international multidisciplinary agency collective in Amsterdam. Specializing in Corporate Consulting, Video Production under Glass Sharp Films, and Software Development including DriveViewer.",
+    keywords: "Corporate Consulting Amsterdam, Dutch BV Formation, Video Production Amsterdam, Glass Sharp Films, Tram Dating, Wedding Videography Amsterdam, Software Development Amsterdam, DriveViewer iOS, Enterprise Cloud Architecture",
     canonicalUrl: "https://yeah-amsterdam.nl/"
   });
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
+    <div>
       <Hero onOpenContact={() => onOpenContact?.()} />
       <DivisionPortals />
       <InteractiveShowcaseReel />
       <AboutSection />
       <Contact onOpenContact={onOpenContact} />
-    </motion.div>
+    </div>
+  );
+};
+
+// --- Animated Route Switcher (enables real exit transitions across routes) ---
+
+const AnimatedRoutes = ({
+  onOpenContact,
+  openCalcWithCategory,
+}: {
+  onOpenContact: (practiceId?: string) => void;
+  openCalcWithCategory: (cat?: "consulting" | "video" | "wedding" | "software") => void;
+}) => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        variants={editorialPageVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+      >
+        <Routes location={location}>
+          <Route path="/" element={<HomePage onOpenContact={onOpenContact} />} />
+          <Route path="/services/:id" element={<ServicePage />} />
+          <Route path="/business-consulting" element={<ServicePage defaultId="business-consulting" />} />
+          <Route path="/video-production" element={<ServicePage defaultId="creative-agency" />} />
+          <Route path="/creative-agency" element={<ServicePage defaultId="creative-agency" />} />
+          <Route path="/custom-it-services" element={<ServicePage defaultId="custom-it-services" />} />
+          <Route path="/enterprise-it" element={<ServicePage defaultId="custom-it-services" />} />
+
+          {/* Dedicated High-Authority SEO Topic Dossiers & Long-Tail Landing Routes */}
+          <Route 
+            path="/guides/:slug" 
+            element={<GuidePage onOpenCalculator={openCalcWithCategory} />} 
+          />
+          <Route 
+            path="/guides/dutch-branch-office-formation" 
+            element={<GuidePage defaultSlug="dutch-branch-office-formation" onOpenCalculator={openCalcWithCategory} />} 
+          />
+          <Route 
+            path="/dutch-branch-office" 
+            element={<GuidePage defaultSlug="dutch-branch-office-formation" onOpenCalculator={openCalcWithCategory} />} 
+          />
+          <Route 
+            path="/guides/video-production-amsterdam" 
+            element={<GuidePage defaultSlug="video-production-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
+          />
+          <Route 
+            path="/video-production-amsterdam" 
+            element={<GuidePage defaultSlug="video-production-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
+          />
+          <Route 
+            path="/guides/wedding-photography-amsterdam" 
+            element={<GuidePage defaultSlug="wedding-photography-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
+          />
+          <Route 
+            path="/wedding-photography" 
+            element={<GuidePage defaultSlug="wedding-photography-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
+          />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
@@ -2987,62 +2826,25 @@ export default function App() {
   };
 
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="relative min-h-screen font-sans selection:bg-[#D94E28] selection:text-white bg-[#F6F4EF] text-[#141413]">
-        <div className="grain" />
-        <ScrollProgressHairline />
-        <AgencyCustomCursor />
-        <Navbar 
-          onOpenSearch={() => setIsSearchOpen(true)}
-          onOpenCalc={() => openCalcWithCategory("consulting")}
-          onOpenContact={() => openContactWithPractice()}
-        />
-        <main>
-          <AnimatePresence mode="wait">
-            <Routes>
-              <Route path="/" element={<HomePage onOpenContact={openContactWithPractice} />} />
-              <Route path="/services/:id" element={<ServicePage />} />
-              <Route path="/business-consulting" element={<ServicePage defaultId="business-consulting" />} />
-              <Route path="/video-production" element={<ServicePage defaultId="creative-agency" />} />
-              <Route path="/creative-agency" element={<ServicePage defaultId="creative-agency" />} />
-              <Route path="/fine-art" element={<ServicePage defaultId="fine-art" />} />
-              <Route path="/custom-it-services" element={<ServicePage defaultId="custom-it-services" />} />
-              <Route path="/enterprise-it" element={<ServicePage defaultId="custom-it-services" />} />
-
-              {/* Dedicated High-Authority SEO Topic Dossiers & Long-Tail Landing Routes */}
-              <Route 
-                path="/guides/:slug" 
-                element={<GuidePage onOpenCalculator={openCalcWithCategory} />} 
-              />
-              <Route 
-                path="/guides/dutch-branch-office-formation" 
-                element={<GuidePage defaultSlug="dutch-branch-office-formation" onOpenCalculator={openCalcWithCategory} />} 
-              />
-              <Route 
-                path="/dutch-branch-office" 
-                element={<GuidePage defaultSlug="dutch-branch-office-formation" onOpenCalculator={openCalcWithCategory} />} 
-              />
-              <Route 
-                path="/guides/video-production-amsterdam" 
-                element={<GuidePage defaultSlug="video-production-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
-              />
-              <Route 
-                path="/video-production-amsterdam" 
-                element={<GuidePage defaultSlug="video-production-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
-              />
-              <Route 
-                path="/guides/wedding-photography-amsterdam" 
-                element={<GuidePage defaultSlug="wedding-photography-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
-              />
-              <Route 
-                path="/wedding-photography" 
-                element={<GuidePage defaultSlug="wedding-photography-amsterdam" onOpenCalculator={openCalcWithCategory} />} 
-              />
-            </Routes>
-          </AnimatePresence>
-        </main>
-        <Footer onOpenContact={() => openContactWithPractice()} />
+    <MotionConfig reducedMotion="user">
+      <Router>
+        <ScrollToTop />
+        <div className="relative min-h-screen font-sans selection:bg-[#D94E28] selection:text-white bg-[#F6F4EF] text-[#141413]">
+          <div className="grain" />
+          <ScrollProgressHairline />
+          <AgencyCustomCursor />
+          <Navbar 
+            onOpenSearch={() => setIsSearchOpen(true)}
+            onOpenCalc={() => openCalcWithCategory("consulting")}
+            onOpenContact={() => openContactWithPractice()}
+          />
+          <main>
+            <AnimatedRoutes
+              onOpenContact={openContactWithPractice}
+              openCalcWithCategory={openCalcWithCategory}
+            />
+          </main>
+          <Footer onOpenContact={() => openContactWithPractice()} />
 
         {/* Floating Quick Utility Dock (Frosted Warm Gallery Dock) */}
         <div className="fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-white/90 backdrop-blur-md px-3 py-2 border border-[#141413]/15 rounded-full shadow-[0_12px_32px_rgba(20,20,19,0.12)] no-print">
@@ -3083,12 +2885,13 @@ export default function App() {
           onClose={() => setIsSearchOpen(false)}
           onOpenCalculator={() => openCalcWithCategory("consulting")}
         />
-        <ContactModal
-          isOpen={isContactOpen}
-          onClose={() => setIsContactOpen(false)}
-          defaultPractice={contactPractice}
-        />
-      </div>
-    </Router>
+          <ContactModal
+            isOpen={isContactOpen}
+            onClose={() => setIsContactOpen(false)}
+            defaultPractice={contactPractice}
+          />
+        </div>
+      </Router>
+    </MotionConfig>
   );
 }

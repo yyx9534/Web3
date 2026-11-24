@@ -13,8 +13,18 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    scrollbar-color: rgba(20, 20, 19, 0.25) #F6F4EF;
+  }
   body {
     @apply bg-[#F6F4EF] text-[#141413] antialiased selection:bg-[#D94E28] selection:text-white;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 

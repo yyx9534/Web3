@@ -22,6 +22,12 @@ import {
   Download
 } from "lucide-react";
 import { DETAILED_GUIDES, DetailedGuide } from "./guidesData";
+import {
+  editorialStaggerContainer,
+  editorialCardVariants,
+  EditorialBlock,
+  EditorialSection,
+} from "./CreativeEffects";
 
 export const GuidePage: React.FC<{ 
   defaultSlug?: string;
@@ -55,22 +61,24 @@ export const GuidePage: React.FC<{
   useEffect(() => {
     if (guide) {
       document.title = guide.metaTitle;
-      
-      let metaDesc = document.querySelector('meta[name="description"]');
-      if (!metaDesc) {
-        metaDesc = document.createElement("meta");
-        metaDesc.setAttribute("name", "description");
-        document.head.appendChild(metaDesc);
-      }
-      metaDesc.setAttribute("content", guide.metaDescription);
 
-      let metaKeywords = document.querySelector('meta[name="keywords"]');
-      if (!metaKeywords) {
-        metaKeywords = document.createElement("meta");
-        metaKeywords.setAttribute("name", "keywords");
-        document.head.appendChild(metaKeywords);
-      }
-      metaKeywords.setAttribute("content", guide.keywords);
+      const setMetaTag = (attrName: "name" | "property", attrValue: string, content: string) => {
+        let tag = document.querySelector(`meta[${attrName}="${attrValue}"]`);
+        if (!tag) {
+          tag = document.createElement("meta");
+          tag.setAttribute(attrName, attrValue);
+          document.head.appendChild(tag);
+        }
+        tag.setAttribute("content", content);
+      };
+
+      setMetaTag("name", "description", guide.metaDescription);
+      setMetaTag("name", "keywords", guide.keywords);
+      setMetaTag("property", "og:title", guide.metaTitle);
+      setMetaTag("property", "og:description", guide.metaDescription);
+      setMetaTag("property", "og:url", guide.canonicalUrl);
+      setMetaTag("name", "twitter:title", guide.metaTitle);
+      setMetaTag("name", "twitter:description", guide.metaDescription);
 
       let linkCanonical = document.querySelector('link[rel="canonical"]');
       if (!linkCanonical) {
@@ -79,6 +87,54 @@ export const GuidePage: React.FC<{
         document.head.appendChild(linkCanonical);
       }
       linkCanonical.setAttribute("href", guide.canonicalUrl);
+
+      const guideSchema = {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "YEAH Agency Amsterdam", item: "https://yeah-amsterdam.nl/" },
+              { "@type": "ListItem", position: 2, name: guide.relatedPracticeName, item: `https://yeah-amsterdam.nl/services/${guide.relatedPracticeId}` },
+              { "@type": "ListItem", position: 3, name: guide.title, item: guide.canonicalUrl },
+            ],
+          },
+          {
+            "@type": "Article",
+            headline: guide.title,
+            description: guide.metaDescription,
+            image: guide.heroImage,
+            dateModified: "2026-11-24",
+            author: { "@type": "Organization", name: "YEAH Agency Amsterdam", url: "https://yeah-amsterdam.nl/" },
+            publisher: { "@type": "Organization", name: "YEAH Agency Amsterdam" },
+            mainEntityOfPage: guide.canonicalUrl,
+          },
+          ...(guide.faqs && guide.faqs.length > 0
+            ? [
+                {
+                  "@type": "FAQPage",
+                  mainEntity: guide.faqs.map((faq) => ({
+                    "@type": "Question",
+                    name: faq.q,
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: faq.a,
+                    },
+                  })),
+                },
+              ]
+            : []),
+        ],
+      };
+
+      const existingScript = document.getElementById("dynamic-route-jsonld");
+      const script = existingScript || document.createElement("script");
+      script.id = "dynamic-route-jsonld";
+      script.setAttribute("type", "application/ld+json");
+      script.textContent = JSON.stringify(guideSchema);
+      if (!existingScript) {
+        document.head.appendChild(script);
+      }
     }
   }, [guide]);
 
@@ -91,17 +147,11 @@ export const GuidePage: React.FC<{
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.35 }}
-      className="pt-28 md:pt-36 pb-28 px-6 md:px-12 bg-[#F6F4EF] min-h-screen text-[#141413]"
-    >
+    <div className="pt-28 md:pt-36 pb-28 px-6 md:px-12 bg-[#F6F4EF] min-h-screen text-[#141413]">
       <div className="max-w-5xl mx-auto">
         
         {/* Navigation & Breadcrumb */}
-        <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-[#141413]/12 pb-6">
+        <EditorialBlock className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-[#141413]/12 pb-6">
           <Link 
             to="/" 
             className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#141413]/60 hover:text-[#D94E28] transition-colors"
@@ -137,40 +187,42 @@ export const GuidePage: React.FC<{
               <span>{copied ? "已复制链接!" : "分享"}</span>
             </button>
           </div>
-        </div>
+        </EditorialBlock>
 
-        {/* Header Kicker (Unboxed editorial typography) */}
-        <div className="mb-4">
-          <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-[#D94E28]">
-            {guide.badge}
-          </span>
-        </div>
+        {/* Header Kicker, Title, Summary & Meta Stats */}
+        <EditorialBlock delay={0.05}>
+          <div className="mb-4">
+            <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-[#D94E28]">
+              {guide.badge}
+            </span>
+          </div>
 
-        {/* Article Title */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#141413] mb-6 leading-[1.2] tracking-tight text-balance">
-          {guide.title}
-        </h1>
+          {/* Article Title */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#141413] mb-6 leading-[1.2] tracking-tight text-balance">
+            {guide.title}
+          </h1>
 
-        {/* Subtitle / Executive Summary */}
-        <p className="text-base sm:text-lg md:text-xl text-[#141413]/75 font-light leading-relaxed mb-8 max-w-4xl">
-          {guide.subtitle}
-        </p>
+          {/* Subtitle / Executive Summary */}
+          <p className="text-base sm:text-lg md:text-xl text-[#141413]/75 font-light leading-relaxed mb-8 max-w-4xl">
+            {guide.subtitle}
+          </p>
 
-        {/* Meta Stats Row */}
-        <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-[#141413]/60 mb-10 pb-8 border-b border-[#141413]/12">
-          <span className="inline-flex items-center gap-1.5">
-            <Clock size={14} className="text-[#D94E28]" /> {guide.readTime}
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Calendar size={14} className="text-[#D94E28]" /> {guide.updatedDate}
-          </span>
-          <span>
-            Practice Lead: <Link to={`/services/${guide.relatedPracticeId}`} className="text-[#141413] hover:text-[#D94E28] underline underline-offset-4 ml-1">{guide.relatedPracticeName}</Link>
-          </span>
-        </div>
+          {/* Meta Stats Row */}
+          <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-[#141413]/60 mb-10 pb-8 border-b border-[#141413]/12">
+            <span className="inline-flex items-center gap-1.5">
+              <Clock size={14} className="text-[#D94E28]" /> {guide.readTime}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Calendar size={14} className="text-[#D94E28]" /> {guide.updatedDate}
+            </span>
+            <span>
+              Practice Lead: <Link to={`/services/${guide.relatedPracticeId}`} className="text-[#141413] hover:text-[#D94E28] underline underline-offset-4 ml-1">{guide.relatedPracticeName}</Link>
+            </span>
+          </div>
+        </EditorialBlock>
 
         {/* Hero Visual Banner with Key Metrics Overlay (Full Color Editorial Photo) */}
-        <div className="relative mb-14 overflow-hidden border border-[#141413]/12 bg-white shadow-sm">
+        <EditorialBlock delay={0.08} className="relative mb-14 overflow-hidden border border-[#141413]/12 bg-white shadow-sm">
           <div className="relative aspect-[21/9] sm:aspect-[21/8] overflow-hidden">
             <img 
               src={guide.heroImage} 
@@ -183,28 +235,35 @@ export const GuidePage: React.FC<{
           </div>
 
           <div className="p-6 md:p-8 bg-white border-t border-[#141413]/10">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <motion.div
+              variants={editorialStaggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              exit="exit"
+              viewport={{ once: false, amount: "some" }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-4"
+            >
               {guide.highlights.map((h, i) => (
-                <div key={i} className="p-3 bg-[#F6F4EF] border border-[#141413]/8">
+                <motion.div key={i} variants={editorialCardVariants} className="p-3 bg-[#F6F4EF] border border-[#141413]/8">
                   <div className="text-[10px] font-mono text-[#141413]/55 uppercase tracking-wider mb-1">{h.label}</div>
                   <div className="text-xs md:text-sm font-medium text-[#141413]">{h.value}</div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </EditorialBlock>
 
         {/* Introduction */}
-        <div className="max-w-none mb-16">
+        <EditorialBlock className="max-w-none mb-16">
           <div className="p-6 md:p-8 bg-white border border-[#141413]/12 leading-relaxed text-sm md:text-base text-[#141413]/85 font-light">
             <p className="mb-0">{guide.introduction}</p>
           </div>
-        </div>
+        </EditorialBlock>
 
         {/* Content Sections */}
         <div className="space-y-16">
           {guide.sections.map((section, sIdx) => (
-            <section key={sIdx} className="scroll-mt-28 border-b border-[#141413]/12 pb-12">
+            <EditorialSection key={sIdx} className="scroll-mt-28 border-b border-[#141413]/12 pb-12">
               <h2 className="text-2xl sm:text-3xl font-serif text-[#141413] mb-2 leading-snug">
                 {section.title}
               </h2>
@@ -263,13 +322,13 @@ export const GuidePage: React.FC<{
                   <div>{section.calloutBox.text}</div>
                 </div>
               )}
-            </section>
+            </EditorialSection>
           ))}
         </div>
 
         {/* FAQ Accordion Section */}
         {guide.faqs && guide.faqs.length > 0 && (
-          <div className="py-14 border-b border-[#141413]/12">
+          <EditorialBlock className="py-14 border-b border-[#141413]/12">
             <div className="mb-8">
               <span className="text-[11px] font-mono text-[#D94E28] uppercase tracking-widest block mb-2">
                 Frequently Addressed Inquiries
@@ -314,11 +373,11 @@ export const GuidePage: React.FC<{
                 );
               })}
             </div>
-          </div>
+          </EditorialBlock>
         )}
 
         {/* Engagement CTA Banner (Warm Obsidian Editorial Contrast Block) */}
-        <div className="mt-14 p-8 md:p-12 bg-[#161514] text-[#F6F4EF] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <EditorialBlock className="mt-14 p-8 md:p-12 bg-[#161514] text-[#F6F4EF] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="max-w-xl">
             <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#D94E28] block mb-2">
               Operational Liaison in Amsterdam
@@ -353,10 +412,10 @@ export const GuidePage: React.FC<{
               <ArrowRight size={14} />
             </Link>
           </div>
-        </div>
+        </EditorialBlock>
 
         {/* Explore Other Guides */}
-        <div className="pt-20">
+        <EditorialBlock className="pt-20">
           <span className="text-xs font-mono uppercase tracking-[0.3em] text-[#141413]/55 block mb-6">
             Explore Other Practice Dossiers
           </span>
@@ -385,9 +444,9 @@ export const GuidePage: React.FC<{
               </Link>
             ))}
           </div>
-        </div>
+        </EditorialBlock>
 
       </div>
-    </motion.div>
+    </div>
   );
 };

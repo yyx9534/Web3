@@ -1,11 +1,140 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   motion,
+  useInView,
+  useMotionTemplate,
   useMotionValue,
   useScroll,
   useSpring,
   useTransform,
+  type Variants,
 } from "motion/react";
+
+/**
+ * Editorial Motion Choreography Primitives (Warm Ivory Gallery Feel)
+ * Compositor-only transforms (y, scale) + opacity for 60fps transitions.
+ */
+export const EDITORIAL_EASE = [0.22, 1, 0.36, 1] as const;
+
+export const editorialPageVariants: Variants = {
+  initial: { opacity: 0, y: 18 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.45,
+      ease: EDITORIAL_EASE,
+      when: "beforeChildren",
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -16,
+    transition: {
+      duration: 0.26,
+      ease: EDITORIAL_EASE,
+    },
+  },
+};
+
+export const editorialSectionVariants: Variants = {
+  hidden: { opacity: 0, y: 26 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.62,
+      delay,
+      ease: EDITORIAL_EASE,
+    },
+  }),
+  exit: {
+    opacity: 0,
+    y: -14,
+    transition: {
+      duration: 0.24,
+      ease: EDITORIAL_EASE,
+    },
+  },
+};
+
+export const editorialStaggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.075,
+      delayChildren: 0.05,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      staggerChildren: 0.04,
+      staggerDirection: -1,
+    },
+  },
+};
+
+export const editorialCardVariants: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.52,
+      ease: EDITORIAL_EASE,
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -12,
+    transition: {
+      duration: 0.22,
+      ease: EDITORIAL_EASE,
+    },
+  },
+};
+
+export const EditorialBlock: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  id?: string;
+}> = ({ children, className = "", delay = 0, id }) => (
+  <motion.div
+    id={id}
+    variants={editorialSectionVariants}
+    custom={delay}
+    initial="hidden"
+    whileInView="visible"
+    exit="exit"
+    viewport={{ once: false, amount: "some" }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
+
+export const EditorialSection: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  id?: string;
+}> = ({ children, className = "", delay = 0, id }) => (
+  <motion.section
+    id={id}
+    variants={editorialSectionVariants}
+    custom={delay}
+    initial="hidden"
+    whileInView="visible"
+    exit="exit"
+    viewport={{ once: false, amount: "some" }}
+    className={className}
+  >
+    {children}
+  </motion.section>
+);
 
 /**
  * Razor-thin top viewport scroll progress bar in Dutch Vermilion
@@ -218,11 +347,11 @@ const MARQUEE_ITEMS = [
   "TOOBIT × CHRIS SHARMA",
   "FIXICO × MYWHEELS",
   "HERMIJNTJE DRENTH OLYMPIC PROFILE",
-  "MING YE (叶明) 8×10 SILVER GELATIN",
-  "SCHLOSS PLÜSCHOW EXHIBITION",
+  "EUROPEAN DESTINATION WEDDING CINEMA",
   "DUTCH BV & KVK FORMATION",
   "EPR & KENNISMIGRANT DISPATCH",
   "DRIVEVIEWER IOS APP",
+  "ENTERPRISE GDPR CLOUD ARCHITECTURE",
 ];
 
 export const EditorialMarquee: React.FC = () => {
@@ -325,3 +454,119 @@ export const AgencyCustomCursor: React.FC = () => {
     </motion.div>
   );
 };
+
+/**
+ * Interactive Radial Spotlight Sheen (Warm Vermilion / Ivory Gallery Illumination)
+ * Purely pointer-events-none overlay that illuminates card surfaces without reducing contrast.
+ */
+export const SpotlightSurface: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  spotlightColor?: string;
+  radius?: number;
+}> = ({
+  children,
+  className = "",
+  spotlightColor = "rgba(217, 78, 40, 0.10)",
+  radius = 340,
+}) => {
+  const mouseX = useMotionValue(-1000);
+  const mouseY = useMotionValue(-1000);
+  const [hovered, setHovered] = useState(false);
+
+  const background = useMotionTemplate`radial-gradient(${radius}px circle at ${mouseX}px ${mouseY}px, ${spotlightColor}, transparent 75%)`;
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  };
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={`relative ${className}`}
+    >
+      <motion.div
+        aria-hidden="true"
+        style={{ background }}
+        animate={{ opacity: hovered ? 1 : 0 }}
+        transition={{ duration: 0.25 }}
+        className="pointer-events-none absolute inset-0 z-10"
+      />
+      {children}
+    </div>
+  );
+};
+
+/**
+ * Precision Architectural / Cinema Viewfinder Corner Registration Marks
+ */
+export const ArchitecturalCornerMarks: React.FC<{
+  dark?: boolean;
+  className?: string;
+}> = ({ dark = false, className = "" }) => {
+  const color = dark
+    ? "border-[#F6F4EF]/30 group-hover:border-[#D94E28]"
+    : "border-[#141413]/25 group-hover:border-[#D94E28]";
+  return (
+    <div aria-hidden="true" className={`pointer-events-none absolute inset-0 z-20 ${className}`}>
+      <span className={`absolute top-2 left-2 w-2.5 h-2.5 border-t border-l transition-colors duration-300 ${color}`} />
+      <span className={`absolute top-2 right-2 w-2.5 h-2.5 border-t border-r transition-colors duration-300 ${color}`} />
+      <span className={`absolute bottom-2 left-2 w-2.5 h-2.5 border-b border-l transition-colors duration-300 ${color}`} />
+      <span className={`absolute bottom-2 right-2 w-2.5 h-2.5 border-b border-r transition-colors duration-300 ${color}`} />
+    </div>
+  );
+};
+
+/**
+ * Viewport-Triggered Metric Counter (renders full target initially for crawlers/no-JS, animates smoothly on view)
+ */
+export const CountUpMetric: React.FC<{
+  target: number;
+  suffix?: string;
+  prefix?: string;
+  startFrom?: number;
+  durationMs?: number;
+}> = ({ target, suffix = "", prefix = "", startFrom = 0, durationMs = 1100 }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: "some" });
+  const [displayValue, setDisplayValue] = useState<number>(target);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    if (!inView || hasAnimated.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplayValue(target);
+      return;
+    }
+    hasAnimated.current = true;
+    const startTime = performance.now();
+
+    const tick = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / durationMs, 1);
+      // Cubic ease-out
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(startFrom + (target - startFrom) * eased);
+      setDisplayValue(current);
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      }
+    };
+
+    requestAnimationFrame(tick);
+  }, [inView, target, startFrom, durationMs]);
+
+  return (
+    <span ref={ref} className="tabular-nums">
+      {prefix}
+      {displayValue}
+      {suffix}
+    </span>
+  );
+};
+

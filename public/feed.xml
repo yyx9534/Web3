@@ -1,56 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>YEAH Agency Amsterdam | Publications, Whitepapers &amp; Practice Insights</title>
+    <title>YEAH Agency Amsterdam | Authoritative Practice Dossiers &amp; Market Entry Insights</title>
     <link>https://yeah-amsterdam.nl/</link>
-    <description>Authoritative practice dossiers, legal compliance briefings, Dutch branch office formation guides, and commercial cinema production insights from YEAH Agency Amsterdam.</description>
-    <language>zh-CN</language>
-    <lastBuildDate>Thu, 08 Oct 2026 12:00:00 +0200</lastBuildDate>
+    <description>Structured practice dossiers, Dutch corporate formation &amp; EPR briefings, Glass Sharp Films commercial cinema productions, destination wedding guides, and DriveViewer iOS engineering updates from YEAH Agency Amsterdam.</description>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 24 Nov 2026 12:00:00 +0100</lastBuildDate>
     <atom:link href="https://yeah-amsterdam.nl/feed.xml" rel="self" type="application/rss+xml" />
 
     <item>
-      <title>荷兰开分公司全流程实操指南 | 外资企业设立分公司流程、KvK注册、公认证与人员派遣详解</title>
+      <title>荷兰开分公司全流程实操指南 | 外资企业设立分公司、荷兰BV注册、KvK、EPR与人员派遣详解</title>
       <link>https://yeah-amsterdam.nl/guides/dutch-branch-office-formation</link>
       <guid>https://yeah-amsterdam.nl/guides/dutch-branch-office-formation</guid>
-      <pubDate>Thu, 08 Oct 2026 09:00:00 +0200</pubDate>
-      <description>为中国企业赴荷兰及欧洲出海提供权威实操指南：涵盖荷兰分公司(Branch Office / Nevenvestiging)与荷兰BV有限责任公司的法律责任对比、KvK商会公证与海牙认证(Apostille)、法定注册地址设立、IND高技术移民人员派遣(Kennismigrant)、30% Ruling外派税优政策及EPR包装环保申报。</description>
+      <pubDate>Tue, 24 Nov 2026 09:00:00 +0100</pubDate>
+      <description>为中国企业赴荷兰及欧洲出海提供权威实操指南：涵盖荷兰分公司(Branch Office / Bijkantoor)与荷兰BV有限责任公司的法律责任对比、KvK商会公证与海牙认证(Apostille)、法定注册地址设立、IND高技术移民人员派遣(Kennismigrant)、30% Ruling外派税优政策及EPR包装法与WEEE环保申报。</description>
       <category>Corporate Consulting</category>
     </item>
 
     <item>
-      <title>Commercial Video Production in Amsterdam &amp; Europe | Cinema Equipment, Crew &amp; Permitting Guide</title>
+      <title>Commercial Video Production in Amsterdam &amp; Europe | Glass Sharp Films Cinema Studio</title>
       <link>https://yeah-amsterdam.nl/guides/video-production-amsterdam</link>
       <guid>https://yeah-amsterdam.nl/guides/video-production-amsterdam</guid>
-      <pubDate>Thu, 08 Oct 2026 09:00:00 +0200</pubDate>
-      <description>Glass Sharp Films guide to commercial filmmaking, documentary direction, corporate commercials, and film crew hire in Amsterdam. Covers RED V-Raptor / ARRI Alexa LF cinema equipment packages, municipal canal permits, certified drone cinematography, and DaVinci Resolve color grading.</description>
+      <pubDate>Tue, 24 Nov 2026 09:00:00 +0100</pubDate>
+      <description>Glass Sharp Films guide to commercial filmmaking, reality series (Tram Dating), documentary direction, and camera crew hire in Amsterdam. Covers ARRI Alexa Mini LF &amp; RED V-Raptor 8K cinema equipment packages, RDW-certified Amsterdam drone cinematography, and DaVinci Resolve HDR color grading.</description>
       <category>Video Production</category>
     </item>
 
     <item>
-      <title>Wedding Photography Amsterdam &amp; Netherlands | Luxury Destination Elopement &amp; Cinema Guide</title>
+      <title>Wedding Photography Amsterdam &amp; Netherlands | Bilingual Destination Elopement &amp; 4K Cinema</title>
       <link>https://yeah-amsterdam.nl/guides/wedding-photography-amsterdam</link>
       <guid>https://yeah-amsterdam.nl/guides/wedding-photography-amsterdam</guid>
-      <pubDate>Thu, 08 Oct 2026 09:00:00 +0200</pubDate>
-      <description>Comprehensive destination wedding photography and cinematic videography guide for Amsterdam, Zaanse Schans, Giethoorn, and European castles. 4K dual-camera coverage, Kodak Portra medium format film photography, licensed drone aerials, and full post-production.</description>
+      <pubDate>Tue, 24 Nov 2026 09:00:00 +0100</pubDate>
+      <description>Comprehensive destination wedding photography and 4K cinema videography guide for Amsterdam UNESCO canals, Kasteel De Haar castles, Zaanse Schans windmills, and Keukenhof tulip fields with multilingual English, Mandarin, Cantonese, and Dutch crews.</description>
       <category>Wedding Photography</category>
     </item>
 
     <item>
-      <title>Practice Overview: Corporate Consulting &amp; European Market Entry</title>
+      <title>Practice 01: Corporate Consulting — Dutch BV Formation, EPR &amp; Kennismigrant Dispatch</title>
       <link>https://yeah-amsterdam.nl/services/business-consulting</link>
       <guid>https://yeah-amsterdam.nl/services/business-consulting</guid>
-      <pubDate>Thu, 08 Oct 2026 08:00:00 +0200</pubDate>
-      <description>Strategic advisory for multinational firms establishing operations in the Netherlands: KvK registration, Afvalfonds Verpakkingen EPR compliance, third-party personnel dispatch, and Kennismigrant sponsorship.</description>
+      <pubDate>Tue, 24 Nov 2026 08:00:00 +0100</pubDate>
+      <description>Turnkey advisory for multinational firms establishing operations in the Netherlands: KvK registration, Afvalfonds Verpakkingen / Verpact EPR compliance, third-party personnel dispatch (EOR), and IND Kennismigrant visas in ~21 business days.</description>
       <category>Services</category>
     </item>
 
     <item>
-      <title>Practice Overview: Glass Sharp Films Commercial &amp; Series Production</title>
+      <title>Practice 02: Video Production &amp; Destination Weddings — Glass Sharp Films Amsterdam</title>
       <link>https://yeah-amsterdam.nl/services/creative-agency</link>
       <guid>https://yeah-amsterdam.nl/services/creative-agency</guid>
-      <pubDate>Thu, 08 Oct 2026 08:00:00 +0200</pubDate>
-      <description>Production banner behind the Tram Dating reality series and high-end commercial cinema campaigns across Western Europe.</description>
+      <pubDate>Tue, 24 Nov 2026 08:00:00 +0100</pubDate>
+      <description>Production banner behind the Tram Dating reality series, Toobit x Chris Sharma (2.5M+ views), Fixico x MyWheels, Hermijntje Drenth Olympic profile, and luxury European wedding cinematography.</description>
       <category>Services</category>
+    </item>
+
+    <item>
+      <title>Practice 03: Software Development — DriveViewer iOS &amp; GDPR Enterprise Cloud Architecture</title>
+      <link>https://yeah-amsterdam.nl/services/custom-it-services</link>
+      <guid>https://yeah-amsterdam.nl/services/custom-it-services</guid>
+      <pubDate>Tue, 24 Nov 2026 08:00:00 +0100</pubDate>
+      <description>Full-stack software engineering from Amsterdam: DriveViewer iOS app on the Apple App Store for Dutch driving schools (46-point CBR grading), EU GDPR multi-region cloud systems, and Douane EDI automated customs ERP handling €45M+ annual volume.</description>
+      <category>Software Development</category>
     </item>
   </channel>
 </rss>

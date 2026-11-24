@@ -87,7 +87,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
               </div>
               <h3 className="font-serif text-2xl text-[#141413]">Contact YEAH Agency Amsterdam</h3>
               <p className="text-xs text-[#141413]/65 mt-1 font-light">
-                Official engagement portal for European corporate consulting, production, fine art, and software.
+                Official engagement portal for European corporate consulting, video production, and software engineering.
               </p>
             </div>
             <button
@@ -173,8 +173,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 >
                   <option value="corporate-consulting">01. Corporate Consulting (Dutch BV / EPR)</option>
                   <option value="video-production">02. Video Production (Glass Sharp Films)</option>
-                  <option value="fine-art">03. Fine Art Representation (Ming Ye)</option>
-                  <option value="software">04. Software Development (DriveViewer)</option>
+                  <option value="software">03. Software Development (DriveViewer)</option>
                   <option value="wedding">Destination Wedding Cinema</option>
                   <option value="general">General Engagement</option>
                 </select>
