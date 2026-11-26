@@ -1,6 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { DETAILED_GUIDES } from "../src/guidesData";
+import {
+  VIDEO_PRODUCTION_CASES,
+  buildVideoObjectSchemas,
+} from "../src/videoCasesData";
 
 interface PrerenderRoute {
   routePath: string;
@@ -88,9 +92,9 @@ const SERVICES_PRERENDER: ServicePreRenderMeta[] = [
     tagline:
       "Commercial brand campaigns, broadcast reality series ('Tram Dating'), and luxury destination wedding cinematography across Europe.",
     description:
-      "Amsterdam video production studio Glass Sharp Films: commercial TVCs, Tram Dating reality series, ARRI & RED 8K packages, RDW drone aerials, and bilingual weddings.",
+      "Amsterdam video production studio Glass Sharp Films: commercial TVCs, Aspadz & Ymoas brand ads, Hanshow B2B interviews, Amsterdam RAI events, The Hague & Eindhoven restaurant promos, Woerden weddings & documentary films.",
     keywords:
-      "Video Production Amsterdam, Glass Sharp Films, Commercial Film Production Netherlands, Tram Dating Reality Series, ARRI Alexa Mini LF Amsterdam, RDW Drone Cinematography Netherlands, Wedding Photography Amsterdam, Destination Wedding Videographer Europe, 阿姆斯特丹视频制作, 欧洲婚礼摄影跟拍",
+      "Video Production Amsterdam, Glass Sharp Films, Commercial Film Production Netherlands, Amsterdam RAI Event Videographer, Restaurant Promo Video The Hague Eindhoven, E-bike Commercial Amsterdam, B2B Customer Interview Video Europe, Architectural Film Production, Wedding Videographer Woerden Amsterdam, iQIYI Documentary Production Europe, Bedrijfsfilm Amsterdam, Horeca Video Den Haag Eindhoven, Evenementen Video RAI, 荷兰视频拍摄, 阿姆斯特丹商业广告拍摄, 荷兰RAI展会跟拍, 荷兰餐饮宣传片, 荷兰婚礼短片跟拍",
     heroImage:
       "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1200&auto=format&fit=crop",
     highlights: [
@@ -223,8 +227,26 @@ const buildServiceRoute = (
           },
         })),
       },
+      ...(service.id === "creative-agency" ? buildVideoObjectSchemas() : []),
     ],
   };
+
+  const videoArchiveHtml =
+    service.id === "creative-agency"
+      ? `<h2>Documented Video Production Portfolio &amp; Client Case Studies</h2>
+          ${VIDEO_PRODUCTION_CASES.map(
+            (cs) => `<section style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #E2DDD3;">
+            <p style="font-size: 11px; color: #D94E28;">${escapeHtml(cs.tag)} · ${escapeHtml(cs.clientCategory)}</p>
+            <h3>${escapeHtml(cs.title)}</h3>
+            <p>${escapeHtml(cs.summary)}</p>
+            <p><strong>Challenge:</strong> ${escapeHtml(cs.challenge)} <strong>Solution:</strong> ${escapeHtml(cs.solution)}</p>
+            <ul>${cs.deliverables.map((d) => `<li>${escapeHtml(d)}</li>`).join("")}</ul>
+            <p><strong>Outcome:</strong> ${escapeHtml(cs.outcome)}</p>
+            ${cs.seoKeywords && cs.seoKeywords.length > 0 ? `<p><strong>Specialty &amp; Regional Focus:</strong> ${escapeHtml(cs.seoKeywords.join(" · "))}</p>` : ""}
+            ${cs.externalLink ? `<p><a href="${escapeHtml(cs.externalLink.url)}">${escapeHtml(cs.externalLink.label)}</a></p>` : ""}
+          </section>`
+          ).join("\n          ")}`
+      : "";
 
   const semanticBodyHtml = `
       ${renderSiteHeaderNav()}
@@ -238,6 +260,7 @@ const buildServiceRoute = (
           <ul>
             ${service.highlights.map((h) => `<li>${escapeHtml(h)}</li>`).join("\n            ")}
           </ul>
+          ${videoArchiveHtml}
           ${
             relatedGuides.length > 0
               ? `<h2>In-Depth Practice Guides &amp; Dossiers</h2>
@@ -446,9 +469,22 @@ const renderHtmlForRoute = (baseHtml: string, route: PrerenderRoute): string => 
     /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/,
     `<link rel="canonical" href="${escapeHtml(route.canonicalUrl)}" />`
   );
+  let hreflangBlock = `<!-- Multilingual Alternate Links -->\n    <link rel="alternate" hreflang="x-default" href="${escapeHtml(route.canonicalUrl)}" />\n    <link rel="alternate" hreflang="${escapeHtml(route.lang)}" href="${escapeHtml(route.canonicalUrl)}" />`;
+
+  if (
+    route.canonicalUrl.endsWith("/guides/video-production-amsterdam") ||
+    route.canonicalUrl.endsWith("/guides/netherlands-video-production-zh")
+  ) {
+    hreflangBlock = `<!-- Paired Bilingual Alternate Links -->
+    <link rel="alternate" hreflang="x-default" href="${BASE_ORIGIN}/guides/video-production-amsterdam" />
+    <link rel="alternate" hreflang="en" href="${BASE_ORIGIN}/guides/video-production-amsterdam" />
+    <link rel="alternate" hreflang="zh-Hans" href="${BASE_ORIGIN}/guides/netherlands-video-production-zh" />
+    <link rel="alternate" hreflang="zh-CN" href="${BASE_ORIGIN}/guides/netherlands-video-production-zh" />`;
+  }
+
   out = out.replace(
     /<!-- Multilingual Alternate Links[\s\S]*?<link rel="alternate" hreflang="zh"[^>]*>/,
-    `<!-- Multilingual Alternate Links -->\n    <link rel="alternate" hreflang="x-default" href="${escapeHtml(route.canonicalUrl)}" />\n    <link rel="alternate" hreflang="${escapeHtml(route.lang)}" href="${escapeHtml(route.canonicalUrl)}" />`
+    hreflangBlock
   );
   out = replaceOrInjectTag(
     out,

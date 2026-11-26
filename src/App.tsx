@@ -25,7 +25,8 @@ import {
   Copy,
   Check,
   LayoutGrid,
-  List
+  List,
+  Play
 } from "lucide-react";
 import { useState, useEffect, useRef, Fragment, type MouseEvent as ReactMouseEvent, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useParams, useLocation, useNavigate } from "react-router-dom";
@@ -35,6 +36,13 @@ import { DETAILED_GUIDES } from "./guidesData";
 import { EstimateCalculatorModal } from "./EstimateCalculatorModal";
 import { GlobalSearchModal } from "./GlobalSearchModal";
 import { ContactModal } from "./ContactModal";
+import { CaseVideoPlayerModal } from "./CaseVideoPlayerModal";
+import {
+  VIDEO_PRODUCTION_CASES,
+  buildVideoObjectSchemas,
+  type CaseStudy,
+} from "./videoCasesData";
+export type { CaseStudy };
 import {
   AmbientGalleryMesh,
   EditorialMarquee,
@@ -55,30 +63,6 @@ import {
 } from "./CreativeEffects";
 
 // --- Types & Data Models ---
-
-export interface CaseStudy {
-  id: string;
-  title: string;
-  clientCategory: string;
-  serviceId: string;
-  serviceName: string;
-  summary: string;
-  challenge: string;
-  solution: string;
-  deliverables: string[];
-  outcome: string;
-  image: string;
-  tag: string;
-  externalLink?: {
-    label: string;
-    url: string;
-  };
-  pdfLink?: {
-    label: string;
-    url: string;
-  };
-  metrics?: { label: string; value: string }[];
-}
 
 export interface ServiceDefinition {
   id: string;
@@ -474,113 +458,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
 
   // 02. Video Production (视频制作 - Glass Sharp Films)
-  {
-    id: "case-tram-dating",
-    title: "Tram Dating — Reality Dating Series (In Active Production)",
-    clientCategory: "Original Asian Reality Dating Series · The Netherlands",
-    serviceId: "creative-agency",
-    serviceName: "Video Production",
-    tag: "REALITY SERIES · IN PRODUCTION",
-    summary: "Principal photography and technical cinematography for 'Tram Dating', an original reality dating series capturing Asian singles dating aboard historic and scenic trams across the Netherlands.",
-    challenge: "Designing multi-camera mobile cinema rigs inside moving heritage trams, capturing authentic unscripted romantic chemistry under changing urban natural light and ambient transit acoustics.",
-    solution: "Glass Sharp Films engineered custom vibration-damped cinema camera mounts, wireless multi-channel lavalier audio arrays, and dynamic street-level tracking alongside Dutch municipal transit authorities.",
-    deliverables: [
-      "Custom multi-camera mobile tram cinema rig and wireless audio capture",
-      "Principal photography across Amsterdam and Dutch transit networks",
-      "Real-time storyline assembly, daily rushes, and character edits",
-      "DaVinci Resolve cinematic urban color grading and broadcast mastering"
-    ],
-    outcome: "Currently in active production; capturing genuine cross-cultural romance against the backdrop of historic Dutch canals and vintage tramways.",
-    image: "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?q=80&w=2070&auto=format&fit=crop"
-  },
-  {
-    id: "case-fixico-mywheels",
-    title: "Fixico x MyWheels Commercial Campaign & Customer Testimonial",
-    clientCategory: "European Automotive & Fleet Technology Leaders",
-    serviceId: "creative-agency",
-    serviceName: "Video Production",
-    tag: "COMMERCIAL CAMPAIGN · GLASSSHARPFILMS.NL",
-    summary: "Produced an impactful commercial customer testimonial video for automotive repair platform Fixico in collaboration with shared mobility leader MyWheels in Amsterdam.",
-    challenge: "Showcasing technical fleet repair management while maintaining an engaging, human narrative centered on urban sustainability and mobility innovation.",
-    solution: "Glass Sharp Films directed dynamic multi-camera footage across Amsterdam locations, capturing real-world fleet maintenance with crisp cinematography, pacing, and color science.",
-    deliverables: [
-      "Commercial brand customer testimonial video master",
-      "Multi-platform social media campaign cutdowns (16:9 & 9:16)",
-      "High-fidelity sound design and licensed acoustic soundtrack",
-      "Bilingual English and Dutch subtitled delivery"
-    ],
-    outcome: "Featured prominently across European B2B automotive channels and corporate keynotes; drove high stakeholder engagement for both brands.",
-    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop",
-    externalLink: {
-      label: "View on glasssharpfilms.nl",
-      url: "https://glasssharpfilms.nl/"
-    }
-  },
-  {
-    id: "case-hermijntje-drenth",
-    title: "Hermijntje Drenth — Dutch Olympic Champion Cinematic Film",
-    clientCategory: "Olympic Gold Medalist & Elite Athletic Profile",
-    serviceId: "creative-agency",
-    serviceName: "Video Production",
-    tag: "OLYMPIC PROFILE · CINEMATIC DOCUMENTARY",
-    summary: "Crafted a cinematic visual portrait for Dutch Olympic rowing champion Hermijntje Drenth, highlighting the rigorous mental and physical discipline of world-class athletics.",
-    challenge: "Capturing intense on-water training sessions under variable Dutch weather while capturing intimate, emotionally resonant audio and close-up cinematic portraiture.",
-    solution: "Deployed cinema cameras with water-resistant stabilized rigs, specialized telephoto lenses, and drone tracking along rowing courses, coupled with deep personal voiceover interviews.",
-    deliverables: [
-      "Cinematic documentary athlete profile film",
-      "High-speed 120fps water cinematography and aerial footage",
-      "DaVinci Resolve dramatic color grade emphasizing dawn light",
-      "International festival and digital showcase masters"
-    ],
-    outcome: "Widely acclaimed in Dutch sports media and athletic foundation presentations for its artistic depth and cinematic storytelling.",
-    image: "https://images.unsplash.com/photo-1544919982-b61976f0ba43?q=80&w=2070&auto=format&fit=crop",
-    externalLink: {
-      label: "View on glasssharpfilms.nl",
-      url: "https://glasssharpfilms.nl/"
-    }
-  },
-  {
-    id: "case-toobit-sharma",
-    title: "Toobit Global Commercial featuring Chris Sharma",
-    clientCategory: "Global Cryptocurrency Platform & Action Sports",
-    serviceId: "creative-agency",
-    serviceName: "Video Production",
-    tag: "GLOBAL COMMERCIAL · TOOBIT X CHRIS SHARMA",
-    summary: "Directed and produced an international online commercial campaign for crypto platform Toobit starring world champion rock climber Chris Sharma.",
-    challenge: "Filming in high-exposure cliffside outdoor locations while maintaining commercial brand discipline, safety protocols, and intense visual pacing.",
-    solution: "Assembled a specialized extreme-sports camera team, utilizing lightweight RED cinema rigs and precision drone flight paths to parallel the climber's ascent with brand themes of resilience.",
-    deliverables: [
-      "High-energy global digital commercial (4K Cinema Master)",
-      "Ad-set vertical video variations for global digital advertising",
-      "Custom sound effects and cinematic sound score mixing",
-      "Full international broadcast license packaging"
-    ],
-    outcome: "Surpassed 2.5M+ global impressions across international markets, cementing Toobit's campaign as a high-performing digital brand commercial.",
-    image: "https://images.unsplash.com/photo-1522163182402-834f871fd851?q=80&w=2070&auto=format&fit=crop",
-    externalLink: {
-      label: "View on glasssharpfilms.nl",
-      url: "https://glasssharpfilms.nl/"
-    }
-  },
-  {
-    id: "case-destination-wedding",
-    title: "European Destination Wedding & Historic Canal Heritage Film",
-    clientCategory: "Luxury International Couple & High-End Wedding Planner",
-    serviceId: "creative-agency",
-    serviceName: "Video Production",
-    tag: "LUXURY WEDDING · CANAL HERITAGE",
-    summary: "Cinematic destination wedding film capturing ceremonies along UNESCO-listed Amsterdam canals and a 17th-century country estate using dual 4K cinema cameras and aerial drone flights.",
-    challenge: "Coordinating waterborne canal cruise shoots, estate historic preservation rules, and civil aviation drone clearances across a tight 3-day multi-cultural celebration.",
-    solution: "Glass Sharp Films deployed dual RED/Sony Cine camera teams, secured Dutch civil aviation permits, and employed wireless audio arrays to create a deeply emotional film.",
-    deliverables: [
-      "12-minute feature wedding documentary film",
-      "60-second cinematic preview trailer (delivered within 48 hours)",
-      "Multi-camera synchronized ceremony and banquet archives",
-      "Custom DaVinci Resolve color science grading"
-    ],
-    outcome: "Delivered to glowing praise from the couple and premier European wedding planners; over 500,000 views across digital platforms.",
-    image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop"
-  },
+  ...VIDEO_PRODUCTION_CASES,
 
   // 03. Software Development (软件开发 - DriveViewer & Cloud)
   {
@@ -2083,11 +1961,14 @@ const Footer = ({ onOpenContact }: { onOpenContact?: () => void }) => {
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {DETAILED_GUIDES.map((g) => (
+            {DETAILED_GUIDES.map((g, idx) => (
               <Link
                 key={g.slug}
                 to={`/guides/${g.slug}`}
-                className="p-4 bg-[#F6F4EF] border border-[#141413]/12 hover:border-[#D94E28] transition-all group rounded-sm flex flex-col justify-between"
+                className={cn(
+                  "p-4 bg-[#F6F4EF] border border-[#141413]/12 hover:border-[#D94E28] transition-all group rounded-sm flex flex-col justify-between",
+                  idx === 0 && "md:col-span-2 lg:col-span-3"
+                )}
               >
                 <div>
                   <div className="text-[10px] font-mono text-[#D94E28] uppercase tracking-wider mb-1">
@@ -2198,10 +2079,12 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
   const params = useParams();
   const navigate = useNavigate();
   const id = defaultId || params.id;
+  const [activeVideoCase, setActiveVideoCase] = useState<CaseStudy | null>(null);
 
   const service = SERVICES.find((s) => s.id === id);
 
   useEffect(() => {
+    setActiveVideoCase(null);
     if (!service && id) {
       navigate("/");
     }
@@ -2255,9 +2138,16 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
                 },
               ]
             : []),
+          ...(service.id === "creative-agency" ? buildVideoObjectSchemas() : []),
         ],
       }
     : null;
+
+  const relatedCases = service ? CASE_STUDIES.filter((c) => c.serviceId === service.id) : [];
+  const dynamicCaseKeywords = relatedCases
+    .flatMap((c) => c.seoKeywords || [])
+    .slice(0, 36)
+    .join(", ");
 
   usePageSEO({
     title: service ? `${service.title} | YEAH Agency Amsterdam` : "YEAH Agency Amsterdam",
@@ -2265,7 +2155,13 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
       ? `${service.desc.slice(0, 154)}`
       : "YEAH Agency Amsterdam",
     keywords: service
-      ? `${service.title}, YEAH Agency Amsterdam, ${service.badge}, ${service.scopeList.map((s) => s.title).join(", ")}`
+      ? [
+          service.title,
+          "YEAH Agency Amsterdam",
+          service.badge,
+          ...service.scopeList.map((s) => s.title),
+          ...(dynamicCaseKeywords ? [dynamicCaseKeywords] : []),
+        ].join(", ")
       : undefined,
     canonicalUrl: serviceUrl,
     ogImage: service?.heroImage,
@@ -2274,7 +2170,7 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
 
   if (!service) return null;
 
-  const relatedCases = CASE_STUDIES.filter((c) => c.serviceId === service.id);
+  const playableCases = relatedCases.filter((c) => Boolean(c.embedUrl));
 
   return (
     <div className="pt-32 pb-28 px-6 md:px-12 bg-[#F6F4EF] min-h-screen text-[#141413]">
@@ -2568,10 +2464,37 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
                           <span>PDF Monograph ↗</span>
                         </div>
                       </a>
+                    ) : cs.embedUrl ? (
+                      <button
+                        type="button"
+                        onClick={() => setActiveVideoCase(cs)}
+                        data-cursor="PLAY FILM ▶"
+                        className="block w-full h-full relative group/play cursor-pointer text-left focus:outline-none"
+                        aria-label={`Play ${cs.title} in page`}
+                      >
+                        <img 
+                          src={cs.image} 
+                          alt={`${cs.title} — ${cs.clientCategory}`}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover saturate-[1.06] group-hover/play:scale-105 transition-transform duration-700"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#141413]/75 via-[#141413]/15 to-transparent group-hover/play:from-[#141413]/60 transition-colors" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="w-14 h-14 rounded-full bg-[#F6F4EF]/95 text-[#141413] group-hover/play:bg-[#D94E28] group-hover/play:text-white group-hover/play:scale-110 transition-all duration-300 shadow-[0_12px_32px_rgba(0,0,0,0.4)] flex items-center justify-center">
+                            <Play size={20} className="ml-0.5 fill-current" />
+                          </span>
+                        </div>
+                        <div className="absolute bottom-3 right-3 z-10 bg-[#141413]/90 backdrop-blur-md px-3 py-1.5 text-[#F6F4EF] text-[10px] font-mono uppercase tracking-widest flex items-center gap-1.5 group-hover/play:bg-[#D94E28] transition-colors">
+                          <Play size={10} className="fill-current" />
+                          <span>Play In-Page</span>
+                        </div>
+                      </button>
                     ) : (
                       <img 
                         src={cs.image} 
-                        alt={cs.title}
+                        alt={`${cs.title} — ${cs.clientCategory}`}
                         loading="lazy"
                         decoding="async"
                         className="w-full h-full object-cover saturate-[1.06] group-hover:scale-105 transition-transform duration-700"
@@ -2616,6 +2539,16 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
                           ))}
                         </ul>
                       </div>
+                      {cs.seoKeywords && cs.seoKeywords.length > 0 && (
+                        <div className="pt-3 border-t border-[#141413]/8">
+                          <strong className="text-[#141413]/60 font-mono text-[10px] uppercase tracking-wider block mb-1">
+                            Specialty &amp; Regional Focus:
+                          </strong>
+                          <p className="text-[11px] text-[#141413]/65 font-light leading-relaxed">
+                            {cs.seoKeywords.join(" · ")}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -2628,16 +2561,31 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
                     <p className="text-xs text-[#141413]/80 font-light">{cs.outcome}</p>
                   </div>
 
-                  {cs.externalLink && (
-                    <a
-                      href={cs.externalLink.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-xs font-mono text-[#141413] hover:text-[#D94E28] transition-colors uppercase tracking-wider"
-                    >
-                      <span>{cs.externalLink.label}</span>
-                      <ExternalLink size={12} />
-                    </a>
+                  {(cs.embedUrl || cs.externalLink) && (
+                    <div className="flex flex-wrap items-center gap-3 pt-1">
+                      {cs.embedUrl && (
+                        <button
+                          type="button"
+                          onClick={() => setActiveVideoCase(cs)}
+                          className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#141413] text-[#F6F4EF] hover:bg-[#D94E28] hover:text-white font-mono text-xs uppercase tracking-wider transition-colors font-medium cursor-pointer"
+                        >
+                          <Play size={12} className="fill-current" />
+                          <span>Play Film / Showcase</span>
+                        </button>
+                      )}
+
+                      {cs.externalLink && (
+                        <a
+                          href={cs.externalLink.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-xs font-mono text-[#141413]/75 hover:text-[#D94E28] transition-colors uppercase tracking-wider py-2"
+                        >
+                          <span>{cs.externalLink.label}</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      )}
+                    </div>
                   )}
 
                   {cs.pdfLink && (
@@ -2744,6 +2692,13 @@ const ServicePage = ({ defaultId }: { defaultId?: string }) => {
         </EditorialBlock>
 
       </div>
+
+      <CaseVideoPlayerModal
+        activeCase={activeVideoCase}
+        playableCases={playableCases}
+        onSelectCase={setActiveVideoCase}
+        onClose={() => setActiveVideoCase(null)}
+      />
     </div>
   );
 };

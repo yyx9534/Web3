@@ -59,11 +59,23 @@ Setting up a Dutch Branch Office (*Bijkantoor* / *Nevenvestiging*) does not requ
 - **Licensing & Permits**: RDW EU-certified commercial drone operations over Amsterdam canals and historical zones, plus Amsterdam municipal filming permits (*Gemeente Amsterdam*).
 - **Post-Production**: In-house DaVinci Resolve calibrated HDR DI color grading, Dolby Atmos spatial audio mixing, and multilingual localization (EN/NL/ZH/ES).
 - **Documented Case Studies**:
+  - **Aspadz Fatbike Amsterdam**: Urban e-bike commercial film in Amsterdam (`https://vimeo.com/1080128369`).
+  - **Hanshow Budapest Customer Interview**: Pan-European B2B retail technology customer interview & documentary in Budapest (`https://vimeo.com/1080130834`).
+  - **Ymoas Pet Supplies Commercial**: D2C e-commerce pet lifestyle brand film (`https://vimeo.com/1080130627`).
+  - **Chinese Restaurant Documentary Trailer**: Atmospheric culinary & diaspora documentary concept trailer (`https://vimeo.com/469988343`).
+  - **Amazing Chinese Restaurants Opening Intro**: Rhythmic documentary series title sequence & opening montage (`https://vimeo.com/373732197`).
+  - **Arch Mist Architectural Film**: Spatial & architectural design showcase film (`https://youtu.be/VBlEo_ARWkw`).
+  - **Chinese Restaurant Series Teaser 2 (iQIYI)**: Second official culinary documentary teaser for iQIYI streaming release (`https://youtu.be/1S55-AqVIP4`).
+  - **Wedding Documentary — Woerden**: Destination wedding short film in Woerden, Netherlands (`https://youtu.be/bgHHhahhqHs`).
+  - **Amsterdam RAI Trade Event Aftermovie**: Live conference and trade exhibition coverage at Amsterdam RAI (`https://youtu.be/-pzFrK7J8fE`).
+  - **Hotking The Hague Restaurant Promo**: Commercial hospitality brand film in The Hague (`https://youtu.be/IswjQdAJxMQ`).
+  - **Eindhoven Ramen Commercial**: Craft culinary & open-kitchen restaurant promo film in Eindhoven (`https://youtu.be/ieOTR_5LKdQ`).
   - **Toobit × Chris Sharma**: Extreme cliffside global campaign starring climbing legend Chris Sharma (2.5M+ views, +180% engagement).
   - **Tram Dating Reality Series**: Original 6-episode unscripted dating series filmed inside vintage moving Amsterdam trams across central landmarks.
   - **Fixico × MyWheels**: Pan-European urban mobility commercial showcasing shared EV fleets.
   - **Hermijntje Drenth**: Intimate 120fps water-level documentary profile of the Dutch Olympic rowing champion.
-- Full Production Dossier: https://yeah-amsterdam.nl/guides/video-production-amsterdam
+- Full Production Dossier (EN): https://yeah-amsterdam.nl/guides/video-production-amsterdam
+- 中文全流程指南 (ZH - 荷兰视频拍摄): https://yeah-amsterdam.nl/guides/netherlands-video-production-zh
 
 ### Q: Where can couples hire bilingual destination wedding photographers and videographers in Amsterdam and Europe?
 **Direct Answer:**

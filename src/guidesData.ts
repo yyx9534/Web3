@@ -157,7 +157,7 @@ export const DETAILED_GUIDES: DetailedGuide[] = [
     subtitle: "From script treatment to DaVinci Resolve color mastering: cinema-grade film production agency Glass Sharp Films delivering global commercials, reality television, and luxury corporate films across Europe.",
     metaTitle: "Commercial Video Production Amsterdam | Glass Sharp Films Cinema Agency & Crew Hire",
     metaDescription: "Premier video production company based in Amsterdam, Netherlands. Specializing in commercial brand films, TVC advertising, unscripted reality series ('Tram Dating'), 4K/6K ARRI & RED camera packages, and licensed drone cinematography across Europe.",
-    keywords: "video production Amsterdam, commercial video production Netherlands, corporate video production Europe, film production company Amsterdam, Glass Sharp Films, commercial camera crew hire Amsterdam, reality TV series production Netherlands, Tram Dating, 4K video crew Europe, DaVinci Resolve color grading Amsterdam",
+    keywords: "video production Amsterdam, commercial video production Netherlands, Amsterdam RAI event videographer, restaurant promo video The Hague Eindhoven, e-bike commercial Amsterdam, B2B customer interview video Europe, architectural film production Netherlands, wedding videographer Woerden Utrecht, Glass Sharp Films, 4K video crew Europe, DaVinci Resolve color grading Amsterdam, bedrijfsfilm Amsterdam, horeca promotievideo Den Haag",
     heroImage: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop",
     readTime: "9 min read",
     updatedDate: "October 2026 Edition",
@@ -204,10 +204,11 @@ export const DETAILED_GUIDES: DetailedGuide[] = [
         subtitle: "Proven track record with multinational brands, Olympic athletes, and broadcast formats.",
         content: "Our work demonstrates creative agility and relentless execution across demanding briefs:",
         bulletPoints: [
-          "Fixico x MyWheels European Commercial: Directed and captured commercial customer testimonial film highlighting urban fleet electrification across Amsterdam canals.",
-          "Hermijntje Drenth (Dutch Olympic Champion Profile): Cinematic documentary portrait capturing dawn training, intense water-level cinematography at 120fps, and intimate voiceover reflection.",
-          "Toobit x Chris Sharma Global Commercial: Action-sports brand campaign filming world champion rock climber Chris Sharma on sheer cliff faces, delivering over 2.5 million global views.",
-          "Tram Dating Reality Series: Original reality dating show set inside heritage Amsterdam transit carriages; custom vibration-damped camera rigs capturing organic romantic chemistry."
+          "Urban Mobility & E-Commerce Commercials: Produced the Aspadz Fatbike Amsterdam e-bike commercial and Ymoas Pet Supplies D2C product ad, alongside global campaigns for Toobit x Chris Sharma (2.5M+ views) and Fixico x MyWheels.",
+          "Enterprise Customer Testimonials & Architectural Cinema: Dispatched European production units to Budapest for global retail leader Hanshow's store case study film, and delivered the Arch Mist spatial architecture film.",
+          "Streaming Documentary & Culinary Storytelling: Directed the Chinese Restaurant Documentary concept trailer, Amazing Chinese Restaurants opening title sequence, and official iQIYI Teaser 2.",
+          "Amsterdam RAI Trade Shows & Local Hospitality Promos: Covered live exhibitions at Amsterdam RAI, produced culinary commercials for Hotking in The Hague (Den Haag) and ramen hospitality brands in Eindhoven, plus bilingual wedding films in Woerden and Amsterdam.",
+          "Reality TV & Olympic Profiles: Produced original series 'Tram Dating' aboard moving Amsterdam heritage trams and filmed the 120fps documentary portrait of Dutch Olympic Champion Hermijntje Drenth."
         ]
       },
       {
@@ -513,6 +514,105 @@ export const DETAILED_GUIDES: DetailedGuide[] = [
         a: "We enforce strict European data residency partitioning (e.g., AWS eu-central-1 Frankfurt / EU sovereign regions), automated field-level pseudonymization prior to cross-border replication, and role-based audit trails satisfying AVG / GDPR regulatory inspections."
       }
     ]
+  },
+
+  // 7. 荷兰视频拍摄与商业广告制作全流程指南（中文SEO专题）
+  {
+    slug: "netherlands-video-production-zh",
+    category: "Video Production · 荷兰视频拍摄与商业制作",
+    badge: "2026 荷兰本土影视工作室 · GLASS SHARP FILMS",
+    title: "荷兰视频拍摄与商业制作全流程指南：阿姆斯特丹宣传片、RAI展会跟拍、中文摄制组与无人机许可",
+    subtitle: "深度解析中国企业与出海品牌在荷兰及欧洲开展视频拍摄的实操方案：本地中文/双语制片团队（Glass Sharp Films）、ARRI/RED 电影机规格、运河市政审批、RDW 无人机合规与后期调色交付。",
+    metaTitle: "荷兰视频拍摄指南 | 阿姆斯特丹宣传片、展会跟拍与中文摄制组 · YEAH Agency",
+    metaDescription: "专业荷兰视频拍摄团队（Glass Sharp Films）：承接阿姆斯特丹企业宣传片、商业广告TVC、RAI/鹿特丹展会跟拍、纪录片及海外婚礼电影。提供中英荷多语摄制组、ARRI/RED设备与市政航拍许可代办。",
+    keywords: "荷兰视频拍摄, 阿姆斯特丹视频拍摄, 荷兰商业视频制作, 荷兰企业宣传片拍摄, 荷兰中文摄制组, 阿姆斯特丹RAI展会跟拍, 荷兰餐饮宣传片拍摄, 海牙餐馆宣传片, 埃因霍温美食广告拍摄, 荷兰电动车广告拍摄, 荷兰产品TVC广告制作, 荷兰婚礼短片跟拍, Woerden婚礼摄影摄像, 建筑设计宣传片拍摄, 欧洲B2B客户采访拍摄, 荷兰无人机航拍许可, Glass Sharp Films, video production Netherlands Chinese crew",
+    heroImage: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2070&auto=format&fit=crop",
+    readTime: "10 分钟深度阅读",
+    updatedDate: "2026年11月最新更新",
+    relatedPracticeId: "creative-agency",
+    relatedPracticeName: "02. Video Production (视频制作 · Glass Sharp Films)",
+    canonicalUrl: "https://yeah-amsterdam.nl/guides/netherlands-video-production-zh",
+    highlights: [
+      { label: "核心制作品牌", value: "Glass Sharp Films（阿姆斯特丹）" },
+      { label: "摄影机标准", value: "ARRI Alexa Mini LF / RED 8K / Sony FX9" },
+      { label: "语言沟通", value: "普通话、粤语、英语、荷兰语本地全语种团队" },
+      { label: "覆盖区域", value: "阿姆斯特丹、鹿特丹、海牙、埃因霍温及全欧" }
+    ],
+    introduction: "对于中国出海企业、跨境品牌、欧洲会展参展商以及海外婚礼客户而言，在荷兰直接跨国派遣全套国内摄制组不仅差旅与器材清关成本高昂，还极易因不熟悉欧盟无人机法规及市政拍摄许可而延误工期。YEAH Agency Amsterdam 旗下专职影视制作厂牌 Glass Sharp Films（glasssharpfilms.nl）扎根阿姆斯特丹，由精通中、英、荷多语种的本地导演、摄影指导（DoP）与制片团队组成，提供从创意策划、实地勘景、市政报批到 DaVinci Resolve 院线级调色的一站式荷兰视频拍摄服务。",
+    sections: [
+      {
+        title: "一、我们在荷兰承接哪些核心视频拍摄业务？",
+        subtitle: "从跨国品牌 TVC 广告、荷兰 RAI 国际展会跟拍到本地企业落地纪录片。",
+        content: "无论是国内总部远程统筹委托，还是团队亲赴欧洲出差拍摄，Glass Sharp Films 均可灵活匹配本地直执行制作方案或国际联拍制片支援（Production Fixer）：",
+        bulletPoints: [
+          "欧洲本地品牌与餐饮商业广告（Commercial Ads）：在阿姆斯特丹街头实地摄制 Aspadz Fatbike 电动助力车广告片，在海牙（Hotking）、埃因霍温（Eindhoven Ramen）打造高食欲感餐饮品牌宣传片，并服务宠物用品品牌 Ymoas、Toobit × 世界攀岩冠军 Chris Sharma（250万+播放）及 Fixico × MyWheels。",
+          "建筑设计与跨国企业客户深度访谈：拍摄《Arch Mist》建筑空间设计美学短片，并赴匈牙利布达佩斯为全球智慧零售龙头汉朔（Hanshow）制作超市落地客户访谈纪录片。",
+          "文化饮食与流媒体纪录片制作：摄制海外中餐文化纪录片《中国餐馆》概念预告片、爱奇艺（iQIYI）官方系列预告片 Teaser 2 及《Amazing Chinese Restaurants》系列片头剪辑。",
+          "阿姆斯特丹 RAI / 鹿特丹展会与企业出海跟拍（Event & Expo Coverage）：为荷兰及国际参展企业提供 Amsterdam RAI 国际展会双机位快速采编、高管访谈与活动花絮宣传片。",
+          "真人秀综艺与高规格荷兰本地婚礼纪实：原创摄制海外亚裔恋爱真人秀《Tram Dating》，为荷兰奥运冠军 Hermijntje Drenth 拍摄纪实短片，并在 Woerden、阿姆斯特丹运河、De Haar 古堡及欧洲各地提供双语婚礼短片摄制。"
+        ]
+      },
+      {
+        title: "二、阿姆斯特丹本地器材库：电影级摄影与稳定系统",
+        subtitle: "省去跨国携带电池与镜头海关申报风险，阿姆斯特丹本地直接整备出机。",
+        content: "我们的阿姆斯特丹核心拍摄套装严格对齐国际电影与商业广告制作标准，确保皮肤质感、高动态范围与欧洲阴晴多变自然光下的稳定成像：",
+        tableData: {
+          headers: ["设备类别", "荷兰本地主力机型清单", "适用拍摄场景"],
+          rows: [
+            ["电影机机身", "ARRI Alexa Mini LF / RED V-Raptor 8K VV / Sony FX6 & FX9", "商业广告 TVC、企业总部宣传片、高帧率动作纪录片、展会双机位访谈"],
+            ["电影镜头群", "Cooke Panchro/i Classic 定焦 / Atlas Orion 2x 变形宽银幕镜头 / Zeiss Supreme", "赋予画面柔和的胶片高光过渡、电影级散景分离度与宽画幅冲击力"],
+            ["合规航拍系统", "DJI Inspire 3 (8K 全画幅) / DJI Mavic 3 Pro Cine（持欧盟 RDW 飞手执照）", "阿姆斯特丹运河区、鹿特丹现代港口、风车村及欧洲自然风貌合法航拍"],
+            ["车载与运动稳定", "DJI Ronin 2 陀螺仪 / Tilta Hydra 车载吸盘减震臂 / EasyRig 5", "阿姆斯特丹电车、公路新能源汽车跟拍及城市街头跟拍稳定性保障"],
+            ["现场多轨收音", "Sound Devices 833 / Wisycom & Lectrosonics 无线麦 / Schoeps 枪麦", "复杂展会、街道访谈、风声环境下的广播级清晰人声录制"]
+          ]
+        }
+      },
+      {
+        title: "三、在荷兰进行商业视频拍摄必须了解的当地法规与许可",
+        subtitle: "避免街头设备被没收或无人机违规高额罚款，本地制片团队全程代办。",
+        content: "荷兰对城市公共空间、历史遗产区域及航空空域管理极为规范，贸然在运河边架设大型轨道或未经批准起飞无人机极易被执法叫停。我们为您提前理顺全部当地手续：",
+        bulletPoints: [
+          "阿姆斯特丹市政拍摄报备（Gemeente Amsterdam Melding / Vergunning）：小型手持团队通常只需提前线上报备（Melding）；若涉及封路、大型灯光车或占据运河桥梁，我们负责申请正式商业拍摄许可。",
+          "欧盟 EASA & 荷兰 ILenT / RDW 无人机航拍审批：史基浦机场（Schiphol）管制圈覆盖大阿姆斯特丹核心城区。我们配备持有官方资质的本地航拍飞手，按合规流程向市政及空管提交飞行计划，确保合法安全出片。",
+          "运河水面游船拍摄协调：合作多家阿姆斯特丹历史木质沙龙船运营商，支持水面对岸平视与低角度运河穿行镜头。",
+          "全欧洲异地联拍交通与住宿统筹：从阿姆斯特丹出发 2-4 小时即可无缝衔接布鲁塞尔、巴黎、杜塞尔多夫或科隆，一站式覆盖跨国多站点拍摄任务。"
+        ],
+        calloutBox: {
+          type: "tip",
+          text: "省钱与提效建议：如果您的国内品牌方无法全员飞抵荷兰，只需发送品牌 Brief 与分镜要求，即可由我们的阿姆斯特丹中文导演兼制片直接对接全程拍摄，并实时视频连线（Live Monitoring）让您在国内会议室同步监看片场画面！"
+        }
+      },
+      {
+        title: "四、标准执行流程与后期交付标准",
+        subtitle: "透明可控的时间线，同时兼容海内外流媒体与国内平台发布规格。",
+        content: "无论是单日紧凑拍摄还是跨国大型商业片，我们均按严格项目管理标准推进：",
+        bulletPoints: [
+          "第 1 阶段（立项与筹备，3-7 天）：中文需求沟通与创意脚本（Treatment）确认、阿姆斯特丹/荷兰本地勘景（Location Scouting）、演员/双语主持人选角与拍摄许可申请。",
+          "第 2 阶段（实地拍摄执行，1-3 天）：阿姆斯特丹中英荷双语摄制组进场拍摄，支持国内远程实时监看指导及每日素材云端备份预览。",
+          "第 3 阶段（剪辑、DaVinci 调色与交付，7-14 天）：粗剪确认结构后，在专业校色监视器上用 DaVinci Resolve 进行电影级调色（DI）与空间声效混音。",
+          "多比例多语言成品包：同步交付 16:9 4K ProRes 422 HQ/MP4 横版母带（用于官网、YouTube、展厅大屏）以及 9:16 竖屏特调版本（直接适配微信视频号、小红书、抖音、Instagram Reels 与 TikTok），附带精准中英双语字幕。"
+        ]
+      }
+    ],
+    faqs: [
+      {
+        q: "在国内找你们拍荷兰视频，需要我们团队亲自飞去阿姆斯特丹吗？",
+        a: "完全不需要。我们超过半数的跨境项目均采用“远程监拍”模式：您只需与我们的阿姆斯特丹中文导演和制片人对齐脚本、景别要求与品牌视觉规范，现场拍摄时我们可以开启低延迟片场直播流，让您在微信或飞书/Zoom 上实时看监视器画面并即时微调细节，大大节省跨国机酒费用。"
+      },
+      {
+        q: "只缺一两位本地摄影师、灯光师或租借本地器材（Production Fixer），可以合作吗？",
+        a: "可以。如果您的国内核心主创团队已经飞往荷兰参展或拍摄，Glass Sharp Films 同样提供灵活的“本地协同支持”服务——按天为您匹配熟悉阿姆斯特丹地形的中文/双语摄影指导（DoP）、摄影助理、灯光师、持证无人机飞手及全套 ARRI/RED/Sony 摄影器材与车辆后勤。"
+      },
+      {
+        q: "在荷兰阿姆斯特丹拍企业片或活动跟拍，一般提前多久预约比较合适？",
+        a: "普通的单日活动跟拍或高管访谈建议提前 1–2 周预约；若涉及特殊室内场地、阿姆斯特丹运河游船、多国转场或需申请市政/无人机特殊许可的大型商业拍摄，建议至少提前 3–4 周锁定档期。"
+      },
+      {
+        q: "成片版权与原始素材（RAW/Log 素材）如何归属？",
+        a: "根据项目合同约定，标准商业与企业项目完成后，我们将通过高速加密云盘交付最终多格式成片；若客户有后续二次剪辑需要，也可约定一并交付整理归档后的原始拍摄工程与高码率母带素材。"
+      }
+    ]
   }
 ];
+
 
